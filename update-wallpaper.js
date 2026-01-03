@@ -110,7 +110,7 @@ async function generateWallpapers() {
                 /* Footer Link */
                 .wallpaper-footer {
                     position: absolute;
-                    bottom: -350px; /* Positioned just below the box */
+                    bottom: -425px; /* Positioned just below the box */
                     left: 0;
                     right: 0;
                     text-align: center;
