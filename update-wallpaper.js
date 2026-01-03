@@ -60,8 +60,11 @@ async function generateWallpapers() {
                     width: 1000px;
                     height: 1400px;
                     display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    flex-direction: column; /* Stack children vertically */
+                    align-items: center;    /* Center children horizontally */
+                    justify-content: flex-start; /* Align content to the TOP */
+                    padding-top: 100px; /* Push text down so it sits just below the pill */
+                    box-sizing: border-box; /* Includes padding in height calculation */
                 }
 
                 /* Verse Pill - Sitting on top edge of the box */
@@ -91,23 +94,24 @@ async function generateWallpapers() {
                 #translation-text {
                     font-family: 'Playfair Display', serif;
                     color: #2D2D2D;
-                    font-size: 75px; /* Decreased font size */
+                    font-size: 75px; 
                     line-height: 1.6;
                     font-style: italic;
                     text-align: center;
                     padding: 0 20px;
                     
+                    /* Safety for very long texts */
                     max-height: 100%; 
                     overflow: hidden;
                     display: -webkit-box;
-                    -webkit-line-clamp: 9;
+                    -webkit-line-clamp: 11; /* Increased slightly as we have more vertical space now */
                     -webkit-box-orient: vertical;
                 }
 
-                /* Footer Link - Now anchored to the bottom of the TEXT BOX */
+                /* Footer Link */
                 .wallpaper-footer {
                     position: absolute;
-                    bottom: -100px; /* Positioned just below the box */
+                    bottom: -175px; /* Positioned just below the box */
                     left: 0;
                     right: 0;
                     text-align: center;
