@@ -2,8 +2,8 @@ name: Update Wallpaper Daily
 
 on:
   schedule:
-    # Runs at 09:30 UTC (3:00 PM IST) and 21:30 UTC (3:00 AM IST)
-    - cron: '30 9,21 * * *'
+    # Runs at 09:15 UTC (2:45 PM IST) and 21:15 UTC (2:45 AM IST)
+    - cron: '15 9,21 * * *'
   workflow_dispatch: # Allows you to run it manually to test
 
 permissions:
