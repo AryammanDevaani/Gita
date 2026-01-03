@@ -94,6 +94,10 @@ async function generateWallpaper() {
   `;
 
   await page.setContent(htmlContent);
+
+  // --- SAFETY FIX: Wait for fonts to load before screenshotting ---
+  await page.evaluateHandle('document.fonts.ready');
+  // ---------------------------------------------------------------
   
   // 5. Save the image
   await page.screenshot({ path: 'wallpaper.png' });
