@@ -56,19 +56,18 @@ async function generateWallpapers() {
 
                 /* Fixed Box for Translation */
                 .text-box {
-                    position: relative; /* Becomes the anchor for the verse pill */
+                    position: relative; 
                     width: 1000px;
                     height: 1400px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    /* border: 1px dashed rgba(0,0,0,0.1); /* Uncomment to see the box boundaries */
                 }
 
-                /* Verse Pill - Now sitting on top of the text box */
+                /* Verse Pill - Sitting on top edge of the box */
                 #verse-reference {
                     position: absolute;
-                    top: -60px; /* Moves it up to "sit" on the top edge */
+                    top: -60px; 
                     left: 50%;
                     transform: translateX(-50%);
                     
@@ -81,32 +80,38 @@ async function generateWallpapers() {
                     font-weight: 700;
                     font-style: italic;
                     border: 3px solid rgba(180, 83, 9, 0.1);
+                    text-transform: uppercase;
                     letter-spacing: 3px;
                     z-index: 10;
                     white-space: nowrap;
-                    box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1); /* Adds subtle depth */
+                    box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1);
                 }
 
+                /* Translation Text */
                 #translation-text {
                     font-family: 'Playfair Display', serif;
                     color: #2D2D2D;
-                    font-size: 100px; 
+                    font-size: 75px; /* Decreased font size */
                     line-height: 1.6;
                     font-style: italic;
                     text-align: center;
                     padding: 0 20px;
                     
-                    /* Ensure text stays within box */
                     max-height: 100%; 
                     overflow: hidden;
                     display: -webkit-box;
-                    -webkit-line-clamp: 7; /* Approximate max lines to prevent cutoff looks */
+                    -webkit-line-clamp: 9;
                     -webkit-box-orient: vertical;
                 }
 
+                /* Footer Link - Now anchored to the bottom of the TEXT BOX */
                 .wallpaper-footer {
                     position: absolute;
-                    bottom: 150px;
+                    bottom: -100px; /* Positioned just below the box */
+                    left: 0;
+                    right: 0;
+                    text-align: center;
+                    
                     font-family: 'Rozha One', serif;
                     font-size: 55px;
                     color: #B45309;
@@ -119,9 +124,9 @@ async function generateWallpapers() {
                 <div class="text-box">
                     <div id="verse-reference">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
                     <div id="translation-text">${textContent}</div>
+                    
+                    <div class="wallpaper-footer">gita.bhgvd.com</div>
                 </div>
-
-                <div class="wallpaper-footer">gita.bhgvd.com</div>
             </body>
             </html>
         `;
@@ -129,7 +134,6 @@ async function generateWallpapers() {
         await page.setContent(htmlContent);
         await page.evaluateHandle('document.fonts.ready');
 
-        // Save specific language file
         const fileName = `wallpaper-${lang.code}.png`;
         await page.screenshot({ path: fileName });
         console.log(`Generated ${fileName}`);
