@@ -1,0 +1,37 @@
+name: Update Wallpaper Daily
+
+on:
+  schedule:
+    # Runs at 3 AM and 3 PM UTC
+    - cron: '0 3,15 * * *'
+  workflow_dispatch: # Allows you to run it manually to test
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Puppeteer
+      run: npm install puppeteer
+
+    - name: Generate Wallpaper
+      run: node update-wallpaper.js
+
+    - name: Commit and Push New Image
+      run: |
+        git config --global user.name 'Gita Bot'
+        git config --global user.email 'bot@bhgvd.com'
+        git add wallpaper.png
+        git commit -m "New Daily Wallpaper [skip ci]" || echo "No changes to commit"
+        git push
