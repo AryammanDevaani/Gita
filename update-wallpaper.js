@@ -18,7 +18,13 @@ async function generateWallpapers() {
     console.log(`Selected Chapter ${verse.chapter}, Verse ${verse.verse}`);
 
     // 2. Launch Browser
-    const browser = await puppeteer.launch();
+    // In update-wallpaper.js
+
+    // 2. Launch Browser
+    // CHANGE THIS LINE:
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     
     // 3. Loop through languages
     for (const lang of languages) {
@@ -146,5 +152,6 @@ async function generateWallpapers() {
 
     await browser.close();
 }
+
 
 generateWallpapers();
