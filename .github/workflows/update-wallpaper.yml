@@ -3,7 +3,7 @@ name: Update Wallpaper Daily
 on:
   schedule:
     # Runs at 09:15 UTC (2:45 PM IST) and 21:15 UTC (2:45 AM IST)
-    - cron: '15 9,21 * * *'
+    - cron: '25 9,21 * * *'
   workflow_dispatch: # Allows you to run it manually to test
 
 permissions:
@@ -38,3 +38,4 @@ jobs:
         git add wallpaper-*.png
         git commit -m "New Daily Wallpaper [skip ci]" || echo "No changes to commit"
         git push
+
