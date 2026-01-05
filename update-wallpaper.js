@@ -31,7 +31,7 @@ async function generateWallpapers() {
         const page = await browser.newPage();
         
         // Set Size to iPhone 16 Pro Max (1320 x 2868)
-        await page.setViewport({ width: 1320, height: 2868, deviceScaleFactor: 1 });
+        await page.setViewport({ width: 1179, height: 2556, deviceScaleFactor: 1 });
 
         // Determine text content
         const textContent = verse[lang.simple] || verse[lang.fallback];
@@ -155,3 +155,4 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
+
