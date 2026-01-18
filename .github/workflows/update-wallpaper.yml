@@ -37,7 +37,8 @@ jobs:
         
         # OLD: git add *apple*.png
         # NEW: Add everything inside the wallpaper folder
-        git add wallpaper/*.png
+        git add wallpapers/*.png
         
         git commit -m "New Daily Wallpaper [skip ci]" || echo "No changes to commit"
         git push
+
