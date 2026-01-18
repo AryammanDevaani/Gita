@@ -110,7 +110,7 @@ async function generateWallpapers() {
                 .text-box {
                     position: relative;
                     /* Universal Positioning: 4% from visual center offset */
-                    top: 15.3vh;
+                    top: 12.5vh;
                     
                     width: 85vw; 
                     height: 55vh; 
