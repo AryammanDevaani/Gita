@@ -56,7 +56,7 @@ const devices = [
 ];
 
 async function generateWallpapers() {
-    // 1. Setup Output Directory (Renamed to 'wallpapers')
+    // 1. Setup Output Directory
     const outputDir = 'wallpapers';
     if (!fs.existsSync(outputDir)){
         fs.mkdirSync(outputDir);
@@ -74,7 +74,7 @@ async function generateWallpapers() {
     
     const page = await browser.newPage();
 
-    // 4. Loop through languages first
+    // 4. Loop through languages
     for (const lang of languages) {
         
         // Determine text content
@@ -109,17 +109,18 @@ async function generateWallpapers() {
 
                 .text-box {
                     position: relative;
-                    /* Universal Positioning: 4% from visual center offset */
-                    top: 12.5vh;
+                    top: 9.5vh;
                     
                     width: 85vw; 
-                    height: 55vh; 
+                    height: 50vh; 
+                    padding-top: 3.75vw;
                     
+                    
+
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     justify-content: flex-start;
-                    padding-top: 8vw;
                     box-sizing: border-box;
                 }
 
@@ -151,17 +152,22 @@ async function generateWallpapers() {
                     font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #2D2D2D;
                     
-                    font-size: 6.2vw;
+                    /* Default large size to test fitting */
+                    font-size: 6.2vw; 
                     
-                    line-height: 1.6;
+                    line-height: 1.4;
                     font-style: italic;
                     text-align: center;
                     padding: 0 2vw;
-                    max-height: 100%; 
-                    overflow: hidden;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 11;
-                    -webkit-box-orient: vertical;
+                    
+                    width: 100%;
+                    max-height: 100%;
+                    
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: center;
+                    
+                    overflow: hidden; 
                 }
 
                 .wallpaper-footer {
@@ -184,7 +190,9 @@ async function generateWallpapers() {
             <body>
                 <div class="text-box">
                     <div id="verse-reference">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
-                    <div id="translation-text">${textContent}</div>
+                    <div id="translation-text">
+                        <span id="text-inner">${textContent}</span>
+                    </div>
                     <div class="wallpaper-footer">gita.bhgvd.com</div>
                 </div>
             </body>
@@ -202,9 +210,7 @@ async function generateWallpapers() {
                 deviceScaleFactor: 1 
             });
 
-            // PATH UPDATE: Save inside 'wallpapers/' folder
             const fileName = `${outputDir}/${lang.fileChar}apple${device.suffix}.png`;
-            
             await page.screenshot({ path: fileName });
             console.log(`Generated ${fileName}`);
         }
