@@ -34,9 +34,10 @@ jobs:
       run: |
         git config --global user.name 'Gita Bot'
         git config --global user.email 'bot@bhgvd.com'
-        # CHANGE THIS LINE to select all wallpaper files
-        git add wallpaper-*.png
+        
+        # OLD: git add *apple*.png
+        # NEW: Add everything inside the wallpaper folder
+        git add wallpaper/*.png
+        
         git commit -m "New Daily Wallpaper [skip ci]" || echo "No changes to commit"
         git push
-
-
