@@ -202,6 +202,32 @@ async function generateWallpapers() {
         await page.setContent(htmlContent);
         await page.evaluateHandle('document.fonts.ready');
 
+        // --- SMART SHRINK LOGIC ---
+        await page.evaluate(() => {
+            const container = document.getElementById('translation-text');
+            
+            // 1. Match this to your CSS default (6.2vw)
+            let fontSize = 6.2; 
+            const minSize = 3.0; 
+            const step = 0.1;
+
+            // 2. Check if it is overflowing at the default size
+            if (container.scrollHeight > container.clientHeight || 
+                container.scrollWidth > container.clientWidth) {
+                
+                // 3. It IS overflowing, so start shrinking
+                while ( 
+                    (container.scrollHeight > container.clientHeight || 
+                     container.scrollWidth > container.clientWidth) && 
+                    fontSize > minSize 
+                ) {
+                    fontSize -= step;
+                    container.style.fontSize = fontSize + 'vw';
+                }
+            }
+        });
+        // --- END SHRINK LOGIC ---
+
         // 5. Loop through ALL devices
         for (const device of devices) {
             await page.setViewport({ 
