@@ -1,38 +1,82 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const path = require('path');
 
 // Load your data
 const gitaData = require('./gita.json');
 
 // Config for languages
 const languages = [
-    { code: 'en', key: 'English', fallback: 'translationEnglish', simple: 'simpleEnglish' },
-    { code: 'hi', key: 'Hindi', fallback: 'translationHindi', simple: 'simpleHindi' },
-    { code: 'gu', key: 'Gujarati', fallback: 'translationGujarati', simple: 'simpleGujarati' }
+    { code: 'en', fileChar: 'e', key: 'English', fallback: 'translationEnglish', simple: 'simpleEnglish' },
+    { code: 'hi', fileChar: 'h', key: 'Hindi', fallback: 'translationHindi', simple: 'simpleHindi' },
+    { code: 'gu', fileChar: 'g', key: 'Gujarati', fallback: 'translationGujarati', simple: 'simpleGujarati' }
+];
+
+// Config for Devices (Verified Jan 2026)
+const devices = [
+    // --- iPhone 17 Series ---
+    { suffix: '17pm',  width: 1320, height: 2868 }, 
+    { suffix: '17air', width: 1260, height: 2736 },
+    { suffix: '17p',   width: 1206, height: 2622 }, 
+    { suffix: '17',    width: 1206, height: 2622 }, 
+
+    // --- iPhone 16 Series ---
+    { suffix: '16pm', width: 1320, height: 2868 }, 
+    { suffix: '16pl', width: 1290, height: 2796 }, 
+    { suffix: '16p',  width: 1206, height: 2622 }, 
+    { suffix: '16',   width: 1179, height: 2556 },
+    { suffix: '16e',  width: 1170, height: 2532 },
+
+    // --- iPhone 15 Series ---
+    { suffix: '15pm', width: 1290, height: 2796 },
+    { suffix: '15pl', width: 1290, height: 2796 },
+    { suffix: '15p',  width: 1179, height: 2556 },
+    { suffix: '15',   width: 1179, height: 2556 }, 
+
+    // --- iPhone 14 Series ---
+    { suffix: '14pm', width: 1290, height: 2796 },
+    { suffix: '14pl', width: 1284, height: 2778 },
+    { suffix: '14p',  width: 1179, height: 2556 },
+    { suffix: '14',   width: 1170, height: 2532 },
+
+    // --- iPhone 13 Series ---
+    { suffix: '13pm', width: 1284, height: 2778 },
+    { suffix: '13p',  width: 1170, height: 2532 },
+    { suffix: '13',   width: 1170, height: 2532 },
+
+    // --- iPhone 12 Series ---
+    { suffix: '12pm', width: 1284, height: 2778 },
+    { suffix: '12p',  width: 1170, height: 2532 },
+    { suffix: '12',   width: 1170, height: 2532 },
+
+    // --- iPhone 11 Series ---
+    { suffix: '11pm', width: 1242, height: 2688 },
+    { suffix: '11p',  width: 1125, height: 2436 },
+    { suffix: '11',   width: 828,  height: 1792 }
 ];
 
 async function generateWallpapers() {
-    // 1. Pick a Random Verse (Same verse for all languages)
+    // 1. Setup Output Directory (Renamed to 'wallpapers')
+    const outputDir = 'wallpapers';
+    if (!fs.existsSync(outputDir)){
+        fs.mkdirSync(outputDir);
+    }
+
+    // 2. Pick a Random Verse
     const verseIndex = Math.floor(Math.random() * gitaData.length);
     const verse = gitaData[verseIndex];
     console.log(`Selected Chapter ${verse.chapter}, Verse ${verse.verse}`);
 
-    // 2. Launch Browser
-    // In update-wallpaper.js
-
-    // 2. Launch Browser
-    // CHANGE THIS LINE:
+    // 3. Launch Browser
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     
-    // 3. Loop through languages
-    for (const lang of languages) {
-        const page = await browser.newPage();
-        
-        // Set Size to iPhone 16 Pro Max (1320 x 2868)
-        await page.setViewport({ width: 1179, height: 2556, deviceScaleFactor: 1 });
+    const page = await browser.newPage();
 
+    // 4. Loop through languages first
+    for (const lang of languages) {
+        
         // Determine text content
         const textContent = verse[lang.simple] || verse[lang.fallback];
 
@@ -47,6 +91,9 @@ async function generateWallpapers() {
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
                 @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
                 
+                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
+                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
+                
                 body {
                     background-color: #F9F7F2;
                     margin: 0;
@@ -60,32 +107,37 @@ async function generateWallpapers() {
                     position: relative;
                 }
 
-                /* Fixed Box for Translation */
                 .text-box {
-                    position: relative; 
-                    width: 1000px;
-                    height: 1400px;
+                    position: relative;
+                    /* Universal Positioning: 4% from visual center offset */
+                    top: 15.3vh;
+                    
+                    width: 85vw; 
+                    height: 55vh; 
+                    
                     display: flex;
-                    flex-direction: column; /* Stack children vertically */
-                    align-items: center;    /* Center children horizontally */
-                    justify-content: flex-start; /* Align content to the TOP */
-                    padding-top: 100px; /* Push text down so it sits just below the pill */
-                    box-sizing: border-box; /* Includes padding in height calculation */
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: flex-start;
+                    padding-top: 8vw;
+                    box-sizing: border-box;
                 }
 
-                /* Verse Pill - Sitting on top edge of the box */
                 #verse-reference {
                     position: absolute;
-                    top: -60px; 
+                    top: -5vw; 
                     left: 50%;
                     transform: translateX(-50%);
                     
+                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
+                    
                     background-color: #FFF7ED;
                     color: #B45309;
-                    font-family: 'Playfair Display', serif;
-                    padding: 20px 50px;
+                    
+                    padding: 1.6vw 4.1vw;
                     border-radius: 100px;
-                    font-size: 36px;
+                    
+                    font-size: 3vw;
                     font-weight: 700;
                     font-style: italic;
                     border: 3px solid rgba(180, 83, 9, 0.1);
@@ -95,34 +147,34 @@ async function generateWallpapers() {
                     box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1);
                 }
 
-                /* Translation Text */
                 #translation-text {
-                    font-family: 'Playfair Display', serif;
+                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #2D2D2D;
-                    font-size: 75px; 
+                    
+                    font-size: 6.2vw;
+                    
                     line-height: 1.6;
                     font-style: italic;
                     text-align: center;
-                    padding: 0 20px;
-                    
-                    /* Safety for very long texts */
+                    padding: 0 2vw;
                     max-height: 100%; 
                     overflow: hidden;
                     display: -webkit-box;
-                    -webkit-line-clamp: 11; /* Increased slightly as we have more vertical space now */
+                    -webkit-line-clamp: 11;
                     -webkit-box-orient: vertical;
                 }
 
-                /* Footer Link */
                 .wallpaper-footer {
                     position: absolute;
-                    bottom: -425px; /* Positioned just below the box */
+                    top: -15vw;
+                    
                     left: 0;
                     right: 0;
                     text-align: center;
-                    
                     font-family: 'Rozha One', serif;
-                    font-size: 55px;
+                    
+                    font-size: 4.6vw;
+                    
                     color: #B45309;
                     opacity: 0.65;
                     letter-spacing: 2px;
@@ -133,7 +185,6 @@ async function generateWallpapers() {
                 <div class="text-box">
                     <div id="verse-reference">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
                     <div id="translation-text">${textContent}</div>
-                    
                     <div class="wallpaper-footer">gita.bhgvd.com</div>
                 </div>
             </body>
@@ -143,16 +194,24 @@ async function generateWallpapers() {
         await page.setContent(htmlContent);
         await page.evaluateHandle('document.fonts.ready');
 
-        const fileName = `wallpaper-${lang.code}.png`;
-        await page.screenshot({ path: fileName });
-        console.log(`Generated ${fileName}`);
-        
-        await page.close();
+        // 5. Loop through ALL devices
+        for (const device of devices) {
+            await page.setViewport({ 
+                width: device.width, 
+                height: device.height, 
+                deviceScaleFactor: 1 
+            });
+
+            // PATH UPDATE: Save inside 'wallpapers/' folder
+            const fileName = `${outputDir}/${lang.fileChar}apple${device.suffix}.png`;
+            
+            await page.screenshot({ path: fileName });
+            console.log(`Generated ${fileName}`);
+        }
     }
 
+    await page.close();
     await browser.close();
 }
 
-
 generateWallpapers();
-
