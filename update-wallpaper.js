@@ -15,50 +15,50 @@ const languages = [
 // Config for Devices (Verified Jan 2026)
 const devices = [
     // --- iPhone 17 Series ---
-    { suffix: '17pm', width: 1320, height: 2868 },
+    { suffix: '17pm',  width: 1320, height: 2868 }, 
     { suffix: '17air', width: 1260, height: 2736 },
-    { suffix: '17p', width: 1206, height: 2622 },
-    { suffix: '17', width: 1206, height: 2622 },
+    { suffix: '17p',   width: 1206, height: 2622 }, 
+    { suffix: '17',    width: 1206, height: 2622 }, 
 
     // --- iPhone 16 Series ---
-    { suffix: '16pm', width: 1320, height: 2868 },
-    { suffix: '16pl', width: 1290, height: 2796 },
-    { suffix: '16p', width: 1206, height: 2622 },
-    { suffix: '16', width: 1179, height: 2556 },
-    { suffix: '16e', width: 1170, height: 2532 },
+    { suffix: '16pm', width: 1320, height: 2868 }, 
+    { suffix: '16pl', width: 1290, height: 2796 }, 
+    { suffix: '16p',  width: 1206, height: 2622 }, 
+    { suffix: '16',   width: 1179, height: 2556 },
+    { suffix: '16e',  width: 1170, height: 2532 },
 
     // --- iPhone 15 Series ---
     { suffix: '15pm', width: 1290, height: 2796 },
     { suffix: '15pl', width: 1290, height: 2796 },
-    { suffix: '15p', width: 1179, height: 2556 },
-    { suffix: '15', width: 1179, height: 2556 },
+    { suffix: '15p',  width: 1179, height: 2556 },
+    { suffix: '15',   width: 1179, height: 2556 }, 
 
     // --- iPhone 14 Series ---
     { suffix: '14pm', width: 1290, height: 2796 },
     { suffix: '14pl', width: 1284, height: 2778 },
-    { suffix: '14p', width: 1179, height: 2556 },
-    { suffix: '14', width: 1170, height: 2532 },
+    { suffix: '14p',  width: 1179, height: 2556 },
+    { suffix: '14',   width: 1170, height: 2532 },
 
     // --- iPhone 13 Series ---
     { suffix: '13pm', width: 1284, height: 2778 },
-    { suffix: '13p', width: 1170, height: 2532 },
-    { suffix: '13', width: 1170, height: 2532 },
+    { suffix: '13p',  width: 1170, height: 2532 },
+    { suffix: '13',   width: 1170, height: 2532 },
 
     // --- iPhone 12 Series ---
     { suffix: '12pm', width: 1284, height: 2778 },
-    { suffix: '12p', width: 1170, height: 2532 },
-    { suffix: '12', width: 1170, height: 2532 },
+    { suffix: '12p',  width: 1170, height: 2532 },
+    { suffix: '12',   width: 1170, height: 2532 },
 
     // --- iPhone 11 Series ---
     { suffix: '11pm', width: 1242, height: 2688 },
-    { suffix: '11p', width: 1125, height: 2436 },
-    { suffix: '11', width: 828, height: 1792 }
+    { suffix: '11p',  width: 1125, height: 2436 },
+    { suffix: '11',   width: 828,  height: 1792 }
 ];
 
 async function generateWallpapers() {
     // 1. Setup Output Directory
     const outputDir = 'wallpapers';
-    if (!fs.existsSync(outputDir)) {
+    if (!fs.existsSync(outputDir)){
         fs.mkdirSync(outputDir);
     }
 
@@ -71,12 +71,12 @@ async function generateWallpapers() {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-
+    
     const page = await browser.newPage();
 
     // 4. Loop through languages
     for (const lang of languages) {
-
+        
         // Determine text content
         const textContent = verse[lang.simple] || verse[lang.fallback];
 
@@ -91,9 +91,8 @@ async function generateWallpapers() {
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
                 @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
                 
-
-    /* IMPORT GOOGLE FONTS to fix missing characters */
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&family=Noto+Serif+Gujarati:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Rozha+One&display=swap');
+                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
+                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
                 
                 body {
                     background-color: #F9F7F2;
@@ -131,7 +130,7 @@ async function generateWallpapers() {
                     left: 50%;
                     transform: translateX(-50%);
                     
-                    font-family: 'Playfair Display', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif;
+                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     
                     background-color: #FFF7ED;
                     color: #B45309;
@@ -150,7 +149,7 @@ async function generateWallpapers() {
                 }
 
                 #translation-text {
-                    font-family: 'Playfair Display', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif;
+                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #2D2D2D;
                     
                     /* Default large size to test fitting */
@@ -206,21 +205,21 @@ async function generateWallpapers() {
         // --- SMART SHRINK LOGIC ---
         await page.evaluate(() => {
             const container = document.getElementById('translation-text');
-
+            
             // 1. Match this to your CSS default (6.2vw)
-            let fontSize = 6.2;
-            const minSize = 3.0;
+            let fontSize = 6.2; 
+            const minSize = 3.0; 
             const step = 0.1;
 
             // 2. Check if it is overflowing at the default size
-            if (container.scrollHeight > container.clientHeight ||
+            if (container.scrollHeight > container.clientHeight || 
                 container.scrollWidth > container.clientWidth) {
-
+                
                 // 3. It IS overflowing, so start shrinking
-                while (
-                    (container.scrollHeight > container.clientHeight ||
-                        container.scrollWidth > container.clientWidth) &&
-                    fontSize > minSize
+                while ( 
+                    (container.scrollHeight > container.clientHeight || 
+                     container.scrollWidth > container.clientWidth) && 
+                    fontSize > minSize 
                 ) {
                     fontSize -= step;
                     container.style.fontSize = fontSize + 'vw';
@@ -231,10 +230,10 @@ async function generateWallpapers() {
 
         // 5. Loop through ALL devices
         for (const device of devices) {
-            await page.setViewport({
-                width: device.width,
-                height: device.height,
-                deviceScaleFactor: 1
+            await page.setViewport({ 
+                width: device.width, 
+                height: device.height, 
+                deviceScaleFactor: 1 
             });
 
             const fileName = `${outputDir}/${lang.fileChar}apple${device.suffix}.png`;
