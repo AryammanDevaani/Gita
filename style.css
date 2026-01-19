@@ -107,7 +107,7 @@ body {
     left: 0;
     width: 100%;
     height: var(--header-height);
-    background-color: #000000; /* Matches page background */
+    background-color: #5d4141; /* Matches page background */
     padding: 1.5rem 0;
     text-align: center;
     z-index: 1000;
