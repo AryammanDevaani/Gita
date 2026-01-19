@@ -150,7 +150,7 @@ async function generateWallpapers() {
                 }
 
                 #translation-text {
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
+                    font-family: 'Playfair Display', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif;
                     color: #2D2D2D;
                     
                     /* Default large size to test fitting */
