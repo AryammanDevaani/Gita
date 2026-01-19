@@ -57,19 +57,19 @@ const wallpaperDevices = [
 
 const deviceShortcuts = {
     "17pm": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_17PM",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_17PM",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17PM"
+        e: "",
+        h: "",
+        g: ""
     },
     "17air": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_17AIR",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_17AIR",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17AIR"
+        e: "",
+        h: "",
+        g: ""
     },
     "17p": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_17P",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_17P",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17P"
+        e: "",
+        h: "",
+        g: ""
     },
     "17": {
         e: "https://www.icloud.com/shortcuts/1443c78b7e1948d7ba00c4a549d71525",
@@ -77,14 +77,14 @@ const deviceShortcuts = {
         g: "https://www.icloud.com/shortcuts/b2beda274da94a6ab4be80cc916fe4b3"
     },
     "16pm": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_16PM",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_16PM",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16PM"
+        e: "",
+        h: "",
+        g: ""
     },
     "16pl": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_16PL",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_16PL",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16PL"
+        e: "",
+        h: "",
+        g: ""
     },
     "16p": {
         e: "https://www.icloud.com/shortcuts/f5695e18f8ab4880a98640962e1f748e",
@@ -92,9 +92,9 @@ const deviceShortcuts = {
         g: "https://www.icloud.com/shortcuts/c06e22e3c1bf4d0bada706a51750f2bf"
     },
     "16": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_16",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_16",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16"
+        e: "",
+        h: "",
+        g: ""
     },
     "16e": {
         e: "https://www.icloud.com/shortcuts/f5c3f6457dc64535892c663021fdd693",
@@ -102,69 +102,69 @@ const deviceShortcuts = {
         g: "https://www.icloud.com/shortcuts/73d5fd14b6a54ff7bd9c160d17e33882"
     },
     "15pm": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_15PM",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_15PM",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15PM"
+        e: "",
+        h: "",
+        g: ""
     },
     "15pl": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_15PL",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_15PL",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15PL"
+        e: "",
+        h: "",
+        g: ""
     },
     "15p": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_15P",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_15P",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15P"
+        e: "",
+        h: "",
+        g: ""
     },
     "15": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_15",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_15",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15"
+        e: "",
+        h: "",
+        g: ""
     },
     "14pm": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_14PM",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_14PM",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14PM"
+        e: "",
+        h: "",
+        g: ""
     },
     "14pl": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_14PL",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_14PL",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14PL"
+        e: "",
+        h: "",
+        g: ""
     },
     "14p": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_14P",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_14P",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14P"
+        e: "",
+        h: "",
+        g: ""
     },
     "14": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_14",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_14",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14"
+        e: "",
+        h: "",
+        g: ""
     },
     "13pm": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_13PM",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_13PM",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_13PM"
+        e: "",
+        h: "",
+        g: ""
     },
     "13p": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_13P",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_13P",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_13P"
+        e: "",
+        h: "",
+        g: ""
     },
     "13": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_13",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_13",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_13"
+        e: "",
+        h: "",
+        g: ""
     },
     "12pm": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_12PM",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_12PM",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_12PM"
+        e: "",
+        h: "",
+        g: ""
     },
     "12p": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_12P",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_12P",
-        g: "https://www.icloud.com/shortcuts/LINK_GUJ_12P"
+        e: "",
+        h: "",
+        g: ""
     },
     "12": {
         e: "https://www.icloud.com/shortcuts/c8589bc7c61c46f18ad7b0150d9f8025",
