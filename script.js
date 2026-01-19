@@ -182,7 +182,7 @@ const deviceShortcuts = {
         g: "https://www.icloud.com/shortcuts/LINK_GUJ_11P"
     },
     "11": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_11",
+        e: "https://www.icloud.com/shortcuts/be43e210b3bf4df7ac56addd4a6f029b",
         h: "https://www.icloud.com/shortcuts/LINK_HIN_11",
         g: "https://www.icloud.com/shortcuts/LINK_GUJ_11"
     }
