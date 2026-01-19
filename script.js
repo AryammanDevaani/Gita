@@ -74,7 +74,7 @@ const deviceShortcuts = {
     "17": {
         e: "https://www.icloud.com/shortcuts/1443c78b7e1948d7ba00c4a549d71525",
         h: "https://www.icloud.com/shortcuts/00cf02efb1004506a866783f302decb0",
-        g: "https://www.icloud.com/shortcuts/b2beda274da94a6ab4be80cc916fe4b3"
+        g: ""
     },
     "16pm": {
         e: "",
