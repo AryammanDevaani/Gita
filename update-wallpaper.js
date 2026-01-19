@@ -85,6 +85,7 @@ async function generateWallpapers() {
             <!DOCTYPE html>
             <html lang="${lang.code}">
             <head>
+            <link rel="icon" type="image/png" href="/favicon.png">
             <style>
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
