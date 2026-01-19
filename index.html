@@ -102,7 +102,7 @@
         <div id="chapters-sentinel" style="position:absolute; top:0; height:1px; width:100%;"></div>
 
         <div id="chapters-sticky-header" class="reader-header">
-            <button id="btn-chapters-back" class="back-link" aria-label="Scroll to Top">
+            <button class="back-link" aria-label="Scroll to Top">
                 ↑
             </button>
             <div class="reader-header-text">
@@ -165,6 +165,95 @@
         </div>
     </main>
 
+    <main id="view-wallpaper" class="container hidden">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+            <h2 style="font-family:var(--font-english); font-weight: 700; font-size:3rem; margin-bottom:0.5rem; color:var(--accent-gold);">
+                Daily Wallpaper
+            </h2>
+            <p style="font-family: var(--font-english); font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; font-style:italic; color: var(--text-secondary);">
+                Wake up to wisdom on your lock screen.
+            </p>
+
+            <div id="wallpaper-android" class="hidden">
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem;">For Android</h3>
+                    <p style="font-family: var(--font-english); font-style: italic; color: #666;">
+                        Coming Soon.
+                    </p>
+                </div>
+            </div>
+
+            <div id="wallpaper-ios" class="hidden">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
+                    
+                    <div>
+                        <label for="wp-device" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Your Device
+                        </label>
+                        <select id="wp-device" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: var(--font-english); font-style:italic; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>iPhone Models</option>
+                            </select>
+                    </div>
+
+                    <div>
+                        <label for="wp-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Language
+                        </label>
+                        <select id="wp-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: var(--font-english); font-style:italic; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Languages</option>
+                            <option value="e">English</option>
+                            <option value="h">Hindi</option>
+                            <option value="g">Gujarati</option>
+                        </select>
+                    </div>
+
+                    <div id="shortcut-container" class="hidden" style="margin-top: 2rem; animation: fadeIn 0.5s ease;">
+                        
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <a id="btn-get-shortcut" href="#" target="_blank" 
+                               style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
+                                Shortcut Link
+                            </a>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 2rem 0;">
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                                Steps for iOS:
+                            </h3>
+                            <h5 style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                                There is also a do-it-along video at the end.
+                            </h5>
+                            <ol style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                                <li>Open the “<strong><a href="https://apps.apple.com/us/app/shortcuts/id915249334">Shortcuts</a></strong>” app on your iPhone.</li>
+                                <li>Click on the “<strong>Shortcut Link</strong>” button above.</li>
+                                <li>Tap on “<strong>+ Add Shortcut</strong>” button.</li>
+                                <li>Tap the  “<strong>Automation</strong>” button.</li>
+                                <li>Click on the “<strong>+</strong>” button on the top right.</li>
+                                <li>Select “<strong>Time of Day</strong>.”</li>
+                                <li>Set the time to whenever you’re likely to be connected to the internet (for example, 12:00 pm).</li>
+                                <li>Under “<strong>Repeat</strong>” select “<strong>Daily</strong>” and then select “<strong>Run Immediately</strong>” (keep the “<strong>Notify When Run</strong>” turned off).</li>
+                                <li>Select “<strong>Next</strong>.”</li>
+                                <li>Now click on the “<strong id="shortcut-step-name">Shortcut Name</strong>” and you’re done!</li>
+                            </ol>
+                        </div>
+
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; background: #000;">
+                            <iframe 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" 
+                                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                                title="Setup Video" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <main id="view-about" class="container hidden">
         <div style="text-align: center; max-width: 600px;">
 
@@ -219,9 +308,9 @@
 
     <footer>
         <button id="btn-about" class="nav-link" style="font-size: 0.9rem; opacity: 0.8;">About & Contact</button>
+        <button id="btn-wallpaper" class="nav-link" style="font-size: 0.9rem; opacity: 0.8;">Wallpaper</button>
     </footer>
 
 </body>
-
 
 </html>

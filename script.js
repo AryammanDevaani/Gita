@@ -26,18 +26,185 @@ const chapterTitlesSanskrit = [
     "दैवासुरसंपद्विभागयोग", "श्रद्धात्रयविभागयोग", "मोक्षसंन्यासयोग"
 ];
 
+// --- WALLPAPER CONFIGURATION ---
+const wallpaperDevices = [
+    { name: "iPhone 17 Pro Max", code: "17pm" },
+    { name: "iPhone 17 Air", code: "17air" },
+    { name: "iPhone 17 Pro", code: "17p" },
+    { name: "iPhone 17", code: "17" },
+    { name: "iPhone 16 Pro Max", code: "16pm" },
+    { name: "iPhone 16 Plus", code: "16pl" },
+    { name: "iPhone 16 Pro", code: "16p" },
+    { name: "iPhone 16", code: "16" },
+    { name: "iPhone 16e", code: "16e" },
+    { name: "iPhone 15 Pro Max", code: "15pm" },
+    { name: "iPhone 15 Plus", code: "15pl" },
+    { name: "iPhone 15 Pro", code: "15p" },
+    { name: "iPhone 15", code: "15" },
+    { name: "iPhone 14 Pro Max", code: "14pm" },
+    { name: "iPhone 14 Plus", code: "14pl" },
+    { name: "iPhone 14 Pro", code: "14p" },
+    { name: "iPhone 14", code: "14" },
+    { name: "iPhone 13 Pro Max", code: "13pm" },
+    { name: "iPhone 13 Pro", code: "13p" },
+    { name: "iPhone 13", code: "13" },
+    { name: "iPhone 12 Pro Max", code: "12pm" },
+    { name: "iPhone 12 Pro", code: "12p" },
+    { name: "iPhone 12", code: "12" },
+    { name: "iPhone 11 Pro Max", code: "11pm" },
+    { name: "iPhone 11 Pro", code: "11p" },
+    { name: "iPhone 11", code: "11" }
+];
+
+// PASTE YOUR 3 LINKS FOR EACH DEVICE BELOW
+// e = English, h = Hindi, g = Gujarati
+const deviceShortcuts = {
+    "17pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_17PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_17PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17PM"
+    },
+    "17air": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_17AIR",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_17AIR",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17AIR"
+    },
+    "17p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_17P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_17P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17P"
+    },
+    "17": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_17",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_17",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_17"
+    },
+    "16pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_16PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_16PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16PM"
+    },
+    "16pl": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_16PL",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_16PL",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16PL"
+    },
+    "16p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_16P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_16P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16P"
+    },
+    "16": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_16",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_16",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16"
+    },
+    "16e": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_16E",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_16E",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_16E"
+    },
+    "15pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_15PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_15PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15PM"
+    },
+    "15pl": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_15PL",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_15PL",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15PL"
+    },
+    "15p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_15P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_15P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15P"
+    },
+    "15": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_15",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_15",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_15"
+    },
+    "14pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_14PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_14PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14PM"
+    },
+    "14pl": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_14PL",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_14PL",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14PL"
+    },
+    "14p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_14P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_14P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14P"
+    },
+    "14": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_14",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_14",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_14"
+    },
+    "13pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_13PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_13PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_13PM"
+    },
+    "13p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_13P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_13P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_13P"
+    },
+    "13": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_13",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_13",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_13"
+    },
+    "12pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_12PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_12PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_12PM"
+    },
+    "12p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_12P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_12P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_12P"
+    },
+    "12": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_12",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_12",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_12"
+    },
+    "11pm": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_11PM",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_11PM",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_11PM"
+    },
+    "11p": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_11P",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_11P",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_11P"
+    },
+    "11": {
+        e: "https://www.icloud.com/shortcuts/LINK_ENG_11",
+        h: "https://www.icloud.com/shortcuts/LINK_HIN_11",
+        g: "https://www.icloud.com/shortcuts/LINK_GUJ_11"
+    }
+};
+
 const views = {
     home: document.getElementById('view-home'),
     chapters: document.getElementById('view-chapters'),
     reader: document.getElementById('view-reader'),
     install: document.getElementById('view-install'),
     about: document.getElementById('view-about'),
+    wallpaper: document.getElementById('view-wallpaper'),
 };
 
 const btnHome = document.getElementById('btn-home');
 const btnChapters = document.getElementById('btn-chapters');
 const btnInstallView = document.getElementById('btn-install-view');
 const btnAbout = document.getElementById('btn-about');
+const btnWallpaper = document.getElementById('btn-wallpaper');
 const btnShare = document.getElementById('btn-share');
 const navInstallBtn = document.getElementById('btn-install-view');
 const btnChaptersBack = document.getElementById('btn-chapters-back');
@@ -322,7 +489,23 @@ if (btnInstallView) {
 
 if (btnAbout) {
     btnAbout.onclick = () => {
-        switchView('about');
+        const isAboutActive = !views.about.classList.contains('hidden');
+        if (isAboutActive) {
+            smoothScrollTop(1000);
+        } else {
+            switchView('about');
+        }
+    };
+}
+
+if (btnWallpaper) {
+    btnWallpaper.onclick = () => {
+        const isWallpaperActive = !views.wallpaper.classList.contains('hidden');
+        if (isWallpaperActive) {
+            smoothScrollTop(1000);
+        } else {
+            switchView('wallpaper');
+        }
     };
 }
 
@@ -333,7 +516,7 @@ function switchView(viewName) {
 
     if (views[viewName]) views[viewName].classList.remove('hidden');
 
-    [btnHome, btnChapters, btnInstallView, btnAbout].forEach(btn => {
+    [btnHome, btnChapters, btnInstallView, btnAbout, btnWallpaper].forEach(btn => {
         if (btn) btn.classList.remove('active');
     });
 
@@ -367,18 +550,13 @@ function switchView(viewName) {
         updateInstallView();
     } else if (viewName === 'about') {
         btnAbout.classList.add('active');
+    } else if (viewName === 'wallpaper') {
+        btnWallpaper.classList.add('active');
+        initWallpaperView();
     }
 
     fadeContent();
     window.scrollTo(0, 0);
-
-    if (btnAbout) {
-        if (viewName === 'about') {
-            btnAbout.style.display = 'none';
-        } else {
-            btnAbout.style.display = 'inline-block';
-        }
-    }
 }
 
 function fadeContent() {
@@ -518,18 +696,13 @@ function openChapter(chapterNum, highlightVerse = null) {
     });
 
     if (highlightVerse) {
-        // Changed to setTimeout with 100ms delay to allow mobile layout to settle
         setTimeout(() => {
             const targetEl = document.getElementById(`verse-${highlightVerse}`);
             if (targetEl) {
                 const header = document.querySelector('.reader-header');
                 const headerHeight = header ? header.offsetHeight : 0;
-                
-                // Calculate absolute position to scroll to
                 const elementPosition = targetEl.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.scrollY - headerHeight - 120;
-
-                // Increased duration to 3000ms for a very smooth glide
                 smoothScrollTo(offsetPosition, 3000);
             }
         }, 100);
@@ -839,4 +1012,64 @@ function smoothScrollTo(target, duration) {
         }
     }
     requestAnimationFrame(animation);
+}
+
+// --- WALLPAPER VIEW LOGIC ---
+function initWallpaperView() {
+    const androidView = document.getElementById('wallpaper-android');
+    const iosView = document.getElementById('wallpaper-ios');
+    const deviceSelect = document.getElementById('wp-device');
+    const langSelect = document.getElementById('wp-lang');
+    const shortcutContainer = document.getElementById('shortcut-container');
+    const btnGetShortcut = document.getElementById('btn-get-shortcut');
+    const stepNameSpan = document.getElementById('shortcut-step-name'); // Dynamic name span
+
+    // 1. Device Detection
+    if (isIos) {
+        if (androidView) androidView.classList.add('hidden');
+        if (iosView) iosView.classList.remove('hidden');
+    } else {
+        if (iosView) iosView.classList.add('hidden');
+        if (androidView) androidView.classList.remove('hidden');
+        return; 
+    }
+
+    // 2. Populate Device Dropdown (only if empty)
+    if (deviceSelect && deviceSelect.options.length <= 1) {
+        wallpaperDevices.forEach(dev => {
+            const opt = document.createElement('option');
+            opt.value = dev.code;
+            opt.textContent = dev.name;
+            deviceSelect.appendChild(opt);
+        });
+    }
+
+    // 3. Selection Logic
+    const checkSelections = () => {
+        const devVal = deviceSelect.value;
+        const langVal = langSelect.value;
+
+        if (devVal && langVal) {
+            shortcutContainer.classList.remove('hidden');
+            
+            // Generate Name (e.g. eApple17pm)
+            const shortcutName = `${langVal}Apple${devVal}`;
+            if (stepNameSpan) stepNameSpan.textContent = shortcutName;
+
+            // Get the specific shortcut link for this device + language
+            const deviceLinks = deviceShortcuts[devVal];
+            if (deviceLinks && deviceLinks[langVal]) {
+                btnGetShortcut.href = deviceLinks[langVal];
+            } else {
+                 btnGetShortcut.href = "#";
+                 console.warn("No shortcut found for:", devVal, langVal);
+            }
+            
+        } else {
+            shortcutContainer.classList.add('hidden');
+        }
+    };
+
+    if (deviceSelect) deviceSelect.onchange = checkSelections;
+    if (langSelect) langSelect.onchange = checkSelections;
 }
