@@ -167,7 +167,7 @@ const deviceShortcuts = {
         g: "https://www.icloud.com/shortcuts/LINK_GUJ_12P"
     },
     "12": {
-        e: "https://www.icloud.com/shortcuts/LINK_ENG_12",
+        e: "https://www.icloud.com/shortcuts/c8589bc7c61c46f18ad7b0150d9f8025",
         h: "https://www.icloud.com/shortcuts/LINK_HIN_12",
         g: "https://www.icloud.com/shortcuts/LINK_GUJ_12"
     },
