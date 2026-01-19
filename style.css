@@ -107,7 +107,7 @@ body {
     left: 0;
     width: 100%;
     height: var(--header-height);
-    background-color: var(--bg-color); /* Matches page background */
+    background-color: #000000; /* Matches page background */
     padding: 1.5rem 0;
     text-align: center;
     z-index: 1000;
@@ -131,7 +131,7 @@ nav {
 .logo {
     font-family: var(--font-logo);
     font-size: 1.5rem;
-    color: var(--text-primary);
+    color: var(--bg-color);
 }
 
 .nav-link {
