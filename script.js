@@ -5,7 +5,7 @@ let stopWarRequested = false;
 let chapterObserver = null;
 let chaptersObserver = null; 
 
-const MY_WEBSITE_URL = "bhgvd.com";
+const MY_WEBSITE_URL = "gita.bhgvd.com";
 const APP_TITLE = "Śrīmad Bhagavad Gītā";
 
 const chapterTitlesEnglish = [
