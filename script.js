@@ -168,7 +168,7 @@ const deviceShortcuts = {
     },
     "12": {
         e: "https://www.icloud.com/shortcuts/c8589bc7c61c46f18ad7b0150d9f8025",
-        h: "https://www.icloud.com/shortcuts/LINK_HIN_12",
+        h: "https://www.icloud.com/shortcuts/0914f3ae0d644627a1ad0690ebada620",
         g: "https://www.icloud.com/shortcuts/LINK_GUJ_12"
     },
     "11pm": {
