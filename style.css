@@ -55,6 +55,11 @@
 }
 
 :root {
+    /* Define the height once here */
+    --header-height: 80px; 
+}
+
+:root {
     --bg-color: #F9F7F2;
     --card-bg: #FFFFFF;
     --text-primary: #2D2D2D;
@@ -96,13 +101,30 @@ body {
     overflow-x: hidden;
 }
 
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--bg-color); /* Matches page background */
+    padding: 1.5rem 0;
+    text-align: center;
+    z-index: 1000;
+}
+
 nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centers the buttons */
     align-items: center;
-    padding: 2rem 3rem;
+    
+    /* Adjust these to position the nav below the fixed header */
+    margin-top: var(--header-height); 
+    padding: 1rem 3rem; 
+    
     max-width: 1200px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
 }
 
@@ -491,7 +513,7 @@ footer a:hover {
 .reader-header {
     position: -webkit-sticky;
     position: sticky;
-    top: 0;
+    top: var(--header-height);
     z-index: 100;
     padding: 1rem 2rem;
     margin: 0 auto 2rem auto;
@@ -526,8 +548,8 @@ footer a:hover {
 .reader-header.stuck::before {
     background-color: var(--bg-color);
     border-bottom: 1px solid rgba(180, 83, 9, 0.15);
-    top: -100px;
-    height: calc(100% + 100px);
+    top: 0;
+    height: 100%;
 }
 
 .reader-header.stuck {
