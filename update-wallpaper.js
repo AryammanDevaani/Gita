@@ -86,13 +86,9 @@ async function generateWallpapers() {
             <html lang="${lang.code}">
             <head>
             <style>
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
-                @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
-                
-                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
-                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
+                <style>
+    /* IMPORT GOOGLE FONTS to fix missing characters */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&family=Noto+Serif+Gujarati:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Rozha+One&display=swap');
                 
                 body {
                     background-color: #F9F7F2;
@@ -130,7 +126,7 @@ async function generateWallpapers() {
                     left: 50%;
                     transform: translateX(-50%);
                     
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
+                    font-family: 'Playfair Display', 'Noto Serif Devanagari', 'Noto Serif Gujarati', serif;
                     
                     background-color: #FFF7ED;
                     color: #B45309;
