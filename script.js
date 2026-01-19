@@ -26,7 +26,6 @@ const chapterTitlesSanskrit = [
     "दैवासुरसंपद्विभागयोग", "श्रद्धात्रयविभागयोग", "मोक्षसंन्यासयोग"
 ];
 
-// --- WALLPAPER CONFIGURATION ---
 const wallpaperDevices = [
     { name: "iPhone 17 Pro Max", code: "17pm" },
     { name: "iPhone 17 Air", code: "17air" },
@@ -56,8 +55,6 @@ const wallpaperDevices = [
     { name: "iPhone 11", code: "11" }
 ];
 
-// PASTE YOUR 3 LINKS FOR EACH DEVICE BELOW
-// e = English, h = Hindi, g = Gujarati
 const deviceShortcuts = {
     "17pm": {
         e: "https://www.icloud.com/shortcuts/LINK_ENG_17PM",
