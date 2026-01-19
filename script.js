@@ -3,7 +3,7 @@ let currentVerseObj = null;
 let warInterval = null;
 let stopWarRequested = false;
 let chapterObserver = null;
-let chaptersObserver = null; 
+let chaptersObserver = null;
 
 const MY_WEBSITE_URL = "gita.bhgvd.com";
 const APP_TITLE = "Śrīmad Bhagavad Gītā";
@@ -74,7 +74,7 @@ const deviceShortcuts = {
     "17": {
         e: "https://www.icloud.com/shortcuts/1443c78b7e1948d7ba00c4a549d71525",
         h: "https://www.icloud.com/shortcuts/00cf02efb1004506a866783f302decb0",
-        g: ""
+        g: "https://www.icloud.com/shortcuts/b2beda274da94a6ab4be80cc916fe4b3"
     },
     "16pm": {
         e: "",
@@ -249,7 +249,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 function startWarLoop() {
     const loader = document.getElementById('war-loader');
     const content = document.getElementById('verse-content');
-    
+
     if (content) content.classList.add('hidden');
     if (loader) {
         loader.classList.remove('hidden');
@@ -284,17 +284,17 @@ function calculateBoxMetrics(targetElement, translations) {
     ghost.style.top = '-9999px';
     ghost.style.left = '-9999px';
     ghost.style.visibility = 'hidden';
-    ghost.style.height = 'auto'; 
-    ghost.style.width = targetElement.offsetWidth + 'px'; 
+    ghost.style.height = 'auto';
+    ghost.style.width = targetElement.offsetWidth + 'px';
     ghost.style.padding = window.getComputedStyle(targetElement).padding;
-    ghost.style.fontSize = '1.4rem'; 
+    ghost.style.fontSize = '1.4rem';
     ghost.classList.remove('hidden');
-    
+
     document.body.appendChild(ghost);
 
-    const baseSize = 1.4; 
-    const maxSize = 2.4; 
-    
+    const baseSize = 1.4;
+    const maxSize = 2.4;
+
     ghost.textContent = translations.english;
     const hEng = ghost.offsetHeight;
 
@@ -309,7 +309,7 @@ function calculateBoxMetrics(targetElement, translations) {
     function getOptimalSize(height) {
         if (height >= maxHeight) return baseSize + 'rem';
         let ratio = maxHeight / height;
-        let newSize = baseSize * Math.sqrt(ratio); 
+        let newSize = baseSize * Math.sqrt(ratio);
         if (newSize > maxSize) newSize = maxSize;
         return newSize.toFixed(2) + 'rem';
     }
@@ -350,14 +350,14 @@ function revealSuccess() {
 
         document.getElementById('sanskrit-text').textContent = verse.sanskrit;
         const textElem = document.getElementById('translation-text');
-        
+
         document.getElementById('verse-reference').textContent = `Chapter ${verse.chapter} • Verse ${verse.verse}`;
 
         if (content) {
             content.classList.remove('hidden');
-            
+
             const metrics = calculateBoxMetrics(textElem, verse);
-            
+
             textElem.style.height = metrics.height;
             textElem.style.display = 'flex';
             textElem.style.alignItems = 'center';
@@ -367,10 +367,10 @@ function revealSuccess() {
             textElem.dataset.fsHin = metrics.fs.hindi;
             textElem.dataset.fsGuj = metrics.fs.gujarati;
 
-            textElem.textContent = verse.english; 
+            textElem.textContent = verse.english;
             textElem.style.fontSize = metrics.fs.english;
             textElem.dataset.lang = "english";
-            
+
             textElem.classList.remove('fading-out');
 
             content.animate([
@@ -439,7 +439,7 @@ if (btnHome) {
     btnHome.onclick = () => {
         const isHomeActive = !views.home.classList.contains('hidden');
         if (isHomeActive) {
-            smoothScrollTop(1000); 
+            smoothScrollTop(1000);
         } else {
             switchView('home');
         }
@@ -525,13 +525,13 @@ function switchView(viewName) {
     } else if (viewName === 'chapters' || viewName === 'reader') {
         btnChapters.classList.add('active');
         btnChapters.textContent = "Chapters";
-        
+
         if (viewName === 'chapters') {
-             const header = document.getElementById('chapters-sticky-header');
-             const sentinel = document.getElementById('chapters-sentinel');
-             
-             if(header && sentinel) {
-                 chaptersObserver = new IntersectionObserver((entries) => {
+            const header = document.getElementById('chapters-sticky-header');
+            const sentinel = document.getElementById('chapters-sentinel');
+
+            if (header && sentinel) {
+                chaptersObserver = new IntersectionObserver((entries) => {
                     if (entries[0].intersectionRatio === 0) {
                         header.classList.add('stuck');
                     } else {
@@ -539,7 +539,7 @@ function switchView(viewName) {
                     }
                 }, { threshold: [0, 1] });
                 chaptersObserver.observe(sentinel);
-             }
+            }
         }
 
     } else if (viewName === 'install') {
@@ -602,9 +602,9 @@ function renderChapterList() {
     }
 }
 
-window.handleReaderBack = function() {
+window.handleReaderBack = function () {
     const header = document.getElementById('sticky-header');
-    
+
     if (header && header.classList.contains('stuck')) {
         smoothScrollTop(1000);
     } else {
@@ -643,7 +643,7 @@ function openChapter(chapterNum, highlightVerse = null) {
         const div = document.createElement('div');
         div.className = 'verse-block';
         div.id = `verse-${v.verse}`;
-        
+
         div.innerHTML = `
             <button class="verse-pill" 
                     aria-label="Share Verse ${v.verse}"
@@ -670,7 +670,7 @@ function openChapter(chapterNum, highlightVerse = null) {
     });
 
     switchView('reader');
-    
+
     const verseBlocks = document.querySelectorAll('.verse-block .chapter-translation');
     verseBlocks.forEach(el => {
         const data = {
@@ -683,11 +683,11 @@ function openChapter(chapterNum, highlightVerse = null) {
         el.style.display = 'flex';
         el.style.alignItems = 'center';
         el.style.justifyContent = 'center';
-        
+
         el.dataset.fsEng = metrics.fs.english;
         el.dataset.fsHin = metrics.fs.hindi;
         el.dataset.fsGuj = metrics.fs.gujarati;
-        
+
         el.style.fontSize = metrics.fs.english;
         el.classList.remove('fading-out');
     });
@@ -719,10 +719,10 @@ function openChapter(chapterNum, highlightVerse = null) {
     chapterObserver.observe(sentinel);
 }
 
-window.captureVerseImage = async function(btnElement, chapter, verse) {
+window.captureVerseImage = async function (btnElement, chapter, verse) {
     const originalContent = btnElement.innerHTML;
     btnElement.classList.add('loading');
-    
+
     const verseObj = gitaData.find(v => v.chapter == chapter && v.verse == verse);
     if (!verseObj) {
         btnElement.classList.remove('loading');
@@ -731,17 +731,17 @@ window.captureVerseImage = async function(btnElement, chapter, verse) {
 
     const sanskrit = verseObj.sanskrit;
     const english = verseObj.english;
-    
+
     const headerText = `${APP_TITLE} \u00A0|\u00A0 Chapter ${chapter} • Verse ${verse}`;
 
     const tempContainer = document.createElement('div');
     tempContainer.style.position = 'fixed';
     tempContainer.style.top = '-9999px';
     tempContainer.style.left = '-9999px';
-    tempContainer.style.width = '800px'; 
+    tempContainer.style.width = '800px';
     tempContainer.style.zIndex = '-100';
     tempContainer.style.backgroundColor = '#F9F7F2';
-    
+
     tempContainer.innerHTML = `
         <div id="temp-share-wrapper" style="width: 550px; padding: 3rem 2rem 3rem 2rem; border-radius: 20px; text-align: center; font-family: 'Playfair Display', serif; background-color: #F9F7F2;">
             <div style="margin-bottom: 3rem;">
@@ -754,12 +754,12 @@ window.captureVerseImage = async function(btnElement, chapter, verse) {
             <div style="font-family: 'Rozha One', serif; color: #B45309; font-size: 1.25rem; margin-top: 3rem; opacity: 0.7;">${MY_WEBSITE_URL}</div>
         </div>
     `;
-    
+
     document.body.appendChild(tempContainer);
 
     try {
         const canvas = await html2canvas(tempContainer.querySelector('#temp-share-wrapper'), {
-            scale: 2, 
+            scale: 2,
             useCORS: true,
             backgroundColor: "#F9F7F2"
         });
@@ -816,11 +816,11 @@ if (btnShare) {
                         wrapper.style.margin = "0 auto";
                         wrapper.style.border = "0px solid #B45309";
                         wrapper.style.borderRadius = "20px";
-                        wrapper.style.paddingBottom = "3rem"; 
+                        wrapper.style.paddingBottom = "3rem";
                     }
-                    if(text) {
-                            text.style.height = 'auto';
-                            text.style.display = 'block';
+                    if (text) {
+                        text.style.height = 'auto';
+                        text.style.display = 'block';
                     }
                 }
             });
@@ -931,7 +931,7 @@ if (homeTextElem) {
     });
 }
 
-window.handleChapterClick = function(el) {
+window.handleChapterClick = function (el) {
     const verseData = {
         english: el.dataset.english,
         hindi: el.dataset.hindi,
@@ -967,7 +967,7 @@ function switchLanguage(element, dataObj) {
 
         element.classList.remove('fading-out');
 
-    }, 600); 
+    }, 600);
 }
 
 function smoothScrollTop(duration = 5000) {
@@ -1012,6 +1012,7 @@ function smoothScrollTo(target, duration) {
 }
 
 // --- WALLPAPER VIEW LOGIC ---
+// --- WALLPAPER VIEW LOGIC ---
 function initWallpaperView() {
     const androidView = document.getElementById('wallpaper-android');
     const iosView = document.getElementById('wallpaper-ios');
@@ -1019,7 +1020,7 @@ function initWallpaperView() {
     const langSelect = document.getElementById('wp-lang');
     const shortcutContainer = document.getElementById('shortcut-container');
     const btnGetShortcut = document.getElementById('btn-get-shortcut');
-    const stepNameSpan = document.getElementById('shortcut-step-name'); // Dynamic name span
+    const stepNameSpan = document.getElementById('shortcut-step-name');
 
     // 1. Device Detection
     if (isIos) {
@@ -1028,45 +1029,95 @@ function initWallpaperView() {
     } else {
         if (iosView) iosView.classList.add('hidden');
         if (androidView) androidView.classList.remove('hidden');
-        return; 
+        return;
     }
 
-    // 2. Populate Device Dropdown (only if empty)
+    // 2. Populate Device Dropdown (Filtered: Only devices with links)
     if (deviceSelect && deviceSelect.options.length <= 1) {
         wallpaperDevices.forEach(dev => {
-            const opt = document.createElement('option');
-            opt.value = dev.code;
-            opt.textContent = dev.name;
-            deviceSelect.appendChild(opt);
+            const links = deviceShortcuts[dev.code];
+            // Check if at least one link (e, h, or g) has content
+            const hasAnyLink = links && (links.e || links.h || links.g);
+
+            if (hasAnyLink) {
+                const opt = document.createElement('option');
+                opt.value = dev.code;
+                opt.textContent = dev.name;
+                deviceSelect.appendChild(opt);
+            }
         });
     }
 
-    // 3. Selection Logic
+    // 3. Helper: Update Language Options based on selected device
+    const updateLanguageOptions = () => {
+        const devVal = deviceSelect.value;
+        const links = deviceShortcuts[devVal];
+
+        // Reset Language Dropdown: Keep only the first "Languages" option
+        while (langSelect.options.length > 1) {
+            langSelect.remove(1);
+        }
+
+        if (links) {
+            // Add English if link exists
+            if (links.e) {
+                const opt = document.createElement('option');
+                opt.value = "e";
+                opt.textContent = "English";
+                langSelect.appendChild(opt);
+            }
+            // Add Hindi if link exists
+            if (links.h) {
+                const opt = document.createElement('option');
+                opt.value = "h";
+                opt.textContent = "Hindi";
+                langSelect.appendChild(opt);
+            }
+            // Add Gujarati if link exists
+            if (links.g) {
+                const opt = document.createElement('option');
+                opt.value = "g";
+                opt.textContent = "Gujarati";
+                langSelect.appendChild(opt);
+            }
+        }
+        
+        // Reset selected value to default
+        langSelect.value = "";
+        // Hide the button since language selection was reset
+        shortcutContainer.classList.add('hidden');
+    };
+
+    // 4. Selection Logic (Shows the button)
     const checkSelections = () => {
         const devVal = deviceSelect.value;
         const langVal = langSelect.value;
 
         if (devVal && langVal) {
             shortcutContainer.classList.remove('hidden');
-            
-            // Generate Name (e.g. eApple17pm)
+
             const shortcutName = `${langVal}Apple${devVal}`;
             if (stepNameSpan) stepNameSpan.textContent = shortcutName;
 
-            // Get the specific shortcut link for this device + language
             const deviceLinks = deviceShortcuts[devVal];
             if (deviceLinks && deviceLinks[langVal]) {
                 btnGetShortcut.href = deviceLinks[langVal];
             } else {
-                 btnGetShortcut.href = "#";
-                 console.warn("No shortcut found for:", devVal, langVal);
+                btnGetShortcut.href = "#";
             }
-            
         } else {
             shortcutContainer.classList.add('hidden');
         }
     };
 
-    if (deviceSelect) deviceSelect.onchange = checkSelections;
-    if (langSelect) langSelect.onchange = checkSelections;
+    // 5. Event Listeners
+    if (deviceSelect) {
+        deviceSelect.onchange = () => {
+            updateLanguageOptions(); // Update languages first
+            // No need to call checkSelections here because updateLanguageOptions hides the button
+        };
+    }
+    if (langSelect) {
+        langSelect.onchange = checkSelections;
+    }
 }
