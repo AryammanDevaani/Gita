@@ -1111,11 +1111,15 @@ function initWallpaperView() {
     };
 
     // 4. Selection Logic (Shows the button)
+    // 4. Selection Logic (Shows the button)
     const checkSelections = () => {
         const devVal = deviceSelect.value;
         const langVal = langSelect.value;
 
         if (devVal && langVal) {
+            // Check if it's currently hidden to know if we should trigger the animation
+            const isFirstReveal = shortcutContainer.classList.contains('hidden');
+            
             shortcutContainer.classList.remove('hidden');
 
             const shortcutName = `${langVal}Apple${devVal}`;
@@ -1127,6 +1131,15 @@ function initWallpaperView() {
             } else {
                 btnGetShortcut.href = "#";
             }
+
+            // Apply the "For You" page reveal animation (slide up + fade in)
+            if (isFirstReveal) {
+                shortcutContainer.animate([
+                    { opacity: 0, transform: 'translateY(20px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+            }
+
         } else {
             shortcutContainer.classList.add('hidden');
         }
