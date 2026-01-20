@@ -1023,15 +1023,37 @@ function initWallpaperView() {
     const stepNameSpan = document.getElementById('shortcut-step-name');
 
     // 1. Device Detection
-    if (isIos) {
+    // 1. Device Detection
+    const ua = navigator.userAgent;
+    // Strict iPhone detection (excludes iPads)
+    const isIphone = /iPhone/i.test(ua) && !window.MSStream;
+
+    if (isIphone) {
+        // Show tool for iPhone
         if (androidView) androidView.classList.add('hidden');
         if (iosView) iosView.classList.remove('hidden');
     } else {
+        // Show "Coming Soon" for everyone else
         if (iosView) iosView.classList.add('hidden');
-        if (androidView) androidView.classList.remove('hidden');
-        return;
-    }
+        if (androidView) {
+            androidView.classList.remove('hidden');
 
+            // Detect the specific device name
+            let deviceName = "Device";
+            const isiPad = /iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            if (/Android/i.test(ua)) deviceName = "Android";
+            else if (isiPad) deviceName = "iPad";
+            else if (/Mac/i.test(ua)) deviceName = "Mac";
+            else if (/Win/i.test(ua)) deviceName = "Windows";
+            else if (/Linux/i.test(ua)) deviceName = "Linux";
+
+            // Update the text to say "For [DeviceName]"
+            const header = androidView.querySelector('h3');
+            if (header) header.textContent = `For ${deviceName}`;
+        }
+        return; // Stop here for non-iPhones
+    }
     // 2. Populate Device Dropdown (Filtered: Only devices with links)
     if (deviceSelect && deviceSelect.options.length <= 1) {
         wallpaperDevices.forEach(dev => {
