@@ -226,12 +226,68 @@
                 Wake up to wisdom on your lock screen.
             </p>
 
+            <div id="wallpaper-windows" class="hidden">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-style: italic;">
+                        For Windows
+                    </h3>
+
+                    <div>
+                        <label for="win-ratio" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Screen Shape (Auto-Detected)
+                        </label>
+                        <select id="win-ratio" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="16x9">16:9 (Standard / 4K)</option>
+                            <option value="16x10">16:10 (Tall / Modern)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="win-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Language
+                        </label>
+                        <select id="win-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Select Language</option>
+                            <option value="e">English</option>
+                            <option value="h">Hindi</option>
+                            <option value="g">Gujarati</option>
+                        </select>
+                    </div>
+
+                    <div id="win-download-area" class="hidden" style="margin-top: 1rem; animation: fadeIn 0.5s ease;">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <a id="btn-win-download" href="#" download
+                               style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-style:italic; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
+                                Download Installer
+                            </a>
+                        </div>
+                        
+                        <ol style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                            <li><strong>Right-click</strong> the zip & select <strong>Extract All</strong>.</li>
+                            <li>Double-click <strong>install.bat</strong>.</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="wallpaper-mac" class="hidden">
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
+                        For Mac
+                    </h3>
+                    <p style="font-family: var(--font-english); font-style: italic; color: #666;">
+                        Coming Soon.
+                    </p>
+                </div>
+            </div>
+
             <div id="wallpaper-android" class="hidden">
-                <div
-                    style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
-                    <h3
-                        style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
-                        For Android</h3>
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
+                        For Android
+                    </h3>
                     <p style="font-family: var(--font-english); font-style: italic; color: #666;">
                         Coming Soon.
                     </p>
