@@ -287,7 +287,7 @@ async function generateWallpapers() {
                     font-style: italic;
                 }
 
-                .footer {--
+                .footer {
                     font-family: 'Rozha One', serif;
                     font-size: 2vh;
                     color: #F9F7F2;
