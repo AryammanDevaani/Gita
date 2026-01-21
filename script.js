@@ -4,7 +4,6 @@ let warInterval = null;
 let stopWarRequested = false;
 let chapterObserver = null;
 let chaptersObserver = null;
-let deferredPrompt = null;
 
 const MY_WEBSITE_URL = "gita.bhgvd.com";
 const APP_TITLE = "Śrīmad Bhagavad Gītā";
@@ -207,7 +206,6 @@ const btnShare = document.getElementById('btn-share');
 const navInstallBtn = document.getElementById('btn-install-view');
 const btnChaptersBack = document.getElementById('btn-chapters-back');
 const verseRefBtn = document.getElementById('verse-reference');
-const btnInstallAction = document.getElementById('btn-install-action');
 
 window.addEventListener('DOMContentLoaded', async () => {
     startWarLoop();
@@ -246,45 +244,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error("Fetch failed, War continues:", error);
     }
-});
-
-// Listen for the 'beforeinstallprompt' event (Chrome/Edge/Android)
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the mini-infobar from appearing automatically
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = e;
-    
-    // If the user is currently on the install view, update the UI immediately
-    if (!views.install.classList.contains('hidden')) {
-        updateInstallView();
-    }
-});
-
-// Handle the Install Button Click
-if (btnInstallAction) {
-    btnInstallAction.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-
-        // Show the native install prompt
-        deferredPrompt.prompt();
-
-        // Wait for the user to respond to the prompt
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User response to the install prompt: ${outcome}`);
-
-        // We've used the prompt, so clear it
-        deferredPrompt = null;
-        
-        // Hide button after use
-        btnInstallAction.classList.add('hidden');
-    });
-}
-
-// Listen for successful installation to clean up UI
-window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    updateInstallView();
 });
 
 function startWarLoop() {
@@ -892,50 +851,25 @@ const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
 const iosInstructions = document.getElementById('instructions-ios');
 const androidInstructions = document.getElementById('instructions-android');
 const successMsg = document.getElementById('install-success');
-// ADD THIS LINE:
-const windowsInstructions = document.getElementById('instructions-windows');
 
 function updateInstallView() {
-    // 1. Hide everything initially
     if (iosInstructions) iosInstructions.classList.add('hidden');
     if (androidInstructions) androidInstructions.classList.add('hidden');
-    if (windowsInstructions) windowsInstructions.classList.add('hidden');
     if (successMsg) successMsg.classList.add('hidden');
-    if (btnInstallAction) btnInstallAction.classList.add('hidden');
 
-    // 2. Logic to determine what to show
     if (isStandalone) {
-        // Case A: Already Installed
         if (successMsg) successMsg.classList.remove('hidden');
-        if (navInstallBtn) navInstallBtn.style.display = 'none'; // Hide nav link if installed
-    
-    } else if (deferredPrompt) {
-        // Case B: Browser supports "Magic Button" (Chrome/Edge/Android)
-        // Show the button and HIDE the complex text instructions
-        if (btnInstallAction) btnInstallAction.classList.remove('hidden');
-        
-        // Optional: You can keep instructions visible below if you want, 
-        // but hiding them makes it cleaner since the button works.
-
+    } else if (isIos) {
+        if (iosInstructions) iosInstructions.classList.remove('hidden');
     } else {
-        // Case C: No "Magic Button" available (iOS, or event hasn't fired yet)
-        // Show manual instructions based on device
-        if (isIos) {
-            if (iosInstructions) iosInstructions.classList.remove('hidden');
-        } else if (/Android/i.test(navigator.userAgent)) {
-            if (androidInstructions) androidInstructions.classList.remove('hidden');
-        } else {
-            // Default to Windows manual instructions
-            if (windowsInstructions) windowsInstructions.classList.remove('hidden');
-        }
+        if (androidInstructions) androidInstructions.classList.remove('hidden');
     }
 }
 
 const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 if (navInstallBtn) {
-    // UPDATED: Show for any device that isn't already installed (Standalone)
-    if (!isStandalone) {
+    if (isMobileDevice && !isStandalone) {
         navInstallBtn.style.display = 'block';
     } else {
         navInstallBtn.style.display = 'none';
