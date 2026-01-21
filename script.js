@@ -1188,65 +1188,38 @@ function initWallpaperView() {
 }
 
 // 1. Capture the Install Event (Chrome/Edge/Android)
-// This event fires automatically if the app is installable.
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the default mini-infobar from appearing immediately
     e.preventDefault();
-    // Stash the event so we can trigger it later with the secret code
     deferredPrompt = e;
 });
 
 // 2. Secret Code Listener
 document.addEventListener('keydown', async (e) => {
-    // Only run this logic if we are currently on the "Install" view
+    // Only run on the "Install" view
     const installView = document.getElementById('view-install');
     if (!installView || installView.classList.contains('hidden')) return;
 
-    // We only care about single letters (ignore Shift, Ctrl, etc.)
     if (e.key.length === 1) {
         secretKeySequence.push(e.key.toLowerCase());
 
-        // Keep the history only as long as the secret code
         if (secretKeySequence.length > SECRET_CODE.length) {
             secretKeySequence.shift();
         }
 
-        // Check if the typed sequence matches "bhgvd"
         if (secretKeySequence.join('') === SECRET_CODE) {
             console.log("Secret Code Activated!");
+            secretKeySequence = []; // Reset sequence
 
-            // Reset sequence so it doesn't fire multiple times
-            secretKeySequence = [];
-
+            // Only trigger if the browser explicitly supports it
             if (deferredPrompt) {
-                // SCENARIO A: Browser supports programmatic install (Chrome/Edge/Android)
                 deferredPrompt.prompt();
-
-                // Log the result (optional)
+                
                 const { outcome } = await deferredPrompt.userChoice;
                 console.log(`Install prompt outcome: ${outcome}`);
-
-                // The prompt can only be used once per page load
+                
                 deferredPrompt = null;
-            } else {
-                // SCENARIO B: Safari / Firefox / Already Installed
-                // We cannot force an install prompt here. 
-                // Fallback: Trigger your existing "War" animation as a reward.
-
-                const loader = document.getElementById('war-loader');
-                if (loader) {
-                    // Temporarily restart the war loop for 3 seconds
-                    stopWarRequested = false;
-                    startWarLoop();
-
-                    // Show a toast or alert (Optional)
-                    // alert("You found the secret! Use the browser menu to install.");
-
-                    setTimeout(() => {
-                        stopWarRequested = true;
-                    }, 3000);
-                }
-            }
+            } 
+            // If null, we do nothing.
         }
     }
 });
