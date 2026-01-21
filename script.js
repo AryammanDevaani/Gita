@@ -1103,11 +1103,12 @@ function initWallpaperView() {
     } 
     // --- LOGIC: Android/Other ---
     // --- LOGIC: Android/Other ---
+    // --- LOGIC: Android/Other ---
     else {
         if (androidView) {
             androidView.classList.remove('hidden');
             
-            // Inject the Interface if it's empty
+            // Inject the Interface
             if (!document.getElementById('and-lang')) {
                 androidView.innerHTML = `
                 <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
@@ -1121,9 +1122,9 @@ function initWallpaperView() {
                         </label>
                         <select id="and-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
                             <option value="" disabled selected>Languages</option>
-                            <option value="English">English</option>
-                            <option value="Hindi">Hindi</option>
-                            <option value="Gujarati">Gujarati</option>
+                            <option value="e">English</option>
+                            <option value="h">Hindi</option>
+                            <option value="g">Gujarati</option>
                         </select>
                     </div>
 
@@ -1154,16 +1155,16 @@ function initWallpaperView() {
                 
                 if (andLang) {
                     andLang.onchange = () => {
-                        const langName = andLang.value; // "English", "Hindi", "Gujarati"
-                        if (langName) {
+                        const code = andLang.value; // "e", "h", "g"
+                        if (code) {
                             andActions.classList.remove('hidden');
                             
-                            // LINK FORMAT: /Gita-English.mdr
-                            // You must upload these 3 files to your repository
-                            btnMacro.href = `/Gita-${langName}.mdr`;
+                            // LINK FORMAT: /eand20x9.macro
+                            btnMacro.href = `/${code}and20x9.macro`;
                             
-                            // Optional: Update button text to confirm selection
-                            btnMacro.textContent = `DOWNLOAD ${langName.toUpperCase()} MACRO`;
+                            // Button Text
+                            const label = andLang.options[andLang.selectedIndex].text;
+                            btnMacro.textContent = `DOWNLOAD ${label.toUpperCase()} MACRO`;
                         }
                     };
                 }
