@@ -4,14 +4,9 @@ let warInterval = null;
 let stopWarRequested = false;
 let chapterObserver = null;
 let chaptersObserver = null;
-// ... existing variables ...
-let deferredPrompt = null; // To store the install event
-let secretKeySequence = []; // To track keystrokes
-
 
 const MY_WEBSITE_URL = "gita.bhgvd.com";
 const APP_TITLE = "Śrīmad Bhagavad Gītā";
-const SECRET_CODE = "bhgvd";
 
 const chapterTitlesEnglish = [
     "The Distress of Arjuna", "The Path of Knowledge", "The Path of Selfless Action",
@@ -1186,46 +1181,3 @@ function initWallpaperView() {
         langSelect.onchange = checkSelections;
     }
 }
-
-// 1. Capture the Install Event (Required for Chrome/Edge/Android)
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-});
-
-// 2. Secret Code Listener (Attempts to run unconditionally)
-document.addEventListener('keydown', async (e) => {
-    // Check if we are on the Install page
-    const installView = document.getElementById('view-install');
-    if (!installView || installView.classList.contains('hidden')) return;
-
-    if (e.key.length === 1) {
-        secretKeySequence.push(e.key.toLowerCase());
-
-        // Keep sequence length correct
-        if (secretKeySequence.length > SECRET_CODE.length) {
-            secretKeySequence.shift();
-        }
-
-        // Check Match
-        if (secretKeySequence.join('') === SECRET_CODE) {
-            console.log("Secret Code Activated! Attempting to install...");
-            secretKeySequence = []; // Reset sequence
-
-            try {
-                // RUNS NO MATTER WHAT
-                // We attempt to trigger the prompt immediately.
-                deferredPrompt.prompt();
-
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`Install prompt outcome: ${outcome}`);
-                
-                deferredPrompt = null;
-            } catch (err) {
-                // If deferredPrompt was null (VS Code/Safari), this block runs silently.
-                // It prevents the site from crashing but shows nothing on screen.
-                console.log("Install prompt failed or unavailable:", err);
-            }
-        }
-    }
-});
