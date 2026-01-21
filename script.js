@@ -1102,11 +1102,72 @@ function initWallpaperView() {
         if (macView) macView.classList.remove('hidden');
     } 
     // --- LOGIC: Android/Other ---
+    // --- LOGIC: Android/Other ---
     else {
         if (androidView) {
             androidView.classList.remove('hidden');
-            const header = androidView.querySelector('h3');
-            if (header) header.textContent = isAndroid ? "For Android" : "For Your Device";
+            
+            // Inject the Interface if it's empty
+            if (!document.getElementById('and-lang')) {
+                androidView.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; font-style: italic;">
+                        For Android
+                    </h3>
+
+                    <div style="text-align: left; margin-bottom: 1.5rem;">
+                        <label for="and-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Language
+                        </label>
+                        <select id="and-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Languages</option>
+                            <option value="English">English</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Gujarati">Gujarati</option>
+                        </select>
+                    </div>
+
+                    <div id="and-actions" class="hidden" style="animation: fadeIn 0.5s ease; text-align: left;">
+                        
+                        <div style="background: #F9F7F2; border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(180, 83, 9, 0.1);">
+                            <h4 style="font-family: var(--font-english); font-style:italic; color: #B45309; margin: 0 0 0.5rem 0;">
+                                Automate Daily
+                            </h4>
+                            <p style="font-family: var(--font-english); font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.5;">
+                                Download the MacroDroid file to automatically update your wallpaper every morning.
+                            </p>
+                            
+                            <a id="btn-and-macro" href="#" download
+                               style="display: block; text-align: center; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem; border-radius: 8px; font-family: var(--font-english); font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity 0.2s;">
+                                DOWNLOAD MACRO
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+                `;
+                
+                // Logic
+                const andLang = document.getElementById('and-lang');
+                const andActions = document.getElementById('and-actions');
+                const btnMacro = document.getElementById('btn-and-macro');
+                
+                if (andLang) {
+                    andLang.onchange = () => {
+                        const langName = andLang.value; // "English", "Hindi", "Gujarati"
+                        if (langName) {
+                            andActions.classList.remove('hidden');
+                            
+                            // LINK FORMAT: /Gita-English.mdr
+                            // You must upload these 3 files to your repository
+                            btnMacro.href = `/Gita-${langName}.mdr`;
+                            
+                            // Optional: Update button text to confirm selection
+                            btnMacro.textContent = `DOWNLOAD ${langName.toUpperCase()} MACRO`;
+                        }
+                    };
+                }
+            }
         }
     }
 

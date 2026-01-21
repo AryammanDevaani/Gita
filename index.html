@@ -1,525 +1,425 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path');
+<!DOCTYPE html>
+<html lang="en">
 
-// Load your data
-const gitaData = require('./gita.json');
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-// Config for languages
-const languages = [
-    { code: 'en', fileChar: 'e', key: 'English', fallback: 'translationEnglish', simple: 'simpleEnglish' },
-    { code: 'hi', fileChar: 'h', key: 'Hindi', fallback: 'translationHindi', simple: 'simpleHindi' },
-    { code: 'gu', fileChar: 'g', key: 'Gujarati', fallback: 'translationGujarati', simple: 'simpleGujarati' }
-];
+    <title>Śrīmad Bhagavad Gītā</title>
+    <meta name="title" content="Bhgvd — Learn Something New, Always">
+    <meta name="description"
+        content="Explore the timeless wisdom of the Bhagavad Gītā with “For You” verses and translations.">
 
-// Config for Devices (Verified Jan 2026)
-const devices = [
-    // --- iPhone 17 Series ---
-    { suffix: '17pm',  width: 1320, height: 2868 }, 
-    { suffix: '17air', width: 1260, height: 2736 },
-    { suffix: '17p',   width: 1206, height: 2622 }, 
-    { suffix: '17',    width: 1206, height: 2622 }, 
+    <meta property="og:site_name" content="Bhgvd">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.bhgvd.com/">
+    <meta property="og:title" content="Śrīmad Bhagavad Gītā">
+    <meta property="og:description" content="Timeless wisdom from the Gītā, for you.">
+    <meta property="og:image" content="https://www.bhgvd.com/favicon.png">
 
-    // --- iPhone 16 Series ---
-    { suffix: '16pm', width: 1320, height: 2868 }, 
-    { suffix: '16pl', width: 1290, height: 2796 }, 
-    { suffix: '16p',  width: 1206, height: 2622 }, 
-    { suffix: '16',   width: 1179, height: 2556 },
-    { suffix: '16e',  width: 1170, height: 2532 },
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.bhgvd.com/">
+    <meta property="twitter:title" content="Śrīmad Bhagavad Gītā">
+    <meta property="twitter:description" content="Timeless wisdom from the Gītā, for you.">
+    <meta property="twitter:image" content="https://www.bhgvd.com/favicon.png">
 
-    // --- iPhone 15 Series ---
-    { suffix: '15pm', width: 1290, height: 2796 },
-    { suffix: '15pl', width: 1290, height: 2796 },
-    { suffix: '15p',  width: 1179, height: 2556 },
-    { suffix: '15',   width: 1179, height: 2556 }, 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#B45309">
 
-    // --- iPhone 14 Series ---
-    { suffix: '14pm', width: 1290, height: 2796 },
-    { suffix: '14pl', width: 1284, height: 2778 },
-    { suffix: '14p',  width: 1179, height: 2556 },
-    { suffix: '14',   width: 1170, height: 2532 },
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
 
-    // --- iPhone 13 Series ---
-    { suffix: '13pm', width: 1284, height: 2778 },
-    { suffix: '13p',  width: 1170, height: 2532 },
-    { suffix: '13',   width: 1170, height: 2532 },
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
 
-    // --- iPhone 12 Series ---
-    { suffix: '12pm', width: 1284, height: 2778 },
-    { suffix: '12p',  width: 1170, height: 2532 },
-    { suffix: '12',   width: 1170, height: 2532 },
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="canonical" href="https://www.bhgvd.com/" />
 
-    // --- iPhone 11 Series ---
-    { suffix: '11pm', width: 1242, height: 2688 },
-    { suffix: '11p',  width: 1125, height: 2436 },
-    { suffix: '11',   width: 828,  height: 1792 }
-];
-
-const desktopDevices = [
-    { suffix: 'pc16x9',  width: 3840, height: 2160 }, // 4K (Windows Standard)
-    { suffix: 'pc16x10', width: 3456, height: 2234 }  // MacBook Pro 16
-];
-
-async function generateWallpapers() {
-    // 1. Setup Output Directory
-    const outputDir = 'wallpapers';
-    if (!fs.existsSync(outputDir)){
-        fs.mkdirSync(outputDir);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js" defer></script>
+    <meta name="google-site-verification" content="6vXfU2JttKNjaVxz8PgORC0tJNEvxPF-QQFx5jUkz2o" />
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+    {
+         "@context": "https://schema.org",
+         "@type": "WebSite",
+         "name": "Bhgvd",
+         "url": "https://www.bhgvd.com/",
+         "alternateName": ["Gita", "Bhagavad Gita", "Bhgvd", "Aryamman", "Aryamman Devaani"]
     }
+    </script>
+</head>
 
-    // 2. Pick a Random Verse
-    const verseIndex = Math.floor(Math.random() * gitaData.length);
-    const verse = gitaData[verseIndex];
-    console.log(`Selected Chapter ${verse.chapter}, Verse ${verse.verse}`);
+<body>
 
-    // 3. Launch Browser
-    const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    
-    const page = await browser.newPage();
+    <div id="war-loader" class="war-overlay hidden"></div>
 
-    // 4. Loop through languages
-    for (const lang of languages) {
-        
-        // Determine text content
-        const textContent = verse[lang.simple] || verse[lang.fallback];
+    <div class="fixed-header">
+        <div class="logo">ŚRĪMAD BHAGAVAD GĪTĀ</div>
+    </div>
 
-        // HTML Template
-        const htmlContent = `
-            <!DOCTYPE html>
-            <html lang="${lang.code}">
-            <head>
-            <link rel="icon" type="image/png" href="/favicon.png">
-            <style>
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
-                @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
-                
-                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
-                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
-                
-                body {
-                    background-color: #F9F7F2;
-                    margin: 0;
-                    height: 100vh;
-                    width: 100vw;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    overflow: hidden;
-                    position: relative;
-                }
+    <nav>
+        <div style="display:flex; gap:1.5rem; justify-content: center; width: 100%;">
+            <button id="btn-home" class="nav-link active">For You</button>
+            <button id="btn-chapters" class="nav-link">Chapters</button>
+            <button id="btn-install-view" class="nav-link" style="display: none;">Install</button>
+            <button id="btn-wallpaper" class="nav-link">Wallpaper</button>
+        </div>
+    </nav>
 
-                .text-box {
-                    position: relative;
-                    top: 9.5vh;
-                    
-                    width: 85vw; 
-                    height: 50vh; 
-                    padding-top: 3.75vw;
-                    
-                    
+    <main id="view-home" class="container">
+        <div class="verse-card">
 
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: flex-start;
-                    box-sizing: border-box;
-                }
-
-                #verse-reference {
-                    position: absolute;
-                    top: -5vw; 
-                    left: 50%;
-                    transform: translateX(-50%);
-                    
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
-                    
-                    background-color: #FFF7ED;
-                    color: #B45309;
-                    
-                    padding: 1.6vw 4.1vw;
-                    border-radius: 100px;
-                    
-                    font-size: 3vw;
-                    font-weight: 700;
-                    font-style: italic;
-                    border: 3px solid rgba(180, 83, 9, 0.1);
-                    letter-spacing: 3px;
-                    z-index: 10;
-                    white-space: nowrap;
-                    box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1);
-                }
-
-                #translation-text {
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
-                    color: #2D2D2D;
-                    
-                    /* Default large size to test fitting */
-                    font-size: 6.2vw; 
-                    
-                    line-height: 1.4;
-                    font-style: italic;
-                    text-align: center;
-                    padding: 0 2vw;
-                    
-                    width: 100%;
-                    max-height: 100%;
-                    
-                    display: flex;
-                    align-items: flex-start;
-                    justify-content: center;
-                    
-                    overflow: hidden; 
-                }
-
-                .wallpaper-footer {
-                    position: absolute;
-                    top: -15vw;
-                    
-                    left: 0;
-                    right: 0;
-                    text-align: center;
-                    font-family: 'Rozha One', serif;
-                    
-                    font-size: 4.6vw;
-                    
-                    color: #B45309;
-                    opacity: 0.65;
-                    letter-spacing: 2px;
-                }
-            </style>
-            </head>
-            <body>
-                <div class="text-box">
-                    <div id="verse-reference">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
-                    <div id="translation-text">
-                        <span id="text-inner">${textContent}</span>
+            <div id="verse-content" class="hidden">
+                <div id="shareable-card-wrapper">
+                    <div class="verse-meta" style="position: relative; margin-bottom: 3rem;">
+                        <span id="verse-reference"></span>
                     </div>
-                    <div class="wallpaper-footer">gita.bhgvd.com</div>
+
+                    <h1 id="sanskrit-text"></h1>
+
+                    <div class="translation-container">
+                        <p id="translation-text"></p>
+                    </div>
+
+                    <div class="card-footer">Śrīmad Bhagavad Gītā</div>
                 </div>
-            </body>
-            </html>
-        `;
 
-        // ... (Your existing Mobile logic ends here) ...
-
-        // --- PART 2: DESKTOP WALLPAPERS (Sanskrit + Translation + Simple) ---
-        
-        // 1. Prepare Content (Verify 'verse.text' matches your JSON key for Sanskrit)
-        const sanskritText = verse.sanskrit; 
-        const translationText = verse[lang.fallback];
-        const simpleText = verse[lang.simple] ? verse[lang.simple] : ''; // Handle missing simple text
-
-        // 2. Desktop HTML Template
-        const htmlDesktop = `
-            <!DOCTYPE html>
-            <html lang="${lang.code}">
-            <head>
-            <style>
-                /* Import Fonts */
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
-                @font-face { font-family: 'Arya'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
-                @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
-                
-                body {
-                    background-color: #5d4141;
-                    margin: 0;
-                    height: 100vh;
-                    width: 100vw;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                /* Restrict width to 45vw for "Dead Center" look */
-                .desktop-container {
-                    width: 45vw;
-                    text-align: center;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 3vh; /* Space between elements */
-                }
-
-                .verse-ref {
-                    font-family: 'Playfair Display', serif;
-                    background-color: #FFF7ED;
-                    color: #B45309;
-                    padding: 0.8vh 2vh;
-                    border-radius: 100px;
-                    font-size: 1.5vh; /* vh units for scaling */
-                    font-weight: 700;
-                    font-style: italic;
-                    border: 2px solid rgba(180, 83, 9, 0.1);
-                    letter-spacing: 2px;
-                    margin-bottom: 2vh;
-                }
-
-                .sanskrit-text {
-                    font-family: 'Arya', sans-serif;
-                    font-weight: 700;
-                    color: #F9F7F2; /* Matches website accent */
-                    font-size: 4vh;
-                    line-height: 1.5;
-                }
-
-                .translation-text {
-                    font-family: 'Playfair Display', serif;
-                    color: #F9F7F2;
-                    font-size: 3vh;
-                    line-height: 1.4;
-                    font-style: italic;
-                }
-
-                .simple-text {
-                    font-family: 'Playfair Display', serif;
-                    color: #F9F7F2;
-                    font-size: 2.5vh; /* Slightly smaller */
-                    line-height: 1.4;
-                    margin-top: 1vh;
-                    font-style: italic;
-                }
-
-                .footer {
-                    font-family: 'Rozha One', serif;
-                    font-size: 2vh;
-                    color: #F9F7F2;
-                    opacity: 0.65;
-                    letter-spacing: 2px;
-                    margin-top: 5vh;
-                }
-            </style>
-            </head>
-            <body>
-                <div class="desktop-container">
-                    <div class="verse-ref">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
-                    
-                    <div class="sanskrit-text">${sanskritText}</div>
-                    
-                    <div class="translation-text">${translationText}</div>
-                    
-                    ${simpleText ? `<div class="simple-text">${simpleText}</div>` : ''}
-                    
-                    <div class="footer">gita.bhgvd.com</div>
+                <div style="margin-top: 5rem;">
+                    <button id="btn-share" class="share-button icon-only" aria-label="Share Verse as Image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                            <polyline points="16 6 12 2 8 6"></polyline>
+                            <line x1="12" y1="2" x2="12" y2="15"></line>
+                        </svg>
+                    </button>
                 </div>
-            </body>
-            </html>
-        `;
+            </div>
+        </div>
+    </main>
 
-        
-        // [INSERT START] --- ANDROID UNIVERSAL (20:9 Centered + iPhone Style) ---
-        
-        // 1. Android Specific Template 
-        // Reuses 'textContent' (Simple/Translation) like iPhone, but centers it perfectly for 20:9
-        const htmlAndroid = `
-            <!DOCTYPE html>
-            <html lang="${lang.code}">
-            <head>
-            <style>
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
-                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
-                @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
-                
-                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
-                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
-                
-                body {
-                    background-color: #F9F7F2;
-                    margin: 0;
-                    height: 100vh;
-                    width: 100vw;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center; /* Dead Center Vertical */
-                    overflow: hidden;
-                    position: relative;
-                }
+    <main id="view-chapters" class="container hidden">
+        <div id="chapters-sentinel" style="position:absolute; top:0; height:1px; width:100%;"></div>
 
-                .android-text-box {
-                    position: relative;
-                    /* No top offset, we rely on Flexbox centering */
-                    
-                    width: 85vw; 
-                    /* Max height safety for center alignment */
-                    max-height: 80vh;
-                    
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    box-sizing: border-box;
-                    padding-top: 2vw; /* Slight breathing room */
-                }
+        <div id="chapters-sticky-header" class="reader-header">
+            <button id="btn-chapters-back" class="back-link" aria-label="Scroll to Top">
+                ↑
+            </button>
+            <div class="reader-header-text">
+                <h2 class="reader-header-title"
+                    style="font-family: var(--font-english); font-size: 1.5rem; line-height: 1.2; font-style: italic;">
+                    The 18 Chapters</h2>
+                <p style="color:var(--text-secondary); font-style:italic; margin-top: 0.5rem;">of wisdom.</p>
+            </div>
+        </div>
 
-                .verse-pill {
-                    position: absolute;
-                    top: -6vw; /* Floating above */
-                    left: 50%;
-                    transform: translateX(-50%);
-                    
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
-                    background-color: #FFF7ED;
-                    color: #B45309;
-                    
-                    padding: 1.5vw 4vw;
-                    border-radius: 100px;
-                    
-                    font-size: 3vw;
-                    font-weight: 700;
-                    font-style: italic;
-                    border: 3px solid rgba(180, 83, 9, 0.1);
-                    letter-spacing: 2px;
-                    z-index: 10;
-                    white-space: nowrap;
-                    box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1);
-                }
+        <div id="chapter-grid" class="grid">
+        </div>
+    </main>
 
-                .main-text {
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
-                    color: #2D2D2D;
-                    
-                    /* Initial Size */
-                    font-size: 6.2vw; 
-                    
-                    line-height: 1.4;
-                    font-style: italic;
-                    text-align: center;
-                    padding: 0 2vw;
-                    width: 100%;
-                }
+    <main id="view-reader" class="container hidden">
+        <div id="reader-content">
+        </div>
+    </main>
 
-                .top-footer {
-                    position: absolute;
-                    top: -16vw; /* Higher up than verse pill */
-                    
-                    left: 0;
-                    right: 0;
-                    text-align: center;
-                    font-family: 'Rozha One', serif;
-                    font-size: 4.5vw;
-                    color: #B45309;
-                    opacity: 0.65;
-                    letter-spacing: 2px;
-                }
-            </style>
-            </head>
-            <body>
-                <div class="android-text-box">
-                    <div class="top-footer">gita.bhgvd.com</div>
-                    <div class="verse-pill">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
-                    
-                    <div class="main-text" id="android-txt">
-                        ${textContent}
+    <main id="view-install" class="container hidden">
+        <div style="text-align: center; max-width: 500px;">
+            <h2
+                style="font-family:var(--font-english); font-weight: 700; font-size:3rem; margin-bottom:0.5rem; color: var(--accent-gold); font-style: italic;">
+                Keep The Wisdom With You
+            </h2>
+            <p
+                style="font-family: var(--font-english); font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; font-style:italic; color: var(--text-secondary);">
+                Add this website to your home screen to access the Wisdom instantly.
+            </p>
+
+            <div id="instructions-desktop-safari" class="hidden"
+                style="text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft); margin-bottom: 2rem;">
+                <h3
+                    style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                    Steps for Safari:</h3>
+                <ol
+                    style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                    <li>Click “<strong>File</strong>” in the menu bar (top left).</li>
+                    <li>Select “<strong>Add to Dock...</strong>”</li>
+                    <li>Click “<strong>Add</strong>” and you’re done!</li>
+                </ol>
+            </div>
+
+            <div id="instructions-desktop-chrome" class="hidden"
+                style="text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                <h3
+                    style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                    Steps for Chromium:</h3>
+                <ol
+                    style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                    <li>Look for the <strong>Install icon</strong> <svg viewBox="0 0 24 24" width="16" height="16"
+                            style="vertical-align: middle; opacity: 0.7;">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor" />
+                        </svg> in the address bar (far right).</li>
+                    <li>Click “<strong>Install</strong>.”</li>
+                    <li>The app will open in its own window!</li>
+                </ol>
+            </div>
+
+            <div id="instructions-ios" class="hidden">
+                <div
+                    style="text-align: left; background: white; padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3
+                        style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                        For iPhone:</h3>
+                    <h4
+                        style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                        There is also a do-it-along video at the end.
+                    </h4>
+                    <ol
+                        style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                        <li>“<strong>⋯</strong>” button below.</li>
+                        <li>“<strong>Share</strong>” button.</li>
+                        <li>Scroll down and select “<strong>Add to Home Screen</strong>.”</li>
+                        <li>“<strong>Add</strong>” (top right) and you’re done!</li>
+                    </ol>
+                </div>
+
+                <div style="max-width: 315px; margin: 0 auto;">
+                    <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden;">
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                            src="https://www.youtube.com/embed/SjGkMrB_dDo?si=syget78GnJl7ovgi"
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
-            </body>
-            </html>
-        `;
-        
+            </div>
 
-        await page.setContent(htmlAndroid);
-        await page.evaluateHandle('document.fonts.ready');
+            <div id="instructions-android" class="hidden"
+                style="text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                <h3
+                    style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                    For Android:</h3>
+                <ol
+                    style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                    <li>“<strong>⋮</strong>” icon button (top right).</li>
+                    <li>“<strong>Add to Home Screen</strong>” or “<strong>Install App</strong>.”</li>
+                    <li>“<strong>Install</strong>” and you’re done!</li>
+                </ol>
+            </div>
+            <div id="install-success" class="hidden"
+                style="margin-top: 2rem; color: green; font-family: var(--font-english); font-style: italic; font-weight: 600;">
+                You have bookmarked!
+            </div>
+        </div>
+    </main>
 
-        // Android Smart Shrink
-        await page.evaluate(() => {
-            const container = document.getElementById('android-txt');
-            const box = document.querySelector('.android-text-box');
-            
-            let fontSize = 6.2; 
-            const minSize = 3.0;
-            const step = 0.1;
-            
-            // Limit height to 75% of screen to avoid clock/nav bars
-            const maxHeight = window.innerHeight * 0.75;
+    <main id="view-wallpaper" class="container hidden">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+            <h2
+                style="font-family:var(--font-english); font-weight: 700; font-size:3rem; margin-bottom:0.5rem; color:var(--accent-gold); font-style: italic;">
+                Daily Wallpaper
+            </h2>
+            <p
+                style="font-family: var(--font-english); font-size: 1.2rem; line-height: 1.6; margin-bottom: 2rem; font-style:italic; color: var(--text-secondary);">
+                Wake up to wisdom on your lock screen.
+            </p>
 
-            // Check overflow relative to screen safety or container width
-            const isOverflowing = () => {
-                return (box.offsetHeight > maxHeight) || (container.scrollWidth > container.clientWidth);
-            };
+            <div id="wallpaper-windows" class="hidden">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-style: italic;">
+                        For Windows
+                    </h3>
 
-            while (isOverflowing() && fontSize > minSize) {
-                fontSize -= step;
-                container.style.fontSize = fontSize + 'vw';
-            }
-        });
+                    <div>
+                        <label for="win-ratio" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Aspect Ratio
+                        </label>
+                        <select id="win-ratio" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Ratios</option>
+                            <option value="16x9">16:9</option>
+                            <option value="16x10">16:10</option>
+                        </select>
+                    </div>
 
-        // Screenshot (20:9 Aspect Ratio)
-        await page.setViewport({ width: 1440, height: 3200, deviceScaleFactor: 1 });
-        const androidFile = `${outputDir}/${lang.fileChar}and20x9.png`;
-        await page.screenshot({ path: androidFile });
-        console.log(`Generated Android: ${androidFile}`);
+                    <div>
+                        <label for="win-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Language
+                        </label>
+                        <select id="win-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Languages</option>
+                            <option value="e">English</option>
+                            <option value="h">Hindi</option>
+                            <option value="g">Gujarati</option>
+                        </select>
+                    </div>
 
-        await page.setContent(htmlDesktop);
-        await page.evaluateHandle('document.fonts.ready');
+                    <div id="win-download-area" class="hidden" style="margin-top: 1rem; animation: fadeIn 0.5s ease;">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <a id="btn-win-download" href="#" download
+                               style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-style:italic; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
+                                Download Installer
+                            </a>
+                        </div>
+                        
+                        <ol style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                            <li><strong>Right-click</strong> the zip & select <strong>Extract All</strong>.</li>
+                            <li>Double-click <strong>install.bat</strong>.</li>
+                        </ol>
+                    </div>
 
-        // 3. Loop Desktop Devices
-        for (const device of desktopDevices) {
-            await page.setViewport({ 
-                width: device.width, 
-                height: device.height, 
-                deviceScaleFactor: 1 
-            });
+                </div>
+            </div>
 
-            // Name format: epc16x9.png
-            const fileName = `${outputDir}/${lang.fileChar}${device.suffix}.png`;
-            await page.screenshot({ path: fileName });
-            console.log(`Generated Desktop: ${fileName}`);
+            <div id="wallpaper-mac" class="hidden">
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
+                        For Mac
+                    </h3>
+                    <p style="font-family: var(--font-english); font-style: italic; color: #666;">
+                        Coming Soon.
+                    </p>
+                </div>
+            </div>
+
+            <div id="wallpaper-android" class="hidden">
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
+                        For Android
+                    </h3>
+                    <p style="font-family: var(--font-english); font-style: italic; color: #666;">
+                        Coming Soon.
+                    </p>
+                </div>
+            </div>
+
+            <div id="wallpaper-ios" class="hidden">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
+
+                    <div>
+                        <label for="wp-device"
+                            style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Your Device
+                        </label>
+                        <select id="wp-device"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>iPhone Models</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="wp-lang"
+                            style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Language
+                        </label>
+                        <select id="wp-lang"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Languages</option>
+                            <option value="e">English</option>
+                            <option value="h">Hindi</option>
+                            <option value="g">Gujarati</option>
+                        </select>
+                    </div>
+
+                    <div id="shortcut-container" class="hidden" style="margin-top: 2rem; animation: fadeIn 0.5s ease;">
+
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <a id="btn-get-shortcut" href="#" target="_blank"
+                                style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2); font-style:italic;">
+                                Shortcut Link
+                            </a>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 2rem 0;">
+
+                        <div
+                            style="margin-bottom: 2rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                            <h3
+                                style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                                Steps for iOS:
+                            </h3>
+                            <h4
+                                style="font-family: var(--font-english); margin-bottom: 1rem; font-style:italic; color: var(--text-primary);">
+                                There is also a do-it-along video at the end.
+                            </h4>
+                            <ol
+                                style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+                                <li>“<strong>Shortcut Link</strong>” button above.</li>
+                                <li>“<strong>+ Add Shortcut</strong>.”</li>
+                                <li>“<strong>Automation</strong>.”</li>
+                                <li>“<strong>New Automation</strong>” button or the “<strong>+</strong>”
+                                    button (top right).</li>
+                                <li>“<strong>Time of Day</strong>.”</li>
+                                <li>Set the time to whenever you’re likely to be connected to the internet (for example,
+                                    12:00 pm).</li>
+                                <li>Under “<strong>Repeat</strong>” select “<strong>Daily</strong>.”</li>
+                                <li>“<strong>Run Immediately</strong>” (keep the “<strong>Notify When Run</strong>”
+                                    turned off).</li>
+                                <li>“<strong>Next</strong>.”</li>
+                                <li>“<strong id="shortcut-step-name">Shortcut Name</strong>” under
+                                    “<strong>My Shortcuts</strong>” and you’re done!</li>
+                                <li>“<strong>Allow</strong>” whenever a message pops up requesting to fetch from the
+                                    site.</li>
+                            </ol>
+                        </div>
+
+                        <div style="max-width: 315px; margin: 0 auto;">
+                            <div style="position: relative; padding-bottom: 177.78%; height: 0; overflow: hidden;">
+                                <iframe
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                                    src="https://www.youtube.com/embed/u0B3H_QXIAI?si=lYqMjA0yClhIqIn6"
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="view-about" class="container hidden">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto; padding-top: 10vh;">
+            <h2
+                style="font-family:var(--font-english); font-weight: 700; font-size:3rem; margin-bottom:1rem; color:var(--accent-gold); font-style: italic;">
+                About
+            </h2>
+
+            <p
+                style="font-family: var(--font-english); font-size: 1.3rem; line-height: 1.6; margin-bottom: 3rem; font-style:italic; color: var(--text-secondary);">
+                A digital sanctuary for the timeless wisdom of the Bhagavad Gītā. <br>
+                Designed to be accessible, aesthetic, and a daily companion on your journey.
+            </p>
+
+            <div style="display: flex; gap: 1.5rem; justify-content: center; align-items: center;">
+
+                <a href="https://youtube.com/@BhgvdGītā" target="_blank" class="share-button icon-only"
+                    aria-label="GitHub">
+                    <i class="ri-youtube-line" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="https://x.com/AryammanDevaani" target="_blank" class="share-button icon-only"
+                    aria-label="Twitter">
+                    <i class="ri-twitter-x-line" style="font-size: 1.5rem;"></i>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
         }
+    </script>
 
-        await page.setContent(htmlContent);
-        await page.evaluateHandle('document.fonts.ready');
+    <footer>
+        <button id="btn-about" class="nav-link" style="font-size: 0.9rem; opacity: 0.8;">About</button>
+    </footer>
 
-        // --- SMART SHRINK LOGIC ---
-        await page.evaluate(() => {
-            const container = document.getElementById('translation-text');
-            
-            // 1. Match this to your CSS default (6.2vw)
-            let fontSize = 6.2; 
-            const minSize = 3.0; 
-            const step = 0.1;
+</body>
 
-            // 2. Check if it is overflowing at the default size
-            if (container.scrollHeight > container.clientHeight || 
-                container.scrollWidth > container.clientWidth) {
-                
-                // 3. It IS overflowing, so start shrinking
-                while ( 
-                    (container.scrollHeight > container.clientHeight || 
-                     container.scrollWidth > container.clientWidth) && 
-                    fontSize > minSize 
-                ) {
-                    fontSize -= step;
-                    container.style.fontSize = fontSize + 'vw';
-                }
-            }
-        });
-        // --- END SHRINK LOGIC ---
-
-        // 5. Loop through ALL devices
-        for (const device of devices) {
-            await page.setViewport({ 
-                width: device.width, 
-                height: device.height, 
-                deviceScaleFactor: 1 
-            });
-
-            const fileName = `${outputDir}/${lang.fileChar}apple${device.suffix}.png`;
-            await page.screenshot({ path: fileName });
-            console.log(`Generated ${fileName}`);
-        }
-    }
-
-    await page.close();
-    await browser.close();
-}
-
-generateWallpapers();
+</html>
