@@ -316,6 +316,37 @@ async function generateWallpapers() {
         await page.setContent(htmlDesktop);
         await page.evaluateHandle('document.fonts.ready');
 
+        await page.evaluate(() => {
+            const container = document.querySelector('.desktop-container');
+            const sanskrit = document.querySelector('.sanskrit-text');
+            const translation = document.querySelector('.translation-text');
+            const simple = document.querySelector('.simple-text'); // Might be null
+
+            // Initial sizes matching your CSS (in vh)
+            let sizes = {
+                sanskrit: 4.0,
+                trans: 3.0,
+                simple: 2.5
+            };
+
+            // Safety Cap: Ensure content doesn't exceed 85% of screen height
+            // This leaves room for the footer and top margins
+            const maxAllowedHeight = window.innerHeight * 0.85;
+
+            const isOverflowing = () => container.offsetHeight > maxAllowedHeight;
+
+            // Shrink loop: Reduce sizes until it fits or hits a minimum safety size
+            while (isOverflowing() && sizes.sanskrit > 2.0) {
+                // Reduce all elements proportionally by 0.1vh step
+                sizes.sanskrit -= 0.1;
+                sizes.trans -= 0.1;
+                sizes.simple -= 0.1;
+
+                if (sanskrit) sanskrit.style.fontSize = sizes.sanskrit + 'vh';
+                if (translation) translation.style.fontSize = sizes.trans + 'vh';
+                if (simple) simple.style.fontSize = sizes.simple + 'vh';
+            }
+        });
         // 3. Loop Desktop Devices
         for (const device of desktopDevices) {
             await page.setViewport({ 
