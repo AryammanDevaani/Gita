@@ -4,9 +4,14 @@ let warInterval = null;
 let stopWarRequested = false;
 let chapterObserver = null;
 let chaptersObserver = null;
+// ... existing variables ...
+let deferredPrompt = null; // To store the install event
+let secretKeySequence = []; // To track keystrokes
+
 
 const MY_WEBSITE_URL = "gita.bhgvd.com";
 const APP_TITLE = "Śrīmad Bhagavad Gītā";
+const SECRET_CODE = "bhgvd";
 
 const chapterTitlesEnglish = [
     "The Distress of Arjuna", "The Path of Knowledge", "The Path of Selfless Action",
@@ -851,25 +856,50 @@ const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
 const iosInstructions = document.getElementById('instructions-ios');
 const androidInstructions = document.getElementById('instructions-android');
 const successMsg = document.getElementById('install-success');
+const desktopSafariInstructions = document.getElementById('instructions-desktop-safari');
+const desktopChromeInstructions = document.getElementById('instructions-desktop-chrome');
 
 function updateInstallView() {
+    // 1. Hide everything initially
     if (iosInstructions) iosInstructions.classList.add('hidden');
     if (androidInstructions) androidInstructions.classList.add('hidden');
+    if (desktopSafariInstructions) desktopSafariInstructions.classList.add('hidden');
+    if (desktopChromeInstructions) desktopChromeInstructions.classList.add('hidden');
     if (successMsg) successMsg.classList.add('hidden');
 
+    // 2. Check logic
     if (isStandalone) {
         if (successMsg) successMsg.classList.remove('hidden');
-    } else if (isIos) {
-        if (iosInstructions) iosInstructions.classList.remove('hidden');
+    } else if (isMobileDevice) {
+        // Mobile Logic
+        if (isIos) {
+            if (iosInstructions) iosInstructions.classList.remove('hidden');
+        } else {
+            if (androidInstructions) androidInstructions.classList.remove('hidden');
+        }
     } else {
-        if (androidInstructions) androidInstructions.classList.remove('hidden');
+        // Desktop Logic
+        const ua = navigator.userAgent;
+        // Detect Safari: It has "Safari" in UA but NOT "Chrome" (Chrome puts 'Safari' in its UA too)
+        const isDesktopSafari = /Safari/i.test(ua) && !/Chrome/i.test(ua);
+
+        if (isDesktopSafari) {
+            if (desktopSafariInstructions) desktopSafariInstructions.classList.remove('hidden');
+        } else {
+            // Default to Chrome instructions for Chrome, Edge, Brave, Firefox, etc.
+            if (desktopChromeInstructions) desktopChromeInstructions.classList.remove('hidden');
+        }
     }
 }
 
 const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 if (navInstallBtn) {
-    if (isMobileDevice && !isStandalone) {
+    // OLD LOGIC:
+    // if (isMobileDevice && !isStandalone) { ... }
+
+    // NEW LOGIC: Show on both Mobile and Desktop if not already installed
+    if (!isStandalone) {
         navInstallBtn.style.display = 'block';
     } else {
         navInstallBtn.style.display = 'none';
@@ -1103,7 +1133,7 @@ function initWallpaperView() {
                 langSelect.appendChild(opt);
             }
         }
-        
+
         // Reset selected value to default
         langSelect.value = "";
         // Hide the button since language selection was reset
@@ -1119,7 +1149,7 @@ function initWallpaperView() {
         if (devVal && langVal) {
             // Check if it's currently hidden to know if we should trigger the animation
             const isFirstReveal = shortcutContainer.classList.contains('hidden');
-            
+
             shortcutContainer.classList.remove('hidden');
 
             const shortcutName = `${langVal}Apple${devVal}`;
@@ -1156,3 +1186,67 @@ function initWallpaperView() {
         langSelect.onchange = checkSelections;
     }
 }
+
+// 1. Capture the Install Event (Chrome/Edge/Android)
+// This event fires automatically if the app is installable.
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the default mini-infobar from appearing immediately
+    e.preventDefault();
+    // Stash the event so we can trigger it later with the secret code
+    deferredPrompt = e;
+});
+
+// 2. Secret Code Listener
+document.addEventListener('keydown', async (e) => {
+    // Only run this logic if we are currently on the "Install" view
+    const installView = document.getElementById('view-install');
+    if (!installView || installView.classList.contains('hidden')) return;
+
+    // We only care about single letters (ignore Shift, Ctrl, etc.)
+    if (e.key.length === 1) {
+        secretKeySequence.push(e.key.toLowerCase());
+
+        // Keep the history only as long as the secret code
+        if (secretKeySequence.length > SECRET_CODE.length) {
+            secretKeySequence.shift();
+        }
+
+        // Check if the typed sequence matches "bhgvd"
+        if (secretKeySequence.join('') === SECRET_CODE) {
+            console.log("Secret Code Activated!");
+
+            // Reset sequence so it doesn't fire multiple times
+            secretKeySequence = [];
+
+            if (deferredPrompt) {
+                // SCENARIO A: Browser supports programmatic install (Chrome/Edge/Android)
+                deferredPrompt.prompt();
+
+                // Log the result (optional)
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Install prompt outcome: ${outcome}`);
+
+                // The prompt can only be used once per page load
+                deferredPrompt = null;
+            } else {
+                // SCENARIO B: Safari / Firefox / Already Installed
+                // We cannot force an install prompt here. 
+                // Fallback: Trigger your existing "War" animation as a reward.
+
+                const loader = document.getElementById('war-loader');
+                if (loader) {
+                    // Temporarily restart the war loop for 3 seconds
+                    stopWarRequested = false;
+                    startWarLoop();
+
+                    // Show a toast or alert (Optional)
+                    // alert("You found the secret! Use the browser menu to install.");
+
+                    setTimeout(() => {
+                        stopWarRequested = true;
+                    }, 3000);
+                }
+            }
+        }
+    }
+});
