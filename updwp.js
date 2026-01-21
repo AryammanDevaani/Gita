@@ -55,6 +55,11 @@ const devices = [
     { suffix: '11',   width: 828,  height: 1792 }
 ];
 
+const desktopDevices = [
+    { suffix: 'pc16x9',  width: 3840, height: 2160 }, // 4K (Windows Standard)
+    { suffix: 'pc16x10', width: 3456, height: 2234 }  // MacBook Pro 16
+];
+
 async function generateWallpapers() {
     // 1. Setup Output Directory
     const outputDir = 'wallpapers';
@@ -199,6 +204,131 @@ async function generateWallpapers() {
             </body>
             </html>
         `;
+
+        // ... (Your existing Mobile logic ends here) ...
+
+        // --- PART 2: DESKTOP WALLPAPERS (Sanskrit + Translation + Simple) ---
+        
+        // 1. Prepare Content (Verify 'verse.text' matches your JSON key for Sanskrit)
+        const sanskritText = verse.sanskrit; 
+        const translationText = verse[lang.fallback];
+        const simpleText = verse[lang.simple] ? verse[lang.simple] : ''; // Handle missing simple text
+
+        // 2. Desktop HTML Template
+        const htmlDesktop = `
+            <!DOCTYPE html>
+            <html lang="${lang.code}">
+            <head>
+            <style>
+                /* Import Fonts */
+                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
+                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
+                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
+                @font-face { font-family: 'Arya'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
+                @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
+                
+                body {
+                    background-color: #5d4141;
+                    margin: 0;
+                    height: 100vh;
+                    width: 100vw;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                /* Restrict width to 45vw for "Dead Center" look */
+                .desktop-container {
+                    width: 45vw;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 3vh; /* Space between elements */
+                }
+
+                .verse-ref {
+                    font-family: 'Playfair Display', serif;
+                    background-color: #FFF7ED;
+                    color: #B45309;
+                    padding: 0.8vh 2vh;
+                    border-radius: 100px;
+                    font-size: 1.5vh; /* vh units for scaling */
+                    font-weight: 700;
+                    font-style: italic;
+                    border: 2px solid rgba(180, 83, 9, 0.1);
+                    letter-spacing: 2px;
+                    margin-bottom: 2vh;
+                }
+
+                .sanskrit-text {
+                    font-family: 'Arya', sans-serif;
+                    font-weight: 700;
+                    color: #F9F7F2; /* Matches website accent */
+                    font-size: 4vh;
+                    line-height: 1.5;
+                }
+
+                .translation-text {
+                    font-family: 'Playfair Display', serif;
+                    color: #F9F7F2;
+                    font-size: 3vh;
+                    line-height: 1.4;
+                    font-style: italic;
+                }
+
+                .simple-text {
+                    font-family: 'Playfair Display', serif;
+                    color: #F9F7F2;
+                    font-size: 2.5vh; /* Slightly smaller */
+                    line-height: 1.4;
+                    margin-top: 1vh;
+                    font-style: italic;
+                }
+
+                .footer {
+                    font-family: 'Rozha One', serif;
+                    font-size: 2vh;
+                    color: #F9F7F2;
+                    opacity: 0.65;
+                    letter-spacing: 2px;
+                    margin-top: 5vh;
+                }
+            </style>
+            </head>
+            <body>
+                <div class="desktop-container">
+                    <div class="verse-ref">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
+                    
+                    <div class="sanskrit-text">${sanskritText}</div>
+                    
+                    <div class="translation-text">${translationText}</div>
+                    
+                    ${simpleText ? `<div class="simple-text">${simpleText}</div>` : ''}
+                    
+                    <div class="footer">gita.bhgvd.com</div>
+                </div>
+            </body>
+            </html>
+        `;
+
+        await page.setContent(htmlDesktop);
+        await page.evaluateHandle('document.fonts.ready');
+
+        // 3. Loop Desktop Devices
+        for (const device of desktopDevices) {
+            await page.setViewport({ 
+                width: device.width, 
+                height: device.height, 
+                deviceScaleFactor: 1 
+            });
+
+            // Name format: epc16x9.png
+            const fileName = `${outputDir}/${lang.fileChar}${device.suffix}.png`;
+            await page.screenshot({ path: fileName });
+            console.log(`Generated Desktop: ${fileName}`);
+        }
 
         await page.setContent(htmlContent);
         await page.evaluateHandle('document.fonts.ready');
