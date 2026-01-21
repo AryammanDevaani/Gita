@@ -26,7 +26,7 @@ jobs:
       run: npm install puppeteer
 
     - name: Generate Wallpaper
-      run: node update-wallpaper.js
+      run: node updwp.js
 
     # In .github/workflows/update-wallpaper.yml
 
