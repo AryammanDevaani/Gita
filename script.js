@@ -1187,39 +1187,45 @@ function initWallpaperView() {
     }
 }
 
-// 1. Capture the Install Event (Chrome/Edge/Android)
+// 1. Capture the Install Event (Required for Chrome/Edge/Android)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
 });
 
-// 2. Secret Code Listener
+// 2. Secret Code Listener (Attempts to run unconditionally)
 document.addEventListener('keydown', async (e) => {
-    // Only run on the "Install" view
+    // Check if we are on the Install page
     const installView = document.getElementById('view-install');
     if (!installView || installView.classList.contains('hidden')) return;
 
     if (e.key.length === 1) {
         secretKeySequence.push(e.key.toLowerCase());
 
+        // Keep sequence length correct
         if (secretKeySequence.length > SECRET_CODE.length) {
             secretKeySequence.shift();
         }
 
+        // Check Match
         if (secretKeySequence.join('') === SECRET_CODE) {
-            console.log("Secret Code Activated!");
+            console.log("Secret Code Activated! Attempting to install...");
             secretKeySequence = []; // Reset sequence
 
-            // Only trigger if the browser explicitly supports it
-            if (deferredPrompt) {
+            try {
+                // RUNS NO MATTER WHAT
+                // We attempt to trigger the prompt immediately.
                 deferredPrompt.prompt();
-                
+
                 const { outcome } = await deferredPrompt.userChoice;
                 console.log(`Install prompt outcome: ${outcome}`);
                 
                 deferredPrompt = null;
-            } 
-            // If null, we do nothing.
+            } catch (err) {
+                // If deferredPrompt was null (VS Code/Safari), this block runs silently.
+                // It prevents the site from crashing but shows nothing on screen.
+                console.log("Install prompt failed or unavailable:", err);
+            }
         }
     }
 });
