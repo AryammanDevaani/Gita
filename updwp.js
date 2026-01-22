@@ -13,10 +13,10 @@ const languages = [
 ];
 
 const ipadDevices = [
-    { suffix: 'ip13',   width: 2064, height: 2752 }, // iPad Pro 13" (M4) / 12.9"
-    { suffix: 'ip11',   width: 1668, height: 2420 }, // iPad Pro 11" / Air
+    { suffix: 'ip13', width: 2064, height: 2752 }, // iPad Pro 13" (M4) / 12.9"
+    { suffix: 'ip11', width: 1668, height: 2420 }, // iPad Pro 11" / Air
     { suffix: 'ipmini', width: 1488, height: 2266 },  // iPad Mini
-    { suffix: 'ip10',   width: 1640, height: 2360 }, // iPad 10th Gen
+    { suffix: 'ip10', width: 1640, height: 2360 }, // iPad 10th Gen
 ];
 
 const androidTablets = [
@@ -26,55 +26,55 @@ const androidTablets = [
 // Config for Devices (Verified Jan 2026)
 const devices = [
     // --- iPhone 17 Series ---
-    { suffix: '17pm',  width: 1320, height: 2868 }, 
+    { suffix: '17pm', width: 1320, height: 2868 },
     { suffix: '17air', width: 1260, height: 2736 },
-    { suffix: '17p',   width: 1206, height: 2622 }, 
-    { suffix: '17',    width: 1206, height: 2622 }, 
+    { suffix: '17p', width: 1206, height: 2622 },
+    { suffix: '17', width: 1206, height: 2622 },
 
     // --- iPhone 16 Series ---
-    { suffix: '16pm', width: 1320, height: 2868 }, 
-    { suffix: '16pl', width: 1290, height: 2796 }, 
-    { suffix: '16p',  width: 1206, height: 2622 }, 
-    { suffix: '16',   width: 1179, height: 2556 },
-    { suffix: '16e',  width: 1170, height: 2532 },
+    { suffix: '16pm', width: 1320, height: 2868 },
+    { suffix: '16pl', width: 1290, height: 2796 },
+    { suffix: '16p', width: 1206, height: 2622 },
+    { suffix: '16', width: 1179, height: 2556 },
+    { suffix: '16e', width: 1170, height: 2532 },
 
     // --- iPhone 15 Series ---
     { suffix: '15pm', width: 1290, height: 2796 },
     { suffix: '15pl', width: 1290, height: 2796 },
-    { suffix: '15p',  width: 1179, height: 2556 },
-    { suffix: '15',   width: 1179, height: 2556 }, 
+    { suffix: '15p', width: 1179, height: 2556 },
+    { suffix: '15', width: 1179, height: 2556 },
 
     // --- iPhone 14 Series ---
     { suffix: '14pm', width: 1290, height: 2796 },
     { suffix: '14pl', width: 1284, height: 2778 },
-    { suffix: '14p',  width: 1179, height: 2556 },
-    { suffix: '14',   width: 1170, height: 2532 },
+    { suffix: '14p', width: 1179, height: 2556 },
+    { suffix: '14', width: 1170, height: 2532 },
 
     // --- iPhone 13 Series ---
     { suffix: '13pm', width: 1284, height: 2778 },
-    { suffix: '13p',  width: 1170, height: 2532 },
-    { suffix: '13',   width: 1170, height: 2532 },
+    { suffix: '13p', width: 1170, height: 2532 },
+    { suffix: '13', width: 1170, height: 2532 },
 
     // --- iPhone 12 Series ---
     { suffix: '12pm', width: 1284, height: 2778 },
-    { suffix: '12p',  width: 1170, height: 2532 },
-    { suffix: '12',   width: 1170, height: 2532 },
+    { suffix: '12p', width: 1170, height: 2532 },
+    { suffix: '12', width: 1170, height: 2532 },
 
     // --- iPhone 11 Series ---
     { suffix: '11pm', width: 1242, height: 2688 },
-    { suffix: '11p',  width: 1125, height: 2436 },
-    { suffix: '11',   width: 828,  height: 1792 }
+    { suffix: '11p', width: 1125, height: 2436 },
+    { suffix: '11', width: 828, height: 1792 }
 ];
 
 const desktopDevices = [
-    { suffix: 'pc16x9',  width: 3840, height: 2160 }, // 4K (Windows Standard)
+    { suffix: 'pc16x9', width: 3840, height: 2160 }, // 4K (Windows Standard)
     { suffix: 'pc16x10', width: 3456, height: 2234 }  // MacBook Pro 16
 ];
 
 async function generateWallpapers() {
     // 1. Setup Output Directory
     const outputDir = 'wallpapers';
-    if (!fs.existsSync(outputDir)){
+    if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir);
     }
 
@@ -87,12 +87,12 @@ async function generateWallpapers() {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-    
+
     const page = await browser.newPage();
 
     // 4. Loop through languages
     for (const lang of languages) {
-        
+
         // Determine text content
         const textContent = verse[lang.simple] || verse[lang.fallback];
 
@@ -219,9 +219,9 @@ async function generateWallpapers() {
         // ... (Your existing Mobile logic ends here) ...
 
         // --- PART 2: DESKTOP WALLPAPERS (Sanskrit + Translation + Simple) ---
-        
+
         // 1. Prepare Content (Verify 'verse.text' matches your JSON key for Sanskrit)
-        const sanskritText = verse.sanskrit; 
+        const sanskritText = verse.sanskrit;
         const translationText = verse[lang.fallback];
         const simpleText = verse[lang.simple] ? verse[lang.simple] : ''; // Handle missing simple text
 
@@ -326,9 +326,9 @@ async function generateWallpapers() {
             </html>
         `;
 
-        
+
         // [INSERT START] --- ANDROID UNIVERSAL (20:9 Centered + iPhone Style) ---
-        
+
         // 1. Android Specific Template 
         // Reuses 'textContent' (Simple/Translation) like iPhone, but centers it perfectly for 20:9
         const htmlAndroid = `
@@ -437,23 +437,23 @@ async function generateWallpapers() {
             </body>
             </html>
         `;
-        
+
         // ... (Existing Android Phone generation code ends here) ...
 
         // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
         // Uses the Mobile Light Theme (#F9F7F2) but with constrained width like Desktop
-        
+
         // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
         // Uses the Mobile Light Theme (#F9F7F2) with footer at the TOP
-        
+
         // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
         // Uses Mobile Light Theme. Footer is moved closer to the pill (-11vh vs -5vh).
-        
+
         // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
         // UPDATED: Matches Desktop Style (Dark + Sanskrit) but positioned lower
-        
+
         // 1. Prepare Content (Copied from Desktop logic)
-        const tabSanskrit = verse.sanskrit; 
+        const tabSanskrit = verse.sanskrit;
         const tabTranslation = verse[lang.fallback];
         const tabSimple = verse[lang.simple] ? verse[lang.simple] : '';
 
@@ -479,20 +479,22 @@ async function generateWallpapers() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: center;
+                    justify-content: flex-start; 
+    padding-top: 45vh; /* Adjust this to raise/lower the fixed starting point */
+    overflow: hidden;
                 }
 
                 .tablet-container {
                     /* Width increased to 70vw (vs Desktop 45vw) because tablets are narrower */
                     width: 70vw; 
                     text-align: center;
-                    display: flex;
+                    display: flex;  
                     flex-direction: column;
                     align-items: center;
                     gap: 3vh;
+                    position: relative;
 
-                    /* POSITION ADJUSTMENT: Moves the block lower by 12% of screen height */
-                    transform: translateY(5vh); 
+                     
                 }
 
                 .verse-ref {
@@ -528,14 +530,19 @@ async function generateWallpapers() {
 
 
                 .footer {
-                position: absolute;
-                    top: -15vw;
+                    position: absolute;
+                    /* CHANGE: Pin to top instead of bottom */
+                    /* Negative value pulls it UP above the Verse Pill */
+                    top: -5vh; 
+                    bottom: auto; /* Ensure bottom is unset */
+                    
                     font-family: 'Rozha One', serif;
                     font-size: 1.5vh;
                     color: #F9F7F2;
                     opacity: 0.65;
                     letter-spacing: 2px;
-                    margin-top: 5vh;
+                    width: 100%;
+                    text-align: center;
                 }
             </style>
             </head>
@@ -581,11 +588,11 @@ async function generateWallpapers() {
         await page.evaluate(() => {
             const container = document.getElementById('android-txt');
             const box = document.querySelector('.android-text-box');
-            
-            let fontSize = 6.2; 
+
+            let fontSize = 6.2;
             const minSize = 3.0;
             const step = 0.1;
-            
+
             // Limit height to 75% of screen to avoid clock/nav bars
             const maxHeight = window.innerHeight * 0.75;
 
@@ -611,10 +618,10 @@ async function generateWallpapers() {
 
         // 3. Loop Desktop Devices
         for (const device of desktopDevices) {
-            await page.setViewport({ 
-                width: device.width, 
-                height: device.height, 
-                deviceScaleFactor: 1 
+            await page.setViewport({
+                width: device.width,
+                height: device.height,
+                deviceScaleFactor: 1
             });
 
             // Name format: epc16x9.png
@@ -629,21 +636,21 @@ async function generateWallpapers() {
         // --- SMART SHRINK LOGIC ---
         await page.evaluate(() => {
             const container = document.getElementById('translation-text');
-            
+
             // 1. Match this to your CSS default (6.2vw)
-            let fontSize = 6.2; 
-            const minSize = 3.0; 
+            let fontSize = 6.2;
+            const minSize = 3.0;
             const step = 0.1;
 
             // 2. Check if it is overflowing at the default size
-            if (container.scrollHeight > container.clientHeight || 
+            if (container.scrollHeight > container.clientHeight ||
                 container.scrollWidth > container.clientWidth) {
-                
+
                 // 3. It IS overflowing, so start shrinking
-                while ( 
-                    (container.scrollHeight > container.clientHeight || 
-                     container.scrollWidth > container.clientWidth) && 
-                    fontSize > minSize 
+                while (
+                    (container.scrollHeight > container.clientHeight ||
+                        container.scrollWidth > container.clientWidth) &&
+                    fontSize > minSize
                 ) {
                     fontSize -= step;
                     container.style.fontSize = fontSize + 'vw';
@@ -654,10 +661,10 @@ async function generateWallpapers() {
 
         // 5. Loop through ALL devices
         for (const device of devices) {
-            await page.setViewport({ 
-                width: device.width, 
-                height: device.height, 
-                deviceScaleFactor: 1 
+            await page.setViewport({
+                width: device.width,
+                height: device.height,
+                deviceScaleFactor: 1
             });
 
             const fileName = `${outputDir}/${lang.fileChar}apple${device.suffix}.png`;
