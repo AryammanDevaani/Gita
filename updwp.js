@@ -449,20 +449,30 @@ async function generateWallpapers() {
         // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
         // Uses Mobile Light Theme. Footer is moved closer to the pill (-11vh vs -5vh).
         
+        // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
+        // UPDATED: Matches Desktop Style (Dark + Sanskrit) but positioned lower
+        
+        // 1. Prepare Content (Copied from Desktop logic)
+        const tabSanskrit = verse.sanskrit; 
+        const tabTranslation = verse[lang.fallback];
+        const tabSimple = verse[lang.simple] ? verse[lang.simple] : '';
+
         const htmlTablet = `
             <!DOCTYPE html>
             <html lang="${lang.code}">
             <head>
             <style>
+                /* Import Fonts */
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
+                @font-face { font-family: 'Arya'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
                 @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
                 @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
                 @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
                 
                 body {
-                    background-color: #F9F7F2;
+                    background-color: #5d4141; /* Desktop Dark Theme */
                     margin: 0;
                     height: 100vh;
                     width: 100vw;
@@ -472,63 +482,74 @@ async function generateWallpapers() {
                     justify-content: center;
                 }
 
-                .tablet-box {
-                    position: relative;
-                    width: 70vw; /* Elegant width for reading */
+                .tablet-container {
+                    /* Width increased to 70vw (vs Desktop 45vw) because tablets are narrower */
+                    width: 70vw; 
+                    text-align: center;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: center;
-                    text-align: center;
+                    gap: 3vh;
+
+                    /* POSITION ADJUSTMENT: Moves the block lower by 12% of screen height */
+                    transform: translateY(20vh); 
                 }
 
-                .verse-pill {
-                    position: absolute;
-                    top: -5vh; /* Floating just above the text */
-                    
+                .verse-ref {
                     font-family: 'Playfair Display', serif;
                     background-color: #FFF7ED;
                     color: #B45309;
-                    padding: 1.2vh 3vh;
+                    padding: 0.5vh 1vh;
                     border-radius: 100px;
-                    font-size: 2.2vh;
+                    font-size: 0.75vh; 
                     font-weight: 700;
                     font-style: italic;
-                    border: 3px solid rgba(180, 83, 9, 0.1);
+                    border: 2px solid rgba(180, 83, 9, 0.1);
                     letter-spacing: 2px;
-                    white-space: nowrap;
-                    box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1);
-                    z-index: 10;
+                    margin-top: 0.25vh;
                 }
 
-                .main-text {
-                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
-                    color: #2D2D2D;
-                    font-size: 5vw; 
+                .sanskrit-text {
+                    font-family: 'Arya', sans-serif;
+                    font-weight: 700;
+                    color: #F9F7F2;
+                    font-size: 2.5vh; 
                     line-height: 1.5;
-                    font-style: italic;
-                    margin-top: 3vh; /* Slight push to clear the pill visual */
                 }
 
-                .top-footer {
-                    position: absolute;
-                    top: -11vh; /* Close to the pill (Difference of 6vh) */
-                    
-                    left: 0;
-                    right: 0;
+                .translation-text {
+                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
+                    color: #F9F7F2;
+                    font-size: 2vh;
+                    line-height: 1.4;
+                    font-style: italic;
+                }
+
+
+
+                .footer {
+                position: absolute;
+                    top: -15vw;
                     font-family: 'Rozha One', serif;
-                    font-size: 3vh;
-                    color: #B45309;
+                    font-size: 1.5vh;
+                    color: #F9F7F2;
                     opacity: 0.65;
                     letter-spacing: 2px;
+                    margin-top: 5vh;
                 }
             </style>
             </head>
             <body>
-                <div class="tablet-box">
-                    <div class="top-footer">gita.bhgvd.com</div>
-                    <div class="verse-pill">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
-                    <div class="main-text">${textContent}</div>
+                <div class="tablet-container">
+                    <div class="verse-ref">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
+                    
+                    <div class="sanskrit-text">${tabSanskrit}</div>
+                    
+                    <div class="translation-text">${tabTranslation}</div>
+                    
+                    
+                    
+                    <div class="footer">gita.bhgvd.com</div>
                 </div>
             </body>
             </html>
@@ -553,7 +574,6 @@ async function generateWallpapers() {
             console.log(`Generated Android Tab: ${fileName}`);
         }
         // [INSERT END]
-
         await page.setContent(htmlAndroid);
         await page.evaluateHandle('document.fonts.ready');
 
@@ -652,3 +672,5 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
+
+
