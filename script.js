@@ -55,6 +55,20 @@ const wallpaperDevices = [
     { name: "iPhone 11", code: "11" }
 ];
 
+// Paste your iCloud Shortcut links here
+const macShortcutsData = {
+    "16x10": {
+        e: "https://www.icloud.com/shortcuts/7e8276f0aaab489d901f287a7a291639", // English 16:10 Shortcut Link
+        h: "https://www.icloud.com/shortcuts/35c520186a684cdd96db0f4778fb5a43", // Hindi 16:10 Shortcut Link
+        g: "https://www.icloud.com/shortcuts/4bd5093013754e52b3d122ac230cf41c"  // Gujarati 16:10 Shortcut Link
+    },
+    "16x9": {
+        e: "https://www.icloud.com/shortcuts/143f0353b03747c9a85af40b7134668b", // English 16:9 Shortcut Link
+        h: "https://www.icloud.com/shortcuts/3723c59895724968adafd19b6bd45e1d", // Hindi 16:9 Shortcut Link
+        g: "https://www.icloud.com/shortcuts/97fed97edd9c4dc1911d29d41d17ad31"  // Gujarati 16:9 Shortcut Link
+    }
+};
+
 const deviceShortcuts = {
     "17pm": {
         e: "",
@@ -1098,9 +1112,47 @@ function initWallpaperView() {
         }
     } 
     // --- LOGIC: Mac ---
+    // --- LOGIC: Mac ---
     else if (isMac) {
         if (macView) macView.classList.remove('hidden');
-    } 
+
+        const macRatioSelect = document.getElementById('mac-ratio');
+        const macLangSelect = document.getElementById('mac-lang');
+        const macContainer = document.getElementById('mac-shortcut-container');
+        const btnMacShortcut = document.getElementById('btn-mac-shortcut');
+        
+        // Auto-detect Ratio for Mac
+        if (macRatioSelect) {
+            const ratio = window.screen.width / window.screen.height;
+            // MacBook defaults (16:10 is 1.6)
+            if (ratio < 1.7) {
+                macRatioSelect.value = "16x10";
+            } else {
+                macRatioSelect.value = "16x9";
+            }
+        }
+
+        const updateMacLink = () => {
+            const ratio = macRatioSelect.value;
+            const lang = macLangSelect.value;
+
+            if (ratio && lang) {
+                const link = macShortcutsData[ratio] ? macShortcutsData[ratio][lang] : "#";
+                
+                if (link) {
+                    macContainer.classList.remove('hidden');
+                    btnMacShortcut.href = link;
+                } else {
+                    macContainer.classList.add('hidden');
+                }
+            } else {
+                macContainer.classList.add('hidden');
+            }
+        };
+
+        if (macRatioSelect) macRatioSelect.onchange = updateMacLink;
+        if (macLangSelect) macLangSelect.onchange = updateMacLink;
+    }
     // --- LOGIC: Android/Other ---
     // --- LOGIC: Android/Other ---
     // --- LOGIC: Android/Other ---
