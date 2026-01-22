@@ -273,7 +273,7 @@ async function generateWallpapers() {
                 }
 
                 .translation-text {
-                    font-family: 'Playfair Display', serif;
+                    font-family: font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #F9F7F2;
                     font-size: 3vh;
                     line-height: 1.4;
@@ -281,7 +281,7 @@ async function generateWallpapers() {
                 }
 
                 .simple-text {
-                    font-family: 'Playfair Display', serif;
+                    font-family: font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #F9F7F2;
                     font-size: 2.5vh; /* Slightly smaller */
                     line-height: 1.4;
@@ -526,3 +526,4 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
+
