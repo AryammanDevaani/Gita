@@ -672,5 +672,3 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
-
-
