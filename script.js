@@ -52,7 +52,10 @@ const wallpaperDevices = [
     { name: "iPhone 12", code: "12" },
     { name: "iPhone 11 Pro Max", code: "11pm" },
     { name: "iPhone 11 Pro", code: "11p" },
-    { name: "iPhone 11", code: "11" }
+    { name: "iPhone 11", code: "11" },
+    { name: "iPad Pro 13\" / 12.9\"", code: "ip13" },
+    { name: "iPad Pro 11\" / Air", code: "ip11" },
+    { name: "iPad Mini", code: "ipmini" }
 ];
 
 // Paste your iCloud Shortcut links here
@@ -199,7 +202,10 @@ const deviceShortcuts = {
         e: "https://www.icloud.com/shortcuts/87223bca605e43d7bce3ce3ff238cc2e",
         h: "https://www.icloud.com/shortcuts/f4f14e329aef4b78834f64c6ca1da2d2",
         g: "https://www.icloud.com/shortcuts/db7bd7aee8f1445ab77362cf35562215"
-    }
+    },
+    "ip13": { e: "", h: "", g: "" },
+    "ip11": { e: "", h: "", g: "" },
+    "ipmini": { e: "", h: "", g: "" }
 };
 
 const views = {
@@ -1161,66 +1167,84 @@ function initWallpaperView() {
             androidView.classList.remove('hidden');
             
             // Inject the Interface
-            if (!document.getElementById('and-lang')) {
-                androidView.innerHTML = `
-                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
-                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; font-style: italic;">
-                        For Android
-                    </h3>
+            // Inside initWallpaperView(), else if (androidView) ...
+                
+                if (!document.getElementById('and-lang')) {
+                    androidView.innerHTML = `
+                    <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                        <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; font-style: italic;">
+                            For Android
+                        </h3>
 
-                    <div style="text-align: left; margin-bottom: 1.5rem;">
-                        <label for="and-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
-                            Select Language
-                        </label>
-                        <select id="and-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
-                            <option value="" disabled selected>Languages</option>
-                            <option value="e">English</option>
-                            <option value="h">Hindi</option>
-                            <option value="g">Gujarati</option>
-                        </select>
-                    </div>
-
-                    <div id="and-actions" class="hidden" style="animation: fadeIn 0.5s ease; text-align: left;">
-                        
-                        <div style="background: #F9F7F2; border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(180, 83, 9, 0.1);">
-                            <h4 style="font-family: var(--font-english); font-style:italic; color: #B45309; margin: 0 0 0.5rem 0;">
-                                Automate Daily
-                            </h4>
-                            <p style="font-family: var(--font-english); font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.5;">
-                                Download the MacroDroid file to automatically update your wallpaper every morning.
-                            </p>
-                            
-                            <a id="btn-and-macro" href="#" download
-                               style="display: block; text-align: center; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem; border-radius: 8px; font-family: var(--font-english); font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity 0.2s;">
-                                DOWNLOAD MACRO
-                            </a>
+                        <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+                            <label style="flex: 1; cursor: pointer;">
+                                <input type="radio" name="and-type" value="phone" checked style="accent-color: var(--accent-gold);">
+                                <span style="font-family: var(--font-english); font-style: italic; margin-left: 0.5rem;">Phone</span>
+                            </label>
+                            <label style="flex: 1; cursor: pointer;">
+                                <input type="radio" name="and-type" value="tablet" style="accent-color: var(--accent-gold);">
+                                <span style="font-family: var(--font-english); font-style: italic; margin-left: 0.5rem;">Tablet</span>
+                            </label>
                         </div>
-                        
+
+                        <div style="text-align: left; margin-bottom: 1.5rem;">
+                            <label for="and-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                                Select Language
+                            </label>
+                            <select id="and-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                                <option value="" disabled selected>Languages</option>
+                                <option value="e">English</option>
+                                <option value="h">Hindi</option>
+                                <option value="g">Gujarati</option>
+                            </select>
+                        </div>
+
+                        <div id="and-actions" class="hidden" style="animation: fadeIn 0.5s ease; text-align: left;">
+                            <div style="background: #F9F7F2; border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(180, 83, 9, 0.1);">
+                                <h4 style="font-family: var(--font-english); font-style:italic; color: #B45309; margin: 0 0 0.5rem 0;">
+                                    Automate Daily
+                                </h4>
+                                <p style="font-family: var(--font-english); font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.5;">
+                                    Download the MacroDroid file to automatically update your wallpaper every morning.
+                                </p>
+                                <a id="btn-and-macro" href="#" download
+                                   style="display: block; text-align: center; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem; border-radius: 8px; font-family: var(--font-english); font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity 0.2s;">
+                                    DOWNLOAD MACRO
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                `;
-                
-                // Logic
-                const andLang = document.getElementById('and-lang');
-                const andActions = document.getElementById('and-actions');
-                const btnMacro = document.getElementById('btn-and-macro');
-                
-                if (andLang) {
-                    andLang.onchange = () => {
+                    `;
+
+                    // Logic for Android Updates
+                    const andLang = document.getElementById('and-lang');
+                    const andActions = document.getElementById('and-actions');
+                    const btnMacro = document.getElementById('btn-and-macro');
+                    const typeRadios = document.getElementsByName('and-type');
+                    
+                    const updateAndroidLink = () => {
                         const code = andLang.value; // "e", "h", "g"
                         if (code) {
                             andActions.classList.remove('hidden');
                             
-                            // LINK FORMAT: /eand20x9.macro
-                            btnMacro.href = `/${code}and20x9.macro`;
+                            // Check Device Type
+                            let isTablet = false;
+                            for (const radio of typeRadios) {
+                                if (radio.checked && radio.value === 'tablet') isTablet = true;
+                            }
+
+                            // LINK FORMAT: /eand20x9.macro OR /eandtab16x10.macro
+                            const suffix = isTablet ? 'andtab16x10' : 'and20x9';
+                            btnMacro.href = `/${code}${suffix}.macro`;
                             
-                            // Button Text
                             const label = andLang.options[andLang.selectedIndex].text;
                             btnMacro.textContent = `DOWNLOAD ${label.toUpperCase()} MACRO`;
                         }
                     };
+
+                    if (andLang) andLang.onchange = updateAndroidLink;
+                    typeRadios.forEach(radio => radio.onchange = updateAndroidLink);
                 }
-            }
         }
     }
 

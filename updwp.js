@@ -12,6 +12,16 @@ const languages = [
     { code: 'gu', fileChar: 'g', key: 'Gujarati', fallback: 'translationGujarati', simple: 'simpleGujarati' }
 ];
 
+const ipadDevices = [
+    { suffix: 'ip13',   width: 2064, height: 2752 }, // iPad Pro 13" (M4) / 12.9"
+    { suffix: 'ip11',   width: 1668, height: 2420 }, // iPad Pro 11" / Air
+    { suffix: 'ipmini', width: 1488, height: 2266 }  // iPad Mini
+];
+
+const androidTablets = [
+    { suffix: 'tab16x10', width: 1600, height: 2560 } // Generic High-Res Tablet
+];
+
 // Config for Devices (Verified Jan 2026)
 const devices = [
     // --- iPhone 17 Series ---
@@ -427,6 +437,121 @@ async function generateWallpapers() {
             </html>
         `;
         
+        // ... (Existing Android Phone generation code ends here) ...
+
+        // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
+        // Uses the Mobile Light Theme (#F9F7F2) but with constrained width like Desktop
+        
+        // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
+        // Uses the Mobile Light Theme (#F9F7F2) with footer at the TOP
+        
+        // [INSERT START] --- TABLET WALLPAPERS (iPad & Android Tab) ---
+        // Uses Mobile Light Theme. Footer is moved closer to the pill (-11vh vs -5vh).
+        
+        const htmlTablet = `
+            <!DOCTYPE html>
+            <html lang="${lang.code}">
+            <head>
+            <style>
+                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
+                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
+                @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
+                @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
+                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
+                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
+                
+                body {
+                    background-color: #F9F7F2;
+                    margin: 0;
+                    height: 100vh;
+                    width: 100vw;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .tablet-box {
+                    position: relative;
+                    width: 70vw; /* Elegant width for reading */
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                }
+
+                .verse-pill {
+                    position: absolute;
+                    top: -5vh; /* Floating just above the text */
+                    
+                    font-family: 'Playfair Display', serif;
+                    background-color: #FFF7ED;
+                    color: #B45309;
+                    padding: 1.2vh 3vh;
+                    border-radius: 100px;
+                    font-size: 2.2vh;
+                    font-weight: 700;
+                    font-style: italic;
+                    border: 3px solid rgba(180, 83, 9, 0.1);
+                    letter-spacing: 2px;
+                    white-space: nowrap;
+                    box-shadow: 0 10px 30px -10px rgba(180, 83, 9, 0.1);
+                    z-index: 10;
+                }
+
+                .main-text {
+                    font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
+                    color: #2D2D2D;
+                    font-size: 5vw; 
+                    line-height: 1.5;
+                    font-style: italic;
+                    margin-top: 3vh; /* Slight push to clear the pill visual */
+                }
+
+                .top-footer {
+                    position: absolute;
+                    top: -11vh; /* Close to the pill (Difference of 6vh) */
+                    
+                    left: 0;
+                    right: 0;
+                    font-family: 'Rozha One', serif;
+                    font-size: 3vh;
+                    color: #B45309;
+                    opacity: 0.65;
+                    letter-spacing: 2px;
+                }
+            </style>
+            </head>
+            <body>
+                <div class="tablet-box">
+                    <div class="top-footer">gita.bhgvd.com</div>
+                    <div class="verse-pill">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
+                    <div class="main-text">${textContent}</div>
+                </div>
+            </body>
+            </html>
+        `;
+
+        await page.setContent(htmlTablet);
+        await page.evaluateHandle('document.fonts.ready');
+
+        // Generate iPads
+        for (const device of ipadDevices) {
+            await page.setViewport({ width: device.width, height: device.height, deviceScaleFactor: 1 });
+            const fileName = `${outputDir}/${lang.fileChar}apple${device.suffix}.png`;
+            await page.screenshot({ path: fileName });
+            console.log(`Generated iPad: ${fileName}`);
+        }
+
+        // Generate Android Tablets
+        for (const device of androidTablets) {
+            await page.setViewport({ width: device.width, height: device.height, deviceScaleFactor: 1 });
+            const fileName = `${outputDir}/${lang.fileChar}and${device.suffix}.png`;
+            await page.screenshot({ path: fileName });
+            console.log(`Generated Android Tab: ${fileName}`);
+        }
+        // [INSERT END]
 
         await page.setContent(htmlAndroid);
         await page.evaluateHandle('document.fonts.ready');
@@ -526,5 +651,3 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
-
-
