@@ -28,9 +28,9 @@ const chapterTitlesSanskrit = [
 
 const wallpaperDevices = [
     { name: "MacBook Air/Pro (16:10)", code: "mac16x10" },
-    { name: "iMac/ Ext. Display (16:9)", code: "mac16x9" },
-    { name: "iPad Pro 13\" / 12.9\"", code: "ip13" },
-    { name: "iPad Pro 11\" / Air", code: "ip11" },
+    { name: "iMac (16:9)", code: "mac16x9" },
+    { name: "iPad Pro 13\″ / 12.9\″", code: "ip13" },
+    { name: "iPad Pro 11\″ / Air", code: "ip11" },
     { name: "iPad Mini", code: "ipmini" },
     { name: "iPad 10th Gen", code: "ip10" },
     
