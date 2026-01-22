@@ -200,12 +200,12 @@ const deviceShortcuts = {
     "ip11": { e: "https://www.icloud.com/shortcuts/4001e2bbea10421cb15e931d00504b66", h: "https://www.icloud.com/shortcuts/320c1b9546364a6ebb31f18f14c3b3bd", g: "https://www.icloud.com/shortcuts/d998b2ca14d0479f8f3c945fa3479d16" },
     "ip10": { e: "https://www.icloud.com/shortcuts/b76a887e8a42498db468cc6ad6228402", h: "https://www.icloud.com/shortcuts/49ab4212119d4077a44975195d3ea285", g: "https://www.icloud.com/shortcuts/418b72f2eb0a477fb63d63189cba346d" },
     "ipmini": { e: "https://www.icloud.com/shortcuts/edbee858ea714b8faa040697c5bc04fe", h: "https://www.icloud.com/shortcuts/875bb40debec4f459eedb467ad898d20", g: "https://www.icloud.com/shortcuts/045150617cf04a4aae3029725a86bc00" },
-    "16x10": {
+    "mac16x10": {
         e: "https://www.icloud.com/shortcuts/7e8276f0aaab489d901f287a7a291639", // English 16:10 Shortcut Link
         h: "https://www.icloud.com/shortcuts/35c520186a684cdd96db0f4778fb5a43", // Hindi 16:10 Shortcut Link
         g: "https://www.icloud.com/shortcuts/4bd5093013754e52b3d122ac230cf41c"  // Gujarati 16:10 Shortcut Link
     },
-    "16x9": {
+    "mac16x9": {
         e: "https://www.icloud.com/shortcuts/143f0353b03747c9a85af40b7134668b", // English 16:9 Shortcut Link
         h: "https://www.icloud.com/shortcuts/3723c59895724968adafd19b6bd45e1d", // Hindi 16:9 Shortcut Link
         g: "https://www.icloud.com/shortcuts/97fed97edd9c4dc1911d29d41d17ad31"  // Gujarati 16:9 Shortcut Link
