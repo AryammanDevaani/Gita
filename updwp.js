@@ -226,6 +226,8 @@ async function generateWallpapers() {
                 @font-face { font-family: 'Playfair Display'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
                 @font-face { font-family: 'Arya'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
                 @font-face { font-family: 'Rozha One'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
+                @font-face { font-family: 'fonthindi'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fonthindi.ttf'); }
+                @font-face { font-family: 'fontgujarati'; src: url('https://xn--gt-ela0o.bhgvd.com/fonts/fontgujarati.ttf'); }
                 
                 body {
                     background-color: #5d4141;
@@ -521,5 +523,6 @@ async function generateWallpapers() {
     await page.close();
     await browser.close();
 }
+
 
 generateWallpapers();
