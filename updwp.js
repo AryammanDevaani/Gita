@@ -492,7 +492,7 @@ async function generateWallpapers() {
                     gap: 3vh;
 
                     /* POSITION ADJUSTMENT: Moves the block lower by 12% of screen height */
-                    transform: translateY(20vh); 
+                    transform: translateY(5vh); 
                 }
 
                 .verse-ref {
@@ -513,14 +513,14 @@ async function generateWallpapers() {
                     font-family: 'Arya', sans-serif;
                     font-weight: 700;
                     color: #F9F7F2;
-                    font-size: 2.5vh; 
+                    font-size: 2vh; 
                     line-height: 1.5;
                 }
 
                 .translation-text {
                     font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #F9F7F2;
-                    font-size: 2vh;
+                    font-size: 1.5vh;
                     line-height: 1.4;
                     font-style: italic;
                 }
@@ -672,3 +672,5 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
+
+
