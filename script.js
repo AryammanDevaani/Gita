@@ -55,7 +55,9 @@ const wallpaperDevices = [
     { name: "iPhone 11", code: "11" },
     { name: "iPad Pro 13\" / 12.9\"", code: "ip13" },
     { name: "iPad Pro 11\" / Air", code: "ip11" },
-    { name: "iPad Mini", code: "ipmini" }
+    { name: "iPad Mini", code: "ipmini" },
+    { name: "iPad 10th Gen", code: "ip10" },
+    
 ];
 
 // Paste your iCloud Shortcut links here
@@ -205,6 +207,7 @@ const deviceShortcuts = {
     },
     "ip13": { e: "", h: "", g: "" },
     "ip11": { e: "", h: "", g: "" },
+    "ip10": { e: "", h: "", g: "" },
     "ipmini": { e: "", h: "", g: "" }
 };
 

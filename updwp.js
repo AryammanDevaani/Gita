@@ -15,7 +15,8 @@ const languages = [
 const ipadDevices = [
     { suffix: 'ip13',   width: 2064, height: 2752 }, // iPad Pro 13" (M4) / 12.9"
     { suffix: 'ip11',   width: 1668, height: 2420 }, // iPad Pro 11" / Air
-    { suffix: 'ipmini', width: 1488, height: 2266 }  // iPad Mini
+    { suffix: 'ipmini', width: 1488, height: 2266 },  // iPad Mini
+    { suffix: 'ip10',   width: 1640, height: 2360 }, // iPad 10th Gen
 ];
 
 const androidTablets = [
@@ -651,3 +652,5 @@ async function generateWallpapers() {
 
 
 generateWallpapers();
+
+
