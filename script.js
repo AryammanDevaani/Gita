@@ -57,7 +57,8 @@ const wallpaperDevices = [
     { name: "iPad Pro 11\" / Air", code: "ip11" },
     { name: "iPad Mini", code: "ipmini" },
     { name: "iPad 10th Gen", code: "ip10" },
-    
+    { name: "MacBook Air/Pro (16:10)", code: "mac16x10" },
+    { name: "iMac/ Ext. Display (16:9)", code: "mac16x9" },
 ];
 
 // Paste your iCloud Shortcut links here
@@ -208,7 +209,17 @@ const deviceShortcuts = {
     "ip13": { e: "https://www.icloud.com/shortcuts/98d7640f5aaa4d1784b2ea6e9ab3da28", h: "https://www.icloud.com/shortcuts/33b2d0caaba44e599d3fc6b7d100617f", g: "https://www.icloud.com/shortcuts/086affd2ac6f4b1aaeb9488a06575be5" },
     "ip11": { e: "https://www.icloud.com/shortcuts/4001e2bbea10421cb15e931d00504b66", h: "https://www.icloud.com/shortcuts/320c1b9546364a6ebb31f18f14c3b3bd", g: "https://www.icloud.com/shortcuts/d998b2ca14d0479f8f3c945fa3479d16" },
     "ip10": { e: "https://www.icloud.com/shortcuts/b76a887e8a42498db468cc6ad6228402", h: "https://www.icloud.com/shortcuts/49ab4212119d4077a44975195d3ea285", g: "https://www.icloud.com/shortcuts/418b72f2eb0a477fb63d63189cba346d" },
-    "ipmini": { e: "https://www.icloud.com/shortcuts/edbee858ea714b8faa040697c5bc04fe", h: "https://www.icloud.com/shortcuts/875bb40debec4f459eedb467ad898d20", g: "https://www.icloud.com/shortcuts/045150617cf04a4aae3029725a86bc00" }
+    "ipmini": { e: "https://www.icloud.com/shortcuts/edbee858ea714b8faa040697c5bc04fe", h: "https://www.icloud.com/shortcuts/875bb40debec4f459eedb467ad898d20", g: "https://www.icloud.com/shortcuts/045150617cf04a4aae3029725a86bc00" },
+    "16x10": {
+        e: "https://www.icloud.com/shortcuts/7e8276f0aaab489d901f287a7a291639", // English 16:10 Shortcut Link
+        h: "https://www.icloud.com/shortcuts/35c520186a684cdd96db0f4778fb5a43", // Hindi 16:10 Shortcut Link
+        g: "https://www.icloud.com/shortcuts/4bd5093013754e52b3d122ac230cf41c"  // Gujarati 16:10 Shortcut Link
+    },
+    "16x9": {
+        e: "https://www.icloud.com/shortcuts/143f0353b03747c9a85af40b7134668b", // English 16:9 Shortcut Link
+        h: "https://www.icloud.com/shortcuts/3723c59895724968adafd19b6bd45e1d", // Hindi 16:9 Shortcut Link
+        g: "https://www.icloud.com/shortcuts/97fed97edd9c4dc1911d29d41d17ad31"  // Gujarati 16:9 Shortcut Link
+    }
 };
 
 const views = {
@@ -1063,17 +1074,17 @@ function smoothScrollTo(target, duration) {
 // --- WALLPAPER VIEW LOGIC ---
 function initWallpaperView() {
     const androidView = document.getElementById('wallpaper-android');
-    const iosView = document.getElementById('wallpaper-ios');
+    const iosView = document.getElementById('wallpaper-ios'); // We will use this for ALL Apple devices
     const windowsView = document.getElementById('wallpaper-windows');
-    const macView = document.getElementById('wallpaper-mac');
-    
-    // iPhone Elements
+    const macView = document.getElementById('wallpaper-mac'); // No longer needed, we hide it
+
+    // Elements
     const deviceSelect = document.getElementById('wp-device');
     const langSelect = document.getElementById('wp-lang');
     const shortcutContainer = document.getElementById('shortcut-container');
     const btnGetShortcut = document.getElementById('btn-get-shortcut');
     const stepNameSpan = document.getElementById('shortcut-step-name');
-
+    
     // Windows Elements
     const winRatioSelect = document.getElementById('win-ratio');
     const winLangSelect = document.getElementById('win-lang');
@@ -1086,18 +1097,20 @@ function initWallpaperView() {
     if (windowsView) windowsView.classList.add('hidden');
     if (macView) macView.classList.add('hidden');
 
-    // 2. Device Detection
+    // 2. Simple Detection
     const ua = navigator.userAgent;
-    const isIphone = /iPhone/i.test(ua) && !window.MSStream;
+    const isApple = /Mac|iPhone|iPad|iPod/i.test(ua);
     const isWindows = /Win/i.test(ua);
-    const isMac = /Mac/i.test(ua) && !/iPhone|iPod|iPad/i.test(ua);
-    const isAndroid = /Android/i.test(ua);
 
-    // --- LOGIC: iPhone ---
-    if (isIphone) {
+    // --- LOGIC: APPLE (Mac, iPhone, iPad) ---
+    if (isApple) {
         if (iosView) iosView.classList.remove('hidden');
-        if (deviceSelect && deviceSelect.options.length <= 1) {
+        
+        // Populate the dropdown with ALL Apple devices (Mac + iOS)
+        if (deviceSelect) {
+            deviceSelect.innerHTML = '<option value="" disabled selected>Select Device</option>';
             wallpaperDevices.forEach(dev => {
+                // Only add if we have shortcuts for it
                 const links = deviceShortcuts[dev.code];
                 if (links && (links.e || links.h || links.g)) {
                     deviceSelect.add(new Option(dev.name, dev.code));
@@ -1105,163 +1118,93 @@ function initWallpaperView() {
             });
         }
     } 
-    // --- LOGIC: Windows ---
+    // --- LOGIC: WINDOWS ---
     else if (isWindows) {
         if (windowsView) windowsView.classList.remove('hidden');
         
-        // Auto-detect Aspect Ratio
+        // Auto-detect Aspect Ratio for Windows
         if (winRatioSelect) {
             const ratio = window.screen.width / window.screen.height;
-            // 16:10 is 1.6, 16:9 is 1.77
-            if (ratio < 1.7) {
-                winRatioSelect.value = "16x10";
-            } else {
-                winRatioSelect.value = "16x9";
-            }
+            winRatioSelect.value = (ratio < 1.7) ? "16x10" : "16x9";
         }
     } 
-    // --- LOGIC: Mac ---
-    // --- LOGIC: Mac ---
-    else if (isMac) {
-        if (macView) macView.classList.remove('hidden');
-
-        const macRatioSelect = document.getElementById('mac-ratio');
-        const macLangSelect = document.getElementById('mac-lang');
-        const macContainer = document.getElementById('mac-shortcut-container');
-        const btnMacShortcut = document.getElementById('btn-mac-shortcut');
-        
-        // Auto-detect Ratio for Mac
-        if (macRatioSelect) {
-            const ratio = window.screen.width / window.screen.height;
-            // MacBook defaults (16:10 is 1.6)
-            if (ratio < 1.7) {
-                macRatioSelect.value = "16x10";
-            } else {
-                macRatioSelect.value = "16x9";
-            }
-        }
-
-        const updateMacLink = () => {
-            const ratio = macRatioSelect.value;
-            const lang = macLangSelect.value;
-
-            if (ratio && lang) {
-                const link = macShortcutsData[ratio] ? macShortcutsData[ratio][lang] : "#";
-                
-                if (link) {
-                    macContainer.classList.remove('hidden');
-                    btnMacShortcut.href = link;
-                } else {
-                    macContainer.classList.add('hidden');
-                }
-            } else {
-                macContainer.classList.add('hidden');
-            }
-        };
-
-        if (macRatioSelect) macRatioSelect.onchange = updateMacLink;
-        if (macLangSelect) macLangSelect.onchange = updateMacLink;
-    }
-    // --- LOGIC: Android/Other ---
-    // --- LOGIC: Android/Other ---
-    // --- LOGIC: Android/Other ---
+    // --- LOGIC: ANDROID / OTHER ---
     else {
         if (androidView) {
             androidView.classList.remove('hidden');
             
-            // Inject the Interface
-            // Inside initWallpaperView(), else if (androidView) ...
-                
-                if (!document.getElementById('and-lang')) {
-                    androidView.innerHTML = `
-                    <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
-                        <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; font-style: italic;">
-                            For Android
-                        </h3>
-
-                        <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
-                            <label style="flex: 1; cursor: pointer;">
-                                <input type="radio" name="and-type" value="phone" checked style="accent-color: var(--accent-gold);">
-                                <span style="font-family: var(--font-english); font-style: italic; margin-left: 0.5rem;">Phone</span>
-                            </label>
-                            <label style="flex: 1; cursor: pointer;">
-                                <input type="radio" name="and-type" value="tablet" style="accent-color: var(--accent-gold);">
-                                <span style="font-family: var(--font-english); font-style: italic; margin-left: 0.5rem;">Tablet</span>
-                            </label>
-                        </div>
-
-                        <div style="text-align: left; margin-bottom: 1.5rem;">
-                            <label for="and-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
-                                Select Language
-                            </label>
-                            <select id="and-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
-                                <option value="" disabled selected>Languages</option>
-                                <option value="e">English</option>
-                                <option value="h">Hindi</option>
-                                <option value="g">Gujarati</option>
-                            </select>
-                        </div>
-
-                        <div id="and-actions" class="hidden" style="animation: fadeIn 0.5s ease; text-align: left;">
-                            <div style="background: #F9F7F2; border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(180, 83, 9, 0.1);">
-                                <h4 style="font-family: var(--font-english); font-style:italic; color: #B45309; margin: 0 0 0.5rem 0;">
-                                    Automate Daily
-                                </h4>
-                                <p style="font-family: var(--font-english); font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.5;">
-                                    Download the MacroDroid file to automatically update your wallpaper every morning.
-                                </p>
-                                <a id="btn-and-macro" href="#" download
-                                   style="display: block; text-align: center; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem; border-radius: 8px; font-family: var(--font-english); font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity 0.2s;">
-                                    DOWNLOAD MACRO
-                                </a>
-                            </div>
+            // Inject Android Interface if not present
+            if (!document.getElementById('and-lang')) {
+                androidView.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1.5rem; font-style: italic;">
+                        For Android
+                    </h3>
+                    <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+                        <label style="flex: 1; cursor: pointer;">
+                            <input type="radio" name="and-type" value="phone" checked style="accent-color: var(--accent-gold);">
+                            <span style="font-family: var(--font-english); font-style: italic; margin-left: 0.5rem;">Phone</span>
+                        </label>
+                        <label style="flex: 1; cursor: pointer;">
+                            <input type="radio" name="and-type" value="tablet" style="accent-color: var(--accent-gold);">
+                            <span style="font-family: var(--font-english); font-style: italic; margin-left: 0.5rem;">Tablet</span>
+                        </label>
+                    </div>
+                    <div style="text-align: left; margin-bottom: 1.5rem;">
+                        <label for="and-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                            Select Language
+                        </label>
+                        <select id="and-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                            <option value="" disabled selected>Languages</option>
+                            <option value="e">English</option>
+                            <option value="h">Hindi</option>
+                            <option value="g">Gujarati</option>
+                        </select>
+                    </div>
+                    <div id="and-actions" class="hidden" style="animation: fadeIn 0.5s ease; text-align: left;">
+                        <div style="background: #F9F7F2; border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(180, 83, 9, 0.1);">
+                            <h4 style="font-family: var(--font-english); font-style:italic; color: #B45309; margin: 0 0 0.5rem 0;">Automate Daily</h4>
+                            <p style="font-family: var(--font-english); font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; line-height: 1.5;">Download the MacroDroid file to automatically update your wallpaper every morning.</p>
+                            <a id="btn-and-macro" href="#" download style="display: block; text-align: center; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem; border-radius: 8px; font-family: var(--font-english); font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity 0.2s;">DOWNLOAD MACRO</a>
                         </div>
                     </div>
-                    `;
-
-                    // Logic for Android Updates
-                    const andLang = document.getElementById('and-lang');
-                    const andActions = document.getElementById('and-actions');
-                    const btnMacro = document.getElementById('btn-and-macro');
-                    const typeRadios = document.getElementsByName('and-type');
-                    
-                    const updateAndroidLink = () => {
-                        const code = andLang.value; // "e", "h", "g"
-                        if (code) {
-                            andActions.classList.remove('hidden');
-                            
-                            // Check Device Type
-                            let isTablet = false;
-                            for (const radio of typeRadios) {
-                                if (radio.checked && radio.value === 'tablet') isTablet = true;
-                            }
-
-                            // LINK FORMAT: /eand20x9.macro OR /eandtab16x10.macro
-                            const suffix = isTablet ? 'andtab16x10' : 'and20x9';
-                            btnMacro.href = `/${code}${suffix}.macro`;
-                            
-                            const label = andLang.options[andLang.selectedIndex].text;
-                            btnMacro.textContent = `DOWNLOAD ${label.toUpperCase()} MACRO`;
+                </div>`;
+                
+                // Re-attach Android Listeners
+                const andLang = document.getElementById('and-lang');
+                const andActions = document.getElementById('and-actions');
+                const btnMacro = document.getElementById('btn-and-macro');
+                const typeRadios = document.getElementsByName('and-type');
+                
+                const updateAndroidLink = () => {
+                    const code = andLang.value;
+                    if (code) {
+                        andActions.classList.remove('hidden');
+                        let isTablet = false;
+                        for (const radio of typeRadios) {
+                            if (radio.checked && radio.value === 'tablet') isTablet = true;
                         }
-                    };
-
-                    if (andLang) andLang.onchange = updateAndroidLink;
-                    typeRadios.forEach(radio => radio.onchange = updateAndroidLink);
-                }
+                        const suffix = isTablet ? 'andtab16x10' : 'and20x9';
+                        btnMacro.href = `/${code}${suffix}.macro`;
+                        const label = andLang.options[andLang.selectedIndex].text;
+                        btnMacro.textContent = `DOWNLOAD ${label.toUpperCase()} MACRO`;
+                    }
+                };
+                if (andLang) andLang.onchange = updateAndroidLink;
+                typeRadios.forEach(radio => radio.onchange = updateAndroidLink);
+            }
         }
     }
 
-    // --- HANDLER: iPhone Selection ---
-    const updateIphoneLink = () => {
+    // --- SHARED HANDLERS (Apple & Windows) ---
+
+    // Apple Link Handler
+    const updateAppleLink = () => {
         const dev = deviceSelect.value;
         const lang = langSelect.value;
-        
-        // Update Lang dropdown based on device (simplified for brevity)
-        // (You can keep your detailed updateLanguageOptions logic here if preferred)
-        
         if (dev && lang) {
             shortcutContainer.classList.remove('hidden');
-            stepNameSpan.textContent = `${lang}Apple${dev}`;
+            stepNameSpan.textContent = "Shortcut Name"; 
             const links = deviceShortcuts[dev];
             btnGetShortcut.href = links ? links[lang] : "#";
         } else {
@@ -1269,39 +1212,37 @@ function initWallpaperView() {
         }
     };
     
-    // Update Language Options for iPhone
-    const updateIphoneLangs = () => {
+    // Apple Language Updater
+    const updateAppleLangs = () => {
          const devVal = deviceSelect.value;
          const links = deviceShortcuts[devVal];
-         while (langSelect.options.length > 1) langSelect.remove(1);
+         
+         // Reset options
+         langSelect.innerHTML = '<option value="" disabled selected>Languages</option>';
+         
          if (links) {
              if (links.e) langSelect.add(new Option("English", "e"));
              if (links.h) langSelect.add(new Option("Hindi", "h"));
              if (links.g) langSelect.add(new Option("Gujarati", "g"));
          }
-         langSelect.value = "";
          shortcutContainer.classList.add('hidden');
     }
 
-    // --- HANDLER: Windows Selection ---
+    // Windows Link Handler
     const updateWindowsLink = () => {
         const ratio = winRatioSelect.value;
         const lang = winLangSelect.value;
-
         if (ratio && lang) {
             winDownloadArea.classList.remove('hidden');
-            // Filename format: win-e-16x9.zip
-            const filename = `win-${lang}-${ratio}.zip`;
-            btnWinDownload.href = `/${filename}`;
+            btnWinDownload.href = `/win-${lang}-${ratio}.zip`;
         } else {
             winDownloadArea.classList.add('hidden');
         }
     };
 
-    // --- EVENT LISTENERS ---
-    if (deviceSelect) deviceSelect.onchange = updateIphoneLangs;
-    if (langSelect) langSelect.onchange = updateIphoneLink;
-
+    // Attach Listeners
+    if (deviceSelect) deviceSelect.onchange = updateAppleLangs;
+    if (langSelect) langSelect.onchange = updateAppleLink;
     if (winRatioSelect) winRatioSelect.onchange = updateWindowsLink;
     if (winLangSelect) winLangSelect.onchange = updateWindowsLink;
 }
