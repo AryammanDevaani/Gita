@@ -205,10 +205,10 @@ const deviceShortcuts = {
         h: "https://www.icloud.com/shortcuts/f4f14e329aef4b78834f64c6ca1da2d2",
         g: "https://www.icloud.com/shortcuts/db7bd7aee8f1445ab77362cf35562215"
     },
-    "ip13": { e: "", h: "", g: "" },
-    "ip11": { e: "", h: "", g: "" },
-    "ip10": { e: "", h: "", g: "" },
-    "ipmini": { e: "", h: "", g: "" }
+    "ip13": { e: "https://www.icloud.com/shortcuts/98d7640f5aaa4d1784b2ea6e9ab3da28", h: "https://www.icloud.com/shortcuts/33b2d0caaba44e599d3fc6b7d100617f", g: "https://www.icloud.com/shortcuts/086affd2ac6f4b1aaeb9488a06575be5" },
+    "ip11": { e: "https://www.icloud.com/shortcuts/4001e2bbea10421cb15e931d00504b66", h: "https://www.icloud.com/shortcuts/320c1b9546364a6ebb31f18f14c3b3bd", g: "https://www.icloud.com/shortcuts/d998b2ca14d0479f8f3c945fa3479d16" },
+    "ip10": { e: "https://www.icloud.com/shortcuts/b76a887e8a42498db468cc6ad6228402", h: "https://www.icloud.com/shortcuts/49ab4212119d4077a44975195d3ea285", g: "https://www.icloud.com/shortcuts/418b72f2eb0a477fb63d63189cba346d" },
+    "ipmini": { e: "https://www.icloud.com/shortcuts/edbee858ea714b8faa040697c5bc04fe", h: "https://www.icloud.com/shortcuts/875bb40debec4f459eedb467ad898d20", g: "https://www.icloud.com/shortcuts/045150617cf04a4aae3029725a86bc00" }
 };
 
 const views = {
