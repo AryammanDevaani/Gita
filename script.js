@@ -27,6 +27,13 @@ const chapterTitlesSanskrit = [
 ];
 
 const wallpaperDevices = [
+    { name: "MacBook Air/Pro (16:10)", code: "mac16x10" },
+    { name: "iMac/ Ext. Display (16:9)", code: "mac16x9" },
+    { name: "iPad Pro 13\" / 12.9\"", code: "ip13" },
+    { name: "iPad Pro 11\" / Air", code: "ip11" },
+    { name: "iPad Mini", code: "ipmini" },
+    { name: "iPad 10th Gen", code: "ip10" },
+    
     { name: "iPhone 17 Pro Max", code: "17pm" },
     { name: "iPhone 17 Air", code: "17air" },
     { name: "iPhone 17 Pro", code: "17p" },
@@ -53,27 +60,10 @@ const wallpaperDevices = [
     { name: "iPhone 11 Pro Max", code: "11pm" },
     { name: "iPhone 11 Pro", code: "11p" },
     { name: "iPhone 11", code: "11" },
-    { name: "iPad Pro 13\" / 12.9\"", code: "ip13" },
-    { name: "iPad Pro 11\" / Air", code: "ip11" },
-    { name: "iPad Mini", code: "ipmini" },
-    { name: "iPad 10th Gen", code: "ip10" },
-    { name: "MacBook Air/Pro (16:10)", code: "mac16x10" },
-    { name: "iMac/ Ext. Display (16:9)", code: "mac16x9" },
+    
 ];
 
-// Paste your iCloud Shortcut links here
-const macShortcutsData = {
-    "16x10": {
-        e: "https://www.icloud.com/shortcuts/7e8276f0aaab489d901f287a7a291639", // English 16:10 Shortcut Link
-        h: "https://www.icloud.com/shortcuts/35c520186a684cdd96db0f4778fb5a43", // Hindi 16:10 Shortcut Link
-        g: "https://www.icloud.com/shortcuts/4bd5093013754e52b3d122ac230cf41c"  // Gujarati 16:10 Shortcut Link
-    },
-    "16x9": {
-        e: "https://www.icloud.com/shortcuts/143f0353b03747c9a85af40b7134668b", // English 16:9 Shortcut Link
-        h: "https://www.icloud.com/shortcuts/3723c59895724968adafd19b6bd45e1d", // Hindi 16:9 Shortcut Link
-        g: "https://www.icloud.com/shortcuts/97fed97edd9c4dc1911d29d41d17ad31"  // Gujarati 16:9 Shortcut Link
-    }
-};
+// Paste your iCloud Shortcut links her
 
 const deviceShortcuts = {
     "17pm": {
