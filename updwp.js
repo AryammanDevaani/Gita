@@ -487,12 +487,14 @@ async function generateWallpapers() {
                 .tablet-container {
                     /* Width increased to 70vw (vs Desktop 45vw) because tablets are narrower */
                     width: 70vw; 
+                    height: 40vw;
                     text-align: center;
                     display: flex;  
                     flex-direction: column;
                     align-items: center;
                     gap: 3vh;
                     position: relative;
+                    border: 2px solid red;
 
                      
                 }
@@ -508,7 +510,7 @@ async function generateWallpapers() {
                     font-style: italic;
                     border: 2px solid rgba(180, 83, 9, 0.1);
                     letter-spacing: 2px;
-                    margin-top: 0.25vh;
+                    margin-top: .25vh;
                 }
 
                 .sanskrit-text {
@@ -564,6 +566,36 @@ async function generateWallpapers() {
 
         await page.setContent(htmlTablet);
         await page.evaluateHandle('document.fonts.ready');
+        // [INSERT THIS BLOCK] --- TABLET SMART SHRINK (UPDATED) ---
+        await page.evaluate(() => {
+            const container = document.querySelector('.tablet-container');
+            const sanskrit = document.querySelector('.sanskrit-text');
+            const translation = document.querySelector('.translation-text');
+            
+            // Variables to control shrinking
+            let factor = 1.0;
+            const minFactor = 0.5; // Don't shrink below 50%
+            const step = 0.05;     // Shrink by 5% each step
+
+            // Base sizes must match your CSS values exactly
+            const baseSanskrit = 2.0; // matches .sanskrit-text { font-size: 2vh; }
+            const baseTrans = 1.5;    // matches .translation-text { font-size: 1.5vh; }
+
+            // Check if text is spilling out of the 40vw height container
+            const isOverflowing = () => {
+                return container.scrollHeight > container.clientHeight;
+            };
+
+            // Loop: Reduce font size until it fits
+            while (isOverflowing() && factor > minFactor) {
+                factor -= step;
+                if (sanskrit) sanskrit.style.fontSize = (baseSanskrit * factor) + 'vh';
+                if (translation) translation.style.fontSize = (baseTrans * factor) + 'vh';
+            }
+        });
+        // [END INSERT]
+
+        // Generate iPads
 
         // Generate iPads
         for (const device of ipadDevices) {
