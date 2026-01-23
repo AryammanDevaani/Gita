@@ -296,6 +296,7 @@ async function generateWallpapers() {
                     color: #F9F7F2;
                     font-size: 10vh;
                     line-height: 1.5;
+                    white-space: pre-wrap;
                 }
 
                 .translation-text {
@@ -536,6 +537,7 @@ async function generateWallpapers() {
                     color: #F9F7F2;
                     font-size: 2vh; 
                     line-height: 1.5;
+                    white-space: pre-wrap;
                 }
 
                 .translation-text {
