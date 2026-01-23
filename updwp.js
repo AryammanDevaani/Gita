@@ -273,7 +273,7 @@ async function generateWallpapers() {
                     gap: 3vh;
                     
                     /* ADDED: Border to see the box */
-                    border: 2px solid red; 
+                   
                 }
 
                 .verse-ref {
