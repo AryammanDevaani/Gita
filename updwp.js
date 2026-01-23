@@ -317,7 +317,7 @@ async function generateWallpapers() {
 
                 .footer {
                     font-family: 'Rozha One', serif;
-                    font-size: 2vh;
+                    font-size: 2.5vh;
                     color: #F9F7F2;
                     opacity: 0.65;
                     letter-spacing: 2px;
