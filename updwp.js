@@ -494,7 +494,6 @@ async function generateWallpapers() {
                     align-items: center;
                     gap: 3vh;
                     position: relative;
-                    border: 2px solid red;
 
                      
                 }
