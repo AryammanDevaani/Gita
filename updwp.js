@@ -226,6 +226,7 @@ async function generateWallpapers() {
         const simpleText = verse[lang.simple] ? verse[lang.simple] : ''; // Handle missing simple text
 
         // 2. Desktop HTML Template
+        // 2. Desktop HTML Template
         const htmlDesktop = `
             <!DOCTYPE html>
             <html lang="${lang.code}">
@@ -248,17 +249,31 @@ async function generateWallpapers() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    justify-content: center;
+                    
+                    /* CHANGED: Align to top, then push down */
+                    justify-content: flex-start;
+                    
+                    /* Adjust this to move the whole block UP or DOWN */
+                    /* 28vh is roughly just below the standard Mac Clock */
+                    padding-top: 28vh; 
+                    
+                    overflow: hidden;
                 }
 
-                /* Restrict width to 45vw for "Dead Center" look */
                 .desktop-container {
-                    width: 45vw;
+                    width: 90vw;
+                    
+                    /* ADDED: Fixed height to force shrinking if text is too long */
+                    height: 50vh; 
+                    
                     text-align: center;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: 3vh; /* Space between elements */
+                    gap: 3vh;
+                    
+                    /* ADDED: Border to see the box */
+                    border: 2px solid red; 
                 }
 
                 .verse-ref {
@@ -267,7 +282,7 @@ async function generateWallpapers() {
                     color: #B45309;
                     padding: 0.8vh 2vh;
                     border-radius: 100px;
-                    font-size: 1.5vh; /* vh units for scaling */
+                    font-size: 1.5vh;
                     font-weight: 700;
                     font-style: italic;
                     border: 2px solid rgba(180, 83, 9, 0.1);
@@ -278,15 +293,15 @@ async function generateWallpapers() {
                 .sanskrit-text {
                     font-family: 'Arya', sans-serif;
                     font-weight: 700;
-                    color: #F9F7F2; /* Matches website accent */
-                    font-size: 4vh;
+                    color: #F9F7F2;
+                    font-size: 10vh;
                     line-height: 1.5;
                 }
 
                 .translation-text {
                     font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #F9F7F2;
-                    font-size: 3vh;
+                    font-size: 7vh;
                     line-height: 1.4;
                     font-style: italic;
                 }
@@ -294,7 +309,7 @@ async function generateWallpapers() {
                 .simple-text {
                     font-family: 'Playfair Display', 'fonthindi', 'fontgujarati', serif;
                     color: #F9F7F2;
-                    font-size: 2.5vh; /* Slightly smaller */
+                    font-size: 4vh;
                     line-height: 1.4;
                     margin-top: 1vh;
                     font-style: italic;
@@ -306,7 +321,9 @@ async function generateWallpapers() {
                     color: #F9F7F2;
                     opacity: 0.65;
                     letter-spacing: 2px;
-                    margin-top: 5vh;
+                    
+                    /* Pushed to bottom of container */
+                    margin-top: auto; 
                 }
             </style>
             </head>
@@ -325,6 +342,7 @@ async function generateWallpapers() {
             </body>
             </html>
         `;
+        
 
 
         // [INSERT START] --- ANDROID UNIVERSAL (20:9 Centered + iPhone Style) ---
@@ -646,6 +664,41 @@ async function generateWallpapers() {
 
         await page.setContent(htmlDesktop);
         await page.evaluateHandle('document.fonts.ready');
+
+
+        await page.setContent(htmlDesktop);
+        await page.evaluateHandle('document.fonts.ready');
+
+        // [INSERT START] --- DESKTOP SMART SHRINK ---
+        await page.evaluate(() => {
+            const container = document.querySelector('.desktop-container');
+            const sanskrit = document.querySelector('.sanskrit-text');
+            const translation = document.querySelector('.translation-text');
+            const simple = document.querySelector('.simple-text');
+
+            let factor = 1.0;
+            const minFactor = 0.5; 
+            const step = 0.05;
+
+            // Base sizes (Must match CSS vh values)
+            const baseSanskrit = 10.0; 
+            const baseTrans = 7.0;
+            const baseSimple = 4.0;
+
+            const isOverflowing = () => {
+                return container.scrollHeight > container.clientHeight;
+            };
+
+            while (isOverflowing() && factor > minFactor) {
+                factor -= step;
+                if (sanskrit) sanskrit.style.fontSize = (baseSanskrit * factor) + 'vh';
+                if (translation) translation.style.fontSize = (baseTrans * factor) + 'vh';
+                if (simple) simple.style.fontSize = (baseSimple * factor) + 'vh';
+            }
+        });
+        // [INSERT END]
+
+        // 3. Loop Desktop Devices
 
         // 3. Loop Desktop Devices
         for (const device of desktopDevices) {
