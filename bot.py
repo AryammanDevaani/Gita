@@ -5,11 +5,11 @@ import sys
 import random
 
 # --- CONFIGURATION (LOADED FROM GITHUB SECRETS) ---
-API_KEY = os.environ.get("API_KEY")
-API_SECRET = os.environ.get("API_SECRET")
-BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
-ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
-ACCESS_SECRET = os.environ.get("ACCESS_SECRET")
+API_KEY = os.environ.get("my5v8j5C6JQfxgcIhGWdcXGvd")
+API_SECRET = os.environ.get("APITNXn7xjPhOyGA7YvfRkJVVSwckcJKE5U3RS4UFbmmFtJ6SaGw5_SECRET")
+BEARER_TOKEN = os.environ.get("AAAAAAAAAAAAAAAAAAAAJrU7AEAAAAAQ%2BY%2B%2BLOOhwUyD%2FDUBOusxLvvO5w%3D5rZfgTOEua35shf3GKAeQscSwn28nK9MSf22wIwpbRr9NoOcpL")
+ACCESS_TOKEN = os.environ.get("2014613616419602435-pM84ckiJ1zNouLj0bMQwsO6kkOjaXu")
+ACCESS_SECRET = os.environ.get("ACCES3kNliu8lBOyqoefYywgzA8ipj4tcafHcGvjCrN8tQqZJYS_SECRET")
 
 # --- FILE PATHS ---
 JSON_FILE = 'gita.json'
