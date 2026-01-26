@@ -45,7 +45,7 @@ def main():
 
     final_caption = (
         f"Chapter {chapter_num}, Verse {verse_num}\n\n"
-        f"{caption_body}\n\n"
+        f"{caption_body}"
     )
 
     output_data = {
