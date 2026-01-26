@@ -46,7 +46,7 @@ def main():
     final_caption = (
         f"Chapter {chapter_num}, Verse {verse_num}\n\n"
         f"{caption_body}\n\n"
-        f"support@bhgvd.com"
+        f"suggestions@bhgvd.com"
     )
 
     output_data = {
