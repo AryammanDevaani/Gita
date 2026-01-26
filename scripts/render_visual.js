@@ -13,10 +13,7 @@ const fs = require('fs');
             @font-face { font-family: 'Arya'; src: url('https://gītā.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
             @font-face { font-family: 'Rozha One'; src: url('https://gītā.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
             
-            :root {
-                /* We control this one value to shrink everything */
-                --base-font: 55px; 
-            }
+            :root { --base-font: 55px; }
 
             body {
                 background-color: #0c4140; 
@@ -37,25 +34,26 @@ const fs = require('fs');
                 flex-direction: column;
                 justify-content: center; 
                 align-items: center;    
-                gap: 40px;
-                padding: 10px; 
+                gap: 50px;
+                PADDING: 10px;
                 box-sizing: border-box; 
             }
 
             .sanskrit {
                 font-family: 'Arya', sans-serif;
                 color: #F9F7F2;
-                /* Ratio: 100% of base */
                 font-size: var(--base-font);
-                line-height: 1.5;
-                white-space: pre-wrap;
+                line-height: 1.6;
+                /* Forces the text to honor your \n but NEVER wrap automatically */
+                white-space: pre; 
+                display: block;
+                width: 100%;
             }
 
             .english {
                 font-family: 'Playfair Display', serif;
                 color: #F9F7F2;
-                /* Ratio: ~75% of base */
-                font-size: calc(var(--base-font) * 0.75);
+                font-size: calc(var(--base-font) * 0.90);
                 line-height: 1.4;
                 font-style: italic;
             }
@@ -63,8 +61,7 @@ const fs = require('fs');
             .domain {
                 margin-top: 20px;
                 font-family: 'Rozha One', serif;
-                /* Ratio: ~53% of base */
-                font-size: calc(var(--base-font) * 0.53);
+                font-size: 30px;
                 color: #F9F7F2;
                 opacity: 0.6;
                 letter-spacing: 2px;
@@ -88,20 +85,25 @@ const fs = require('fs');
     await page.setContent(htmlTemplate, { waitUntil: 'networkidle0' });
     await page.evaluateHandle('document.fonts.ready');
 
-    // Smart Shrink Logic using the CSS Variable
     await page.evaluate(() => {
         const container = document.querySelector('.container');
+        const sanskrit = document.querySelector('.sanskrit');
         const root = document.documentElement;
-        let currentSize = 45; // Matches the initial --base-font
+        let currentSize = 45;
 
-        // Shrink the base size until the container no longer overflows
-        while (container.scrollHeight > 850 && currentSize > 15) {
-            currentSize -= 1;
+        // CHECK BOTH: Vertical overflow (height) AND Horizontal overflow (width)
+        // This ensures the 2 lines of Sanskrit never break into 3 lines.
+        const isOverflowing = () => {
+            return container.scrollHeight > 850 || sanskrit.scrollWidth > sanskrit.clientWidth;
+        };
+
+        while (isOverflowing() && currentSize > 12) {
+            currentSize -= 0.5; // Smaller steps for smoother fit
             root.style.setProperty('--base-font', currentSize + 'px');
         }
     });
 
     await page.screenshot({ path: 'final_render.png', type: 'jpeg', quality: 100 });
     await browser.close();
-    console.log("Rendered with proportional scaling.");
+    console.log("Two-line locked render complete.");
 })();
