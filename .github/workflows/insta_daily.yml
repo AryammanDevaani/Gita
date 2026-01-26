@@ -1,0 +1,57 @@
+name: Gita Instagram Bot
+
+on:
+  schedule:
+    # UTC Times: 21:30 (3am IST), 03:30 (9am IST), 09:30 (3pm IST), 15:30 (9pm IST)
+    - cron: '30 3,9,15,21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  post-to-insta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Libraries
+        run: |
+          pip install requests
+          npm install canvas
+
+      - name: 1. Select Verse
+        run: python scripts/select_verse.py
+
+      - name: 2. Generate Image
+        run: node scripts/generate_insta.js
+
+      - name: 3. Commit Image (Make Public)
+        run: |
+          git config --global user.name 'Gita Bot'
+          git config --global user.email 'bot@noreply.github.com'
+          git add daily_post.png todays_verse.json
+          git commit -m "New Daily Verse"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for Raw Link (15s)
+        run: sleep 15
+
+      - name: 4. Post to Instagram
+        run: python scripts/post_insta.py
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
