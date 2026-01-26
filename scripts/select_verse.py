@@ -49,6 +49,7 @@ def main():
         f"Chapter {chapter_num}, Verse {verse_num}\n\n"
         f"{caption_body}\n\n"
         f"Read more: gita.bhgvd.com\n\n"
+        f"#Gita #BhagavadGita #Wisdom #DailyVerse #Hinduism"
     )
 
     # 5. Save Data
