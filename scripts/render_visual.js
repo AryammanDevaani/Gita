@@ -9,9 +9,9 @@ const fs = require('fs');
         <html>
         <head>
         <style>
-            @font-face { font-family: 'Playfair Display'; src: url('https://gita.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
-            @font-face { font-family: 'Arya'; src: url('https://gita.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
-            @font-face { font-family: 'Rozha One'; src: url('https://gita.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
+            @font-face { font-family: 'Playfair Display'; src: url('https://gītā.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
+            @font-face { font-family: 'Arya'; src: url('https://gītā.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
+            @font-face { font-family: 'Rozha One'; src: url('https://gītā.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
             
             body {
                 background-color: #5d4141; 
