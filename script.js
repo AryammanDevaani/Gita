@@ -520,6 +520,15 @@ if (btnAbout) {
 }
 
 if (btnWallpaper) {
+    // Hide the wallpaper button for Android and Windows users
+    const ua = navigator.userAgent;
+    const isAndroid = /Android/i.test(ua);
+    const isWindows = /Win/i.test(ua);
+
+    if (isAndroid || isWindows) {
+        btnWallpaper.style.display = 'none';
+    }
+
     btnWallpaper.onclick = () => {
         const isWallpaperActive = !views.wallpaper.classList.contains('hidden');
         if (isWallpaperActive) {
