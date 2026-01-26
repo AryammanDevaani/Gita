@@ -46,7 +46,7 @@ def main():
 
     # 4. Construct the Final Formatted Caption
     final_caption = (f"{caption_body}\n\n"
-        f"Read more: gita.bhgvd.com")
+        f"For suggestions, corrections, or to contribute email: support@bhgvd.com.")
 
     # 5. Save Data
     output_data = {
