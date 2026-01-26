@@ -14,9 +14,9 @@ const fs = require('fs');
             @font-face { font-family: 'Rozha One'; src: url('https://gītā.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
             
             body {
-                background-color: #5d4141; 
+                background-color: #0c4140; 
                 margin: 0;
-                height: 1350px;
+                height: 1080px;
                 width: 1080px;
                 display: flex;
                 flex-direction: column;
@@ -72,11 +72,11 @@ const fs = require('fs');
 
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
-    await page.setViewport({ width: 1080, height: 1350 });
+    await page.setViewport({ width: 1080, height: 1080 });
     await page.setContent(htmlTemplate);
     await page.evaluateHandle('document.fonts.ready');
     
-    await page.screenshot({ path: 'final_render.png', type: 'jpeg', quality: 90 });
+    await page.screenshot({ path: 'final_render.png', type: 'jpeg', quality: 100 });
     await browser.close();
     console.log("Visual rendered successfully.");
 })();
