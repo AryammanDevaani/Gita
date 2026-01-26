@@ -140,5 +140,5 @@ const fs = require('fs');
     await page.screenshot({ path: 'daily_post.png' });
 
     await browser.close();
-    print("HTML Image generated successfully.");
+    console.log("HTML Image generated successfully.");
 })();
