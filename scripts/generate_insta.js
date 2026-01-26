@@ -1,63 +1,144 @@
-const { createCanvas, registerFont } = require('canvas');
+const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-const verseData = JSON.parse(fs.readFileSync('todays_verse.json', 'utf8'));
+(async () => {
+    // 1. Load the verse data picked by the Python script
+    const verse = JSON.parse(fs.readFileSync('todays_verse.json', 'utf8'));
 
-// Register Fonts
-registerFont('./fonts/Arya-Bold.ttf', { family: 'Arya' });
-registerFont('./fonts/RozhaOne-Regular.ttf', { family: 'Rozha One' });
-registerFont('./fonts/Inter-Regular.ttf', { family: 'Inter' });
+    // 2. Map your JSON keys to the template variables
+    const tabSanskrit = verse.sanskrit;
+    const tabTranslation = verse.english; // Or verse.threadsEnglish depending on preference
 
-async function createInstagramPost() {
-    const width = 1080;
-    const height = 1350;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
+    const htmlTablet = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
+            /* Import Fonts */
+            @font-face { font-family: 'Playfair Display'; src: url('https://gita.bhgvd.com/fonts/PlayfairDisplay-Regular.ttf'); font-weight: 400; }
+            @font-face { font-family: 'Playfair Display'; src: url('https://gita.bhgvd.com/fonts/PlayfairDisplay-Italic.ttf'); font-style: italic; }
+            @font-face { font-family: 'Playfair Display'; src: url('https://gita.bhgvd.com/fonts/PlayfairDisplay-SemiBold.ttf'); font-weight: 600; }
+            @font-face { font-family: 'Arya'; src: url('https://gita.bhgvd.com/fonts/Arya-Bold.ttf'); font-weight: 700; }
+            @font-face { font-family: 'Rozha One'; src: url('https://gita.bhgvd.com/fonts/RozhaOne-Regular.ttf'); }
+            
+            body {
+                background-color: #5d4141; 
+                margin: 0;
+                height: 1350px; /* Locked to Instagram Portrait Height */
+                width: 1080px;  /* Locked to Instagram Portrait Width */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start; 
+                padding-top: 550px; /* Adjusting for 1350px height */
+                overflow: hidden;
+            }
 
-    // Background
-    ctx.fillStyle = '#0f0f0f';
-    ctx.fillRect(0, 0, width, height);
+            .tablet-container {
+                width: 800px; 
+                height: 500px;
+                text-align: center;
+                display: flex;  
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                position: relative;
+            }
 
-    const margin = 100;
-    const textWidth = width - (margin * 2);
-    const centerX = width / 2;
+            .verse-ref {
+                font-family: 'Playfair Display', serif;
+                background-color: #FFF7ED;
+                color: #B45309;
+                padding: 10px 20px;
+                border-radius: 100px;
+                font-size: 18px; 
+                font-weight: 700;
+                font-style: italic;
+                border: 2px solid rgba(180, 83, 9, 0.1);
+                letter-spacing: 2px;
+            }
 
-    // Sanskrit
-    ctx.fillStyle = '#EBCB8B';
-    ctx.font = '50px "Arya"';
-    ctx.textAlign = 'center';
-    wrapText(ctx, verseData.sanskrit, centerX, 400, textWidth, 70);
+            .sanskrit-text {
+                font-family: 'Arya', sans-serif;
+                font-weight: 700;
+                color: #F9F7F2;
+                font-size: 42px; 
+                line-height: 1.5;
+                white-space: pre-wrap;
+            }
 
-    // English
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = '40px "Rozha One"';
-    wrapText(ctx, verseData.english, centerX, 800, textWidth, 60);
+            .translation-text {
+                font-family: 'Playfair Display', serif;
+                color: #F9F7F2;
+                font-size: 32px;
+                line-height: 1.4;
+                font-style: italic;
+            }
 
-    // Footer
-    ctx.fillStyle = '#555555';
-    ctx.font = '30px "Inter"';
-    ctx.fillText(`Chapter ${verseData.chapter} • Verse ${verseData.verse}`, centerX, height - 150);
-    ctx.fillText('gita.bhgvd.com', centerX, height - 100);
+            .footer {
+                position: absolute;
+                top: -80px; 
+                font-family: 'Rozha One', serif;
+                font-size: 32px;
+                color: #F9F7F2;
+                opacity: 0.65;
+                letter-spacing: 2px;
+                width: 100%;
+                text-align: center;
+            }
+        </style>
+        </head>
+        <body>
+            <div class="tablet-container">
+                <div class="footer">gita.bhgvd.com</div>
+                <div class="verse-ref">Chapter ${verse.chapter} • Verse ${verse.verse}</div>
+                <div class="sanskrit-text">${tabSanskrit}</div>
+                <div class="translation-text">${tabTranslation}</div>
+            </div>
+        </body>
+        </html>
+    `;
 
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync('daily_post.png', buffer);
-}
+    // 3. Launch Puppeteer to "Take a Picture" of the HTML
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
 
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    const words = text.split(' ');
-    let line = '';
-    for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + ' ';
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && n > 0) {
-            ctx.fillText(line, x, y);
-            line = words[n] + ' ';
-            y += lineHeight;
-        } else {
-            line = testLine;
+    // Set the viewport to exactly Instagram Portrait size
+    await page.setViewport({ width: 1080, height: 1350 });
+
+    // Set the HTML content
+    await page.setContent(htmlTablet);
+
+    // Wait for fonts to load so text looks right
+    await page.evaluateHandle('document.fonts.ready');
+
+    // Run your Smart Shrink logic
+    await page.evaluate(() => {
+        const container = document.querySelector('.tablet-container');
+        const sanskrit = document.querySelector('.sanskrit-text');
+        const translation = document.querySelector('.translation-text');
+        
+        let factor = 1.0;
+        const minFactor = 0.5;
+        const step = 0.05;
+
+        const baseSanskrit = 42; 
+        const baseTrans = 32;    
+
+        const isOverflowing = () => container.scrollHeight > container.clientHeight;
+
+        while (isOverflowing() && factor > minFactor) {
+            factor -= step;
+            if (sanskrit) sanskrit.style.fontSize = (baseSanskrit * factor) + 'px';
+            if (translation) translation.style.fontSize = (baseTrans * factor) + 'px';
         }
-    }
-    ctx.fillText(line, x, y);
-}
+    });
 
-createInstagramPost();
+    // 4. Save the screenshot as our daily post image
+    await page.screenshot({ path: 'daily_post.png' });
+
+    await browser.close();
+    print("HTML Image generated successfully.");
+})();

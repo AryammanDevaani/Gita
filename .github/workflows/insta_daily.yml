@@ -29,7 +29,7 @@ jobs:
       - name: Install Libraries
         run: |
           pip install requests
-          npm install canvas
+          npm install puppeteer
 
       - name: 1. Select Verse
         run: python scripts/select_verse.py
