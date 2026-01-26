@@ -923,11 +923,19 @@ function updateInstallView() {
 const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 if (navInstallBtn) {
-    // OLD LOGIC:
-    // if (isMobileDevice && !isStandalone) { ... }
+    const ua = navigator.userAgent;
+    
+    // Detect Windows and Mac (Desktop)
+    // Note: We use 'Macintosh' to target desktop Macs, as iOS devices 
+    // often include 'Mac OS X' in their User Agent strings.
+    const isWindows = /Win/i.test(ua);
+    const isMac = /Macintosh/i.test(ua);
 
-    // NEW LOGIC: Show on both Mobile and Desktop if not already installed
-    if (!isStandalone) {
+    // Show button only if:
+    // 1. App is NOT installed (standalone)
+    // 2. Device is NOT Windows
+    // 3. Device is NOT Mac
+    if (!isStandalone && !isWindows && !isMac) {
         navInstallBtn.style.display = 'block';
     } else {
         navInstallBtn.style.display = 'none';
