@@ -76,7 +76,7 @@ const fs = require('fs');
     await page.setContent(htmlTemplate);
     await page.evaluateHandle('document.fonts.ready');
     
-    await page.screenshot({ path: 'final_render.png' });
+    await page.screenshot({ path: 'final_render.png', type: 'jpeg', quality: 90 });
     await browser.close();
     console.log("Visual rendered successfully.");
 })();
