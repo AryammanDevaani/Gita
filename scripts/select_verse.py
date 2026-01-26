@@ -45,11 +45,8 @@ def main():
         caption_body = english
 
     # 4. Construct the Final Formatted Caption
-    final_caption = (
-        f"Chapter {chapter_num}, Verse {verse_num}\n\n"
-        f"{caption_body}\n\n"
-        f"Read more: gita.bhgvd.com"
-    )
+    final_caption = (f"{caption_body}\n\n"
+        f"Read more: gita.bhgvd.com")
 
     # 5. Save Data
     output_data = {
