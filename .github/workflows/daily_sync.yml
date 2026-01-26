@@ -1,0 +1,51 @@
+name: Gita Daily Sync
+
+on:
+  schedule:
+    - cron: '30 3,9,15,21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Dependencies
+        run: |
+          pip install requests
+          npm install puppeteer
+
+      - name: 1. Curate
+        run: python scripts/curate_content.py
+
+      - name: 2. Render
+        run: node scripts/render_visual.js
+
+      - name: 3. Archive
+        run: |
+          git config --global user.name 'Gita Bot'
+          git config --global user.email 'bot@noreply.github.com'
+          git add final_render.png session_data.json
+          git commit -m "Archive post data" || echo "No changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 4. Dispatch
+        run: python scripts/dispatch_insta.py
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
