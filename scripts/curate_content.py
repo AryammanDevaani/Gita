@@ -31,22 +31,30 @@ def main():
     # Requirement: Image uses tweetEnglish
     image_text = verse.get('tweetEnglish', verse.get('english', ''))
 
-    # Caption Hierarchy
-    insta_purport = verse.get('instagramPurport', '').strip()
-    threads_text = verse.get('threadsEnglish', '').strip()
-    fallback_text = verse.get('english', '').strip()
+    # --- NEW CAPTION LOGIC ---
+    # We attempt to fetch the organized fields first.
+    # If they are missing (e.g., empty string), we might want to fallback or leave them blank.
+    transliteration = verse.get('englishTransliteration', '').strip()
+    wbw_meaning = verse.get('englishWBW', '').strip()
+    explanation = verse.get('englishExplain', '').strip()
 
-    if insta_purport:
-        caption_body = insta_purport
-    elif threads_text:
-        caption_body = threads_text
-    else:
-        caption_body = fallback_text
+    # Construct the final caption with the requested spacing.
+    # You requested "empty line" then "empty line", which usually implies a significant gap.
+    # \n = new line. \n\n = one empty line in between. \n\n\n = two empty lines in between.
+    # Below uses \n\n (standard paragraph break). If you want larger gaps, change to \n\n\n.
+    
+    caption_parts = [
+        f"Chapter {chapter_num}, Verse {verse_num}",  # Verse Number
+        transliteration,                               # Transliteration
+        wbw_meaning,                                   # WBW Meaning
+        explanation                                    # Explanation
+    ]
+    
+    # Filter out empty parts (in case a verse lacks one section) to avoid weird extra spacing
+    # and join them with double newlines
+    final_caption = "\n\n".join([part for part in caption_parts if part])
 
-    final_caption = (
-        f"Chapter {chapter_num}, Verse {verse_num}\n\n"
-        f"{caption_body}"
-    )
+    # -------------------------
 
     output_data = {
         "chapter": chapter_num,
