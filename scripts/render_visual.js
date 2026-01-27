@@ -35,7 +35,7 @@ const fs = require('fs');
                 justify-content: center; 
                 align-items: center;    
                 gap: 50px;
-                PADDING: 10px;
+                PADDING: 20px;
                 box-sizing: border-box; 
             }
 
