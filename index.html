@@ -53,7 +53,26 @@
 </head>
 
 <body>
+    <div id="in-app-warning" class="hidden" 
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #F9F7F2; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
+        
+        <div style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 1rem;">
+            <i class="ri-compass-3-line"></i>
+        </div>
 
+        <h2 style="font-family: var(--font-english); font-weight: 700; font-size: 2rem; color: var(--accent-gold); margin-bottom: 1rem; font-style: italic;">
+            Open in External Browser
+        </h2>
+        
+        <p style="font-family: var(--font-english); font-size: 1.2rem; color: var(--text-secondary); line-height: 1.6; max-width: 400px; margin-bottom: 2rem; font-style: italic;">
+            It looks like you’re viewing this inside an app. <br><br>
+            For the best experience , please tap the <strong>Menu (•••)</strong> above and select “<strong>Open in Browser</strong>.”
+        </p>
+
+        <button id="btn-dismiss-warning" style="background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.8rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; cursor: pointer; font-style: italic; transition: all 0.2s ease;">
+            Continue Anyway
+        </button>
+    </div>
     <div id="war-loader" class="war-overlay hidden"></div>
 
     <div class="fixed-header">

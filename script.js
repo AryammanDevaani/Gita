@@ -234,6 +234,34 @@ const verseRefBtn = document.getElementById('verse-reference');
 window.addEventListener('DOMContentLoaded', async () => {
     startWarLoop();
 
+    // ... inside DOMContentLoaded ...
+    
+    // Check for In-App Browsers (Instagram, Facebook, Twitter/X)
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isInApp = (ua.indexOf("Instagram") > -1) || 
+                    (ua.indexOf("FBAN") > -1) || 
+                    (ua.indexOf("FBAV") > -1) || 
+                    (ua.indexOf("Twitter") > -1);
+
+    const warningEl = document.getElementById('in-app-warning');
+    const btnDismiss = document.getElementById('btn-dismiss-warning');
+
+    if (isInApp && warningEl) {
+        // Show the warning (remove 'hidden' class)
+        warningEl.classList.remove('hidden');
+        
+        // Ensure flex display is active (in case CSS overrides it)
+        warningEl.style.display = 'flex'; 
+    }
+
+    if (btnDismiss) {
+        btnDismiss.onclick = () => {
+            if (warningEl) {
+                warningEl.style.display = 'none';
+            }
+        };
+    }
+
     try {
         const response = await fetch('gita.json');
         if (!response.ok) throw new Error("File not found");
