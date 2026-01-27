@@ -2,7 +2,7 @@ name: Instagram English
 
 on:
   schedule:
-    - cron: '30 18 * * *'
+    - cron: '0 18 * * *'
   workflow_dispatch:
 
 permissions:
@@ -50,4 +50,5 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
 
           META_TOKEN: ${{ secrets.META_TOKEN }}
+
 
