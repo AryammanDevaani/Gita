@@ -52,7 +52,7 @@ def main():
     
     # Filter out empty parts (in case a verse lacks one section) to avoid weird extra spacing
     # and join them with double newlines
-    final_caption = "\n\n".join([part for part in caption_parts if part])
+    final_caption = "\n\n\n".join([part for part in caption_parts if part])
 
     # -------------------------
 
