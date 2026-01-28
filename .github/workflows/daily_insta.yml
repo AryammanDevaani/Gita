@@ -1,4 +1,4 @@
-name: Daily Instagram (Global)
+name: Daily Instagram
 
 on:
   schedule:
@@ -81,4 +81,5 @@ jobs:
         run: python scripts/post_gu.py
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+
           META_TOKEN: ${{ secrets.META_TOKEN }}
