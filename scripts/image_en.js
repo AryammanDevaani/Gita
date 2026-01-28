@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 (async () => {
-    const data = JSON.parse(fs.readFileSync('session_data.json', 'utf8'));
+    const data = JSON.parse(fs.readFileSync('content_data_en.json', 'utf8'));
 
     const htmlTemplate = `
         <!DOCTYPE html>
@@ -103,7 +103,7 @@ const fs = require('fs');
         }
     });
 
-    await page.screenshot({ path: 'final_render.png', type: 'jpeg', quality: 100 });
+    await page.screenshot({ path: 'image_en.png', type: 'jpeg', quality: 100 });
     await browser.close();
     console.log("Two-line locked render complete.");
 })();

@@ -64,7 +64,7 @@ def main():
         "caption": final_caption
     }
 
-    with open('session_data.json', 'w', encoding='utf-8') as f:
+    with open('content_data_en.json', 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
     
     print(f"Curated Chapter {chapter_num} Verse {verse_num}")

@@ -6,11 +6,11 @@ import time
 USER_ID = os.environ.get('IG_USER_ID')
 TOKEN = os.environ.get('META_TOKEN')
 
-with open('session_data.json', 'r') as f:
+with open('content_data_en.json', 'r') as f:
     data = json.load(f)
 
 # Added a cache-buster timestamp to ensure Instagram doesn't grab an old version
-IMG_URL = f"https://raw.githubusercontent.com/aryammandevaani/gita/main/final_render.png?t={int(time.time())}"
+IMG_URL = f"https://raw.githubusercontent.com/aryammandevaani/gita/main/image_en.png?t={int(time.time())}"
 TEXT = data.get('caption')
 
 def publish():

@@ -29,10 +29,10 @@ jobs:
           npm install puppeteer
 
       - name: 1. Curate
-        run: python scripts/curate_content.py
+        run: python scripts/content_en.py
 
       - name: 2. Render
-        run: node scripts/render_visual.js
+        run: node scripts/image_en.js
 
       - name: 3. Archive
         run: |
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 4. Dispatch
-        run: python scripts/dispatch_insta.py
+        run: python scripts/post_en.py
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
 
