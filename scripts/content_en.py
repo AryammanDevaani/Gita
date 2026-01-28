@@ -29,7 +29,7 @@ def main():
     sanskrit = verse.get('sanskrit', '')
     
     # Requirement: Image uses tweetEnglish
-    image_text = verse.get('tweetEnglish', verse.get('english', ''))
+    image_text = verse.get('translationEnglish', verse.get('english', ''))
 
     # --- NEW CAPTION LOGIC ---
     # We attempt to fetch the organized fields first.

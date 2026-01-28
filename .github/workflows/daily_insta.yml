@@ -1,0 +1,84 @@
+name: Daily Instagram (Global)
+
+on:
+  schedule:
+    # 3:30 AM IST (22:00 UTC previous day)
+    - cron: '0 22 * * *'
+    # 11:30 AM IST (06:00 UTC)
+    - cron: '0 6 * * *'
+    # 7:30 PM IST (14:00 UTC)
+    - cron: '0 14 * * *'
+  workflow_dispatch:      # Allows you to click "Run Now" manually
+
+permissions:
+  contents: write
+
+jobs:
+  run-all-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Dependencies
+        run: |
+          pip install requests
+          npm install puppeteer
+
+      # --- ENGLISH ---
+      - name: 1. Curate English
+        run: python scripts/content_en.py
+      - name: 2. Render English
+        run: node scripts/image_en.js
+
+      # --- HINDI ---
+      - name: 3. Curate Hindi
+        run: python scripts/content_hi.py
+      - name: 4. Render Hindi
+        run: node scripts/image_hi.js
+
+      # --- GUJARATI ---
+      - name: 5. Curate Gujarati
+        run: python scripts/content_gu.py
+      - name: 6. Render Gujarati
+        run: node scripts/image_gu.js
+
+      # --- ARCHIVE (Crucial Step: Pushes ALL images to the repo) ---
+      - name: 7. Archive All Data
+        run: |
+          git config --global user.name 'Gita Bot'
+          git config --global user.email 'bot@noreply.github.com'
+          git add image_en.png content_data_en.json
+          git add image_hi.png content_data_hi.json
+          git add image_gu.png content_data_gu.json
+          git commit -m "Archive post data (EN, HI, GU)" || echo "No changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- DISPATCH (Sends them to Instagram) ---
+      - name: 8. Dispatch English
+        run: python scripts/post_en.py
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+
+      - name: 9. Dispatch Hindi
+        run: python scripts/post_hi.py
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+
+      - name: 10. Dispatch Gujarati
+        run: python scripts/post_gu.py
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_TOKEN: ${{ secrets.META_TOKEN }}
