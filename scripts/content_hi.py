@@ -1,8 +1,12 @@
 import json
-import random
 import os
 
+# 1. Helper function for Hindi Numerals
+def to_hindi_numerals(n):
+    return str(n).translate(str.maketrans("0123456789", "०१२३४५६७८९"))
+
 def main():
+    # 2. Load Gita Data
     try:
         with open('gita.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -21,33 +25,41 @@ def main():
     if not all_verses:
         return
 
-    # --- REPLACING RANDOM SELECTION WITH MASTER SELECTION ---
+    # 3. Master Selection Logic (Find the verse picked by selector.py)
     try:
         with open('selection.json', 'r', encoding='utf-8') as f:
             sel = json.load(f)
             target_chap = sel.get('chapter')
             target_ver = sel.get('verse')
             
-        # Find the specific verse in our big list
         verse = next((v for v in all_verses if v.get('chapter') == target_chap and v.get('verse') == target_ver), None)
         
         if not verse:
-            print(f"Error: Selected verse {target_chap}:{target_ver} not found in gita.json")
+            print(f"Error: Selected verse {target_chap}:{target_ver} not found.")
             return
             
     except FileNotFoundError:
         print("Error: selection.json not found. Run selector.py first.")
         return
-    # --------------------------------------------------------
-    
-    # Hindi specific fields
+
+    # 4. Extract & Convert Data (Only AFTER verse is found)
+    verse_num = verse.get('verse', 'Unknown')
+    chapter_num = verse.get('chapter', 'Unknown')
+    sanskrit = verse.get('sanskrit', '')
+
+    # Convert to Hindi Numerals
+    chapter_hi = to_hindi_numerals(chapter_num)
+    verse_hi = to_hindi_numerals(verse_num)
+
+    # Hindi Text Fields
     image_text = verse.get('translationHindi', verse.get('hindi', ''))
     transliteration = verse.get('hindiTransliteration', '').strip()
     wbw_meaning = verse.get('hindiWBW', '').strip()
     explanation = verse.get('hindiExplain', '').strip()
 
+    # 5. Build Caption
     caption_parts = [
-        f"अध्याय {chapter_num}, श्लोक {verse_num}",
+        f"अध्याय {chapter_hi}, श्लोक {verse_hi}",
         transliteration,
         wbw_meaning,
         explanation,
@@ -64,7 +76,7 @@ def main():
         "caption": final_caption
     }
 
-    # Save to Hindi specific file
+    # 6. Save
     with open('content_data_hi.json', 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
     
