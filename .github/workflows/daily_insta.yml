@@ -121,7 +121,7 @@ jobs:
           git add content_data_*.json
           
           # We don't necessarily need to commit the images, but we can if you want them in the repo
-          # git add *.png 
+          git add *.png 
           
           git commit -m "Cycle update: ${{ steps.set_mode.outputs.mode }}" || echo "No changes to commit"
           git push
@@ -135,4 +135,5 @@ jobs:
           python scripts/post_carousel.py --mode ${{ steps.set_mode.outputs.mode }}
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+
           META_TOKEN: ${{ secrets.META_TOKEN }}
