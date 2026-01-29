@@ -37,7 +37,8 @@ def main():
         f"अध्याय {chapter_num}, श्लोक {verse_num}",
         transliteration,
         wbw_meaning,
-        explanation
+        explanation,
+        f"corrections@gita.bhgvd.com"
     ]
     
     final_caption = "\n\n".join([part for part in caption_parts if part])

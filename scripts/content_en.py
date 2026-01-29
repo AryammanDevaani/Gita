@@ -47,7 +47,8 @@ def main():
         f"Chapter {chapter_num}, Verse {verse_num}",  # Verse Number
         transliteration,                               # Transliteration
         wbw_meaning,                                   # WBW Meaning
-        explanation                                    # Explanation
+        explanation,
+        f"corrections@gita.bhgvd.com"                                    # Explanation
     ]
     
     # Filter out empty parts (in case a verse lacks one section) to avoid weird extra spacing
