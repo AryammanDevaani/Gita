@@ -57,24 +57,23 @@ def main():
     wbw_meaning = verse.get('hindiWBW', '').strip()
     explanation = verse.get('hindiExplain', '').strip()
 
-    # 5. Build Caption
-    caption_parts = [
-        f"अध्याय {chapter_hi}, श्लोक {verse_hi}",
-        transliteration,
-        wbw_meaning,
-        explanation,
-        f"corrections@bhgvd.com"
-    ]
+    # 5. Structure Data (No Caption Building)
     
-    final_caption = "\n\n".join([part for part in caption_parts if part])
-
     output_data = {
-        "chapter": chapter_num,
-        "verse": verse_num,
+        # EXISTING FIELDS (Required for image_hi.js)
         "sanskrit": sanskrit,
-        "image_text": image_text,
-        "caption": final_caption
+        "image_text": image_text, 
+
+        # NEW FIELDS (For Carousel & Dynamic Captions)
+        "header": f"अध्याय {chapter_hi}, श्लोक {verse_hi}",
+        "transliteration": transliteration,
+        "wbw": wbw_meaning,
+        "explanation": explanation
     }
+
+    # 6. Save
+    with open('content_data_hi.json', 'w', encoding='utf-8') as f:
+        json.dump(output_data, f, indent=2, ensure_ascii=False)
 
     # 6. Save
     with open('content_data_hi.json', 'w', encoding='utf-8') as f:

@@ -57,29 +57,24 @@ def main():
     wbw_meaning = verse.get('gujaratiWBW', '').strip()
     explanation = verse.get('gujaratiExplain', '').strip()
 
-    # 5. Build Caption
-    caption_parts = [
-        f"અધ્યાય {chapter_gu}, શ્લોક {verse_gu}",
-        transliteration,
-        wbw_meaning,
-        explanation,
-        f"corrections@bhgvd.com"
-    ]
+    # 5. Structure Data (No Caption Building)
     
-    final_caption = "\n\n".join([part for part in caption_parts if part])
-
     output_data = {
-        "chapter": chapter_num,
-        "verse": verse_num,
+        # EXISTING FIELDS (Required for image_gu.js)
         "sanskrit": sanskrit,
         "image_text": image_text,
-        "caption": final_caption
+
+        # NEW FIELDS (For Carousel & Dynamic Captions)
+        "header": f"અધ્યાય {chapter_gu}, શ્લોક {verse_gu}",
+        "transliteration": transliteration,
+        "wbw": wbw_meaning,
+        "explanation": explanation
     }
 
     # 6. Save
     with open('content_data_gu.json', 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
-    
+        
     print(f"Curated Gujarati: Chapter {chapter_num} Verse {verse_num}")
 
 if __name__ == "__main__":

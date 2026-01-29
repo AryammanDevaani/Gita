@@ -1,100 +1,138 @@
-name: Daily Instagram
+name: Daily Instagram Carousel
 
 on:
   schedule:
-    # 3:30 AM IST (22:00 UTC previous day)
-    - cron: '0 22 * * *'
-    # 11:30 AM IST (06:00 UTC)
-    - cron: '0 6 * * *'
-    # 7:30 PM IST (14:00 UTC)
-    - cron: '0 14 * * *'
-  workflow_dispatch:      # Allows you to click "Run Now" manually
+    # 7:30 AM IST (02:00 UTC) -> Hindi Mode
+    - cron: '0 2 * * *'
+    # 3:30 PM IST (10:00 UTC) -> Gujarati Mode
+    - cron: '0 10 * * *'
+    # 11:30 PM IST (18:00 UTC) -> English Mode
+    - cron: '0 18 * * *'
+
+  workflow_dispatch:
+    inputs:
+      mode_override:
+        description: 'Force a specific mode (english, hindi, gujarati)'
+        required: false
+        type: choice
+        options:
+        - auto
+        - english
+        - hindi
+        - gujarati
+        default: 'auto'
 
 permissions:
   contents: write
 
 jobs:
-  run-all-posts:
+  create-and-post:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Environment
+      # --- SETUP ---
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - uses: actions/setup-python@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Dependencies
+      - name: Install Dependencies
         run: |
           pip install requests
           npm install puppeteer
 
-      # --- NEW STEP: SELECT VERSE ---
-      - name: 0. Master Selection
+      # --- 0. SELECT VERSE ---
+      - name: Select New Random Verse
         run: python scripts/selector.py
 
-      # --- ENGLISH ---
-      - name: 1. Curate English
-        run: python scripts/content_en.py
-      - name: 2. Render English
-        run: node scripts/image_en.js
+      # --- 1. DATA CURATION ---
+      - name: Curate Data (All Languages)
+        run: |
+          python scripts/content_en.py
+          python scripts/content_hi.py
+          python scripts/content_gu.py
 
-      # --- HINDI ---
-      - name: 3. Curate Hindi
-        run: python scripts/content_hi.py
-      - name: 4. Render Hindi
-        run: node scripts/image_hi.js
+      # --- 2. RENDER IMAGES (All 6) ---
+      - name: Render Images
+        run: |
+          # Verse Images
+          node scripts/image_en.js
+          node scripts/image_hi.js
+          node scripts/image_gu.js
+          
+          # Explanation Images
+          node scripts/image_en_ex.js
+          node scripts/image_hi_ex.js
+          node scripts/image_gu_ex.js
 
-      # --- GUJARATI ---
-      - name: 5. Curate Gujarati
-        run: python scripts/content_gu.py
-      - name: 6. Render Gujarati
-        run: node scripts/image_gu.js
+      # --- 3. DETERMINE MODE ---
+      - name: Determine Post Mode
+        id: set_mode
+        run: |
+          # Check if manual override was selected
+          INPUT_MODE="${{ github.event.inputs.mode_override }}"
+          
+          if [[ -n "$INPUT_MODE" && "$INPUT_MODE" != "auto" ]]; then
+            echo "Manual override detected: $INPUT_MODE"
+            echo "mode=$INPUT_MODE" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
-      # --- ARCHIVE (Include history.json!) ---
-      # --- ARCHIVE ---
-      - name: 7. Archive All Data
+          # Otherwise, check current UTC hour
+          HOUR=$(date -u +%H)
+          echo "Current UTC Hour: $HOUR"
+
+          # Logic: Match the schedule times (approximate checks to be safe)
+          if [ "$HOUR" -eq 2 ] || [ "$HOUR" -eq 02 ]; then
+            echo "Detected 7:30 AM IST slot -> HINDI"
+            echo "mode=hindi" >> $GITHUB_OUTPUT
+            
+          elif [ "$HOUR" -eq 10 ]; then
+            echo "Detected 3:30 PM IST slot -> GUJARATI"
+            echo "mode=gujarati" >> $GITHUB_OUTPUT
+            
+          elif [ "$HOUR" -eq 18 ]; then
+            echo "Detected 11:30 PM IST slot -> ENGLISH"
+            echo "mode=english" >> $GITHUB_OUTPUT
+            
+          else
+            # Fallback if triggered at weird time manually without input
+            echo "Time doesn't match standard slots. Defaulting to ENGLISH."
+            echo "mode=english" >> $GITHUB_OUTPUT
+          fi
+
+      # --- 4. COMMIT HISTORY ---
+      - name: Archive History & Data
         run: |
           git config --global user.name 'Gita Bot'
           git config --global user.email 'bot@noreply.github.com'
           
-          # Add the specific files we generated
+          # Add history and selection to ensure we don't repeat verses
           git add history.json selection.json
-          git add image_en.png content_data_en.json
-          git add image_hi.png content_data_hi.json
-          git add image_gu.png content_data_gu.json
           
-          # Commit the important stuff
-          git commit -m "Daily post + history update" || echo "No changes"
+          # Add the generated content (optional, but good for debugging)
+          git add content_data_*.json
           
-          # FIX: Stash any other changes (like package-lock.json) so the pull works
-          git stash
+          # We don't necessarily need to commit the images, but we can if you want them in the repo
+          # git add *.png 
           
-          # Now pull and push
-          git pull --rebase origin main
+          git commit -m "Cycle update: ${{ steps.set_mode.outputs.mode }}" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # --- DISPATCH ---
-      - name: 8. Dispatch English
-        run: python scripts/post_en.py
-        env:
-          IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          META_TOKEN: ${{ secrets.META_TOKEN }}
-
-      - name: 9. Dispatch Hindi
-        run: python scripts/post_hi.py
-        env:
-          IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          META_TOKEN: ${{ secrets.META_TOKEN }}
-
-      - name: 10. Dispatch Gujarati
-        run: python scripts/post_gu.py
+      # --- 5. POST TO INSTAGRAM ---
+      - name: Post Carousel
+        run: |
+          echo "Posting in mode: ${{ steps.set_mode.outputs.mode }}"
+          python scripts/post_carousel.py --mode ${{ steps.set_mode.outputs.mode }}
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           META_TOKEN: ${{ secrets.META_TOKEN }}

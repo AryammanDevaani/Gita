@@ -59,31 +59,24 @@ def main():
     # \n = new line. \n\n = one empty line in between. \n\n\n = two empty lines in between.
     # Below uses \n\n (standard paragraph break). If you want larger gaps, change to \n\n\n.
     
-    caption_parts = [
-        f"Chapter {chapter_num}, Verse {verse_num}",  # Verse Number
-        transliteration,                               # Transliteration
-        wbw_meaning,                                   # WBW Meaning
-        explanation,
-        f"corrections@bhgvd.com"                                    # Explanation
-    ]
+    # --- STRUCTURED DATA EXPORT ---
+    # We no longer build the full caption here. We save the parts.
     
-    # Filter out empty parts (in case a verse lacks one section) to avoid weird extra spacing
-    # and join them with double newlines
-    final_caption = "\n\n".join([part for part in caption_parts if part])
-
-    # -------------------------
-
     output_data = {
-        "chapter": chapter_num,
-        "verse": verse_num,
+        # EXISTING FIELDS (Required for image_en.js)
         "sanskrit": sanskrit,
-        "image_english": image_text,
-        "caption": final_caption
+        "image_english": image_text, 
+
+        # NEW FIELDS (For Carousel & Dynamic Captions)
+        "header": f"Chapter {chapter_num}, Verse {verse_num}",
+        "transliteration": transliteration,
+        "wbw": wbw_meaning,
+        "explanation": explanation
     }
 
     with open('content_data_en.json', 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
-    
+
     print(f"Curated Chapter {chapter_num} Verse {verse_num}")
 
 if __name__ == "__main__":
