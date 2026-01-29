@@ -40,7 +40,7 @@ def get_sequence(mode):
     elif mode == 'hindi':
         return ['hi', 'gu', 'en']
     elif mode == 'gujarati':
-        return ['gu', 'hi', 'en']
+        return ['gu', 'en', 'hi']
     else:
         print(f"❌ Invalid mode: {mode}")
         exit(1)
