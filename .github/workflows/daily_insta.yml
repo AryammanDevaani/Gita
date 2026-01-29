@@ -33,6 +33,10 @@ jobs:
           pip install requests
           npm install puppeteer
 
+      # --- NEW STEP: SELECT VERSE ---
+      - name: 0. Master Selection
+        run: python scripts/selector.py
+
       # --- ENGLISH ---
       - name: 1. Curate English
         run: python scripts/content_en.py
@@ -51,20 +55,26 @@ jobs:
       - name: 6. Render Gujarati
         run: node scripts/image_gu.js
 
-      # --- ARCHIVE (Crucial Step: Pushes ALL images to the repo) ---
+      # --- ARCHIVE (Include history.json!) ---
       - name: 7. Archive All Data
         run: |
           git config --global user.name 'Gita Bot'
           git config --global user.email 'bot@noreply.github.com'
+          
+          # Add the history file so we track progress
+          git add history.json
+          
           git add image_en.png content_data_en.json
           git add image_hi.png content_data_hi.json
           git add image_gu.png content_data_gu.json
-          git commit -m "Archive post data (EN, HI, GU)" || echo "No changes"
+          
+          git commit -m "Daily post + history update" || echo "No changes"
+          git pull --rebase origin main
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # --- DISPATCH (Sends them to Instagram) ---
+      # --- DISPATCH ---
       - name: 8. Dispatch English
         run: python scripts/post_en.py
         env:
@@ -81,5 +91,4 @@ jobs:
         run: python scripts/post_gu.py
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-
           META_TOKEN: ${{ secrets.META_TOKEN }}

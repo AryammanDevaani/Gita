@@ -21,12 +21,24 @@ def main():
     if not all_verses:
         return
 
-    verse = random.choice(all_verses)
-
-    # Extracting specific fields
-    verse_num = verse.get('verse', 'Unknown')
-    chapter_num = verse.get('chapter', 'Unknown')
-    sanskrit = verse.get('sanskrit', '')
+    # --- REPLACING RANDOM SELECTION WITH MASTER SELECTION ---
+    try:
+        with open('selection.json', 'r', encoding='utf-8') as f:
+            sel = json.load(f)
+            target_chap = sel.get('chapter')
+            target_ver = sel.get('verse')
+            
+        # Find the specific verse in our big list
+        verse = next((v for v in all_verses if v.get('chapter') == target_chap and v.get('verse') == target_ver), None)
+        
+        if not verse:
+            print(f"Error: Selected verse {target_chap}:{target_ver} not found in gita.json")
+            return
+            
+    except FileNotFoundError:
+        print("Error: selection.json not found. Run selector.py first.")
+        return
+    # --------------------------------------------------------
     
     # Requirement: Image uses tweetEnglish
     image_text = verse.get('translationEnglish', verse.get('english', ''))
