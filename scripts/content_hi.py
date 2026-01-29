@@ -38,7 +38,7 @@ def main():
         transliteration,
         wbw_meaning,
         explanation,
-        f"corrections@gita.bhgvd.com"
+        f"corrections@bhgvd.com"
     ]
     
     final_caption = "\n\n".join([part for part in caption_parts if part])

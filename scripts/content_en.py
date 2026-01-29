@@ -48,7 +48,7 @@ def main():
         transliteration,                               # Transliteration
         wbw_meaning,                                   # WBW Meaning
         explanation,
-        f"corrections@gita.bhgvd.com"                                    # Explanation
+        f"corrections@bhgvd.com"                                    # Explanation
     ]
     
     # Filter out empty parts (in case a verse lacks one section) to avoid weird extra spacing
