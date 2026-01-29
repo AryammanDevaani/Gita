@@ -46,22 +46,25 @@ def get_sequence(mode):
         exit(1)
 
 def build_caption(data, sequence):
-    """Constructs the caption based on the language sequence."""
-    # 1. Header (Chapter & Verse) comes from the PRIMARY language (first in sequence)
+    """Constructs the caption with Em Dash separators between ALL sections."""
+    # 1. Header (Chapter & Verse) comes from the PRIMARY language
     primary_lang = sequence[0]
-    header = data[primary_lang]['header'] # e.g., "Chapter 9, Verse 8" or Hindi equivalent
+    header = data[primary_lang]['header']
 
-    caption_parts = [header]
+    # Start with Header and the first Separator
+    caption_parts = [header, "—"]
 
     # 2. Add Transliteration and WBW for each language in order
     for lang in sequence:
         entry = data[lang]
-        # Add a small separator or label if needed, but here we just list them as requested
-        # We handle empty fields gracefully
         if entry.get('transliteration'):
             caption_parts.append(entry['transliteration'])
         if entry.get('wbw'):
             caption_parts.append(entry['wbw'])
+        
+        # Add a separator after EVERY language block
+        # This ensures: Header — Lang1 — Lang2 — Lang3 — Email
+        caption_parts.append("—")
     
     # 3. Footer
     caption_parts.append("corrections@bhgvd.com")
