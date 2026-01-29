@@ -56,19 +56,25 @@ jobs:
         run: node scripts/image_gu.js
 
       # --- ARCHIVE (Include history.json!) ---
+      # --- ARCHIVE ---
       - name: 7. Archive All Data
         run: |
           git config --global user.name 'Gita Bot'
           git config --global user.email 'bot@noreply.github.com'
           
-          # Add the history file so we track progress
-          git add history.json
-          
+          # Add the specific files we generated
+          git add history.json selection.json
           git add image_en.png content_data_en.json
           git add image_hi.png content_data_hi.json
           git add image_gu.png content_data_gu.json
           
+          # Commit the important stuff
           git commit -m "Daily post + history update" || echo "No changes"
+          
+          # FIX: Stash any other changes (like package-lock.json) so the pull works
+          git stash
+          
+          # Now pull and push
           git pull --rebase origin main
           git push
         env:
