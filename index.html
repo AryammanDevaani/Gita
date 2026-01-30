@@ -53,23 +53,27 @@
 </head>
 
 <body>
-    <div id="in-app-warning" class="hidden" 
+    <div id="in-app-warning" class="hidden"
         style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #F9F7F2; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;">
-        
+
         <div style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 1rem;">
             <i class="ri-compass-3-line"></i>
         </div>
 
-        <h2 style="font-family: var(--font-english); font-weight: 700; font-size: 2rem; color: var(--accent-gold); margin-bottom: 1rem; font-style: italic;">
+        <h2
+            style="font-family: var(--font-english); font-weight: 700; font-size: 2rem; color: var(--accent-gold); margin-bottom: 1rem; font-style: italic;">
             Open in External Browser
         </h2>
-        
-        <p style="font-family: var(--font-english); font-size: 1.2rem; color: var(--text-secondary); line-height: 1.6; max-width: 400px; margin-bottom: 2rem; font-style: italic;">
+
+        <p
+            style="font-family: var(--font-english); font-size: 1.2rem; color: var(--text-secondary); line-height: 1.6; max-width: 400px; margin-bottom: 2rem; font-style: italic;">
             It looks like you’re viewing this inside an app. <br><br>
-            For the best experience , please tap the <strong>Menu (•••)</strong> above and select “<strong>Open in Browser</strong>.”
+            For the best experience , please tap the <strong>Menu (•••)</strong> above and select “<strong>Open in
+                Browser</strong>.”
         </p>
 
-        <button id="btn-dismiss-warning" style="background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.8rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; cursor: pointer; font-style: italic; transition: all 0.2s ease;">
+        <button id="btn-dismiss-warning"
+            style="background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.8rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; cursor: pointer; font-style: italic; transition: all 0.2s ease;">
             Continue Anyway
         </button>
     </div>
@@ -246,17 +250,21 @@
             </p>
 
             <div id="wallpaper-windows" class="hidden">
-                <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
-                    
-                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-style: italic;">
+                <div
+                    style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+
+                    <h3
+                        style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-style: italic;">
                         For Windows
                     </h3>
 
                     <div>
-                        <label for="win-ratio" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                        <label for="win-ratio"
+                            style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
                             Aspect Ratio
                         </label>
-                        <select id="win-ratio" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                        <select id="win-ratio"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
                             <option value="" disabled selected>Ratios</option>
                             <option value="16x9">16:9</option>
                             <option value="16x10">16:10</option>
@@ -264,10 +272,12 @@
                     </div>
 
                     <div>
-                        <label for="win-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                        <label for="win-lang"
+                            style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
                             Select Language
                         </label>
-                        <select id="win-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                        <select id="win-lang"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
                             <option value="" disabled selected>Languages</option>
                             <option value="e">English</option>
                             <option value="h">Hindi</option>
@@ -278,12 +288,13 @@
                     <div id="win-download-area" class="hidden" style="margin-top: 1rem; animation: fadeIn 0.5s ease;">
                         <div style="text-align: center; margin-bottom: 2rem;">
                             <a id="btn-win-download" href="#" download
-                               style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-style:italic; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
+                                style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-style:italic; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
                                 Download Installer
                             </a>
                         </div>
-                        
-                        <ol style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
+
+                        <ol
+                            style="font-family: var(--font-english); line-height: 1.8; margin-left: 1.5rem; font-style:italic; color: #666;">
                             <li><strong>Right-click</strong> the zip & select <strong>Extract All</strong>.</li>
                             <li>Double-click <strong>install.bat</strong>.</li>
                         </ol>
@@ -293,17 +304,21 @@
             </div>
 
             <div id="wallpaper-mac" class="hidden">
-                <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
-                    
-                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-style: italic;">
+                <div
+                    style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left; background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+
+                    <h3
+                        style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; font-style: italic;">
                         For Mac
                     </h3>
 
                     <div>
-                        <label for="mac-ratio" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                        <label for="mac-ratio"
+                            style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
                             Aspect Ratio
                         </label>
-                        <select id="mac-ratio" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                        <select id="mac-ratio"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
                             <option value="" disabled selected>Select Ratio</option>
                             <option value="16x10">16:10 (MacBook Air / Pro)</option>
                             <option value="16x9">16:9 (iMac / External Monitor)</option>
@@ -311,10 +326,12 @@
                     </div>
 
                     <div>
-                        <label for="mac-lang" style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
+                        <label for="mac-lang"
+                            style="display: block; font-family: var(--font-english); font-size: 0.9rem; margin-bottom: 0.5rem; font-style:italic; color: var(--text-secondary);">
                             Select Language
                         </label>
-                        <select id="mac-lang" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
+                        <select id="mac-lang"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-family: 'Courier New', Courier, monospace; letter-spacing: -0.1em; font-size: 1rem; background: #fff; appearance: none;">
                             <option value="" disabled selected>Languages</option>
                             <option value="e">English</option>
                             <option value="h">Hindi</option>
@@ -322,19 +339,23 @@
                         </select>
                     </div>
 
-                    <div id="mac-shortcut-container" class="hidden" style="margin-top: 1rem; animation: fadeIn 0.5s ease;">
+                    <div id="mac-shortcut-container" class="hidden"
+                        style="margin-top: 1rem; animation: fadeIn 0.5s ease;">
                         <div style="text-align: center; margin-bottom: 2rem;">
                             <a id="btn-mac-shortcut" href="#" target="_blank"
-                               style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-style:italic; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
+                                style="display: inline-block; text-decoration: none; background-color: var(--accent-gold); color: #fff; border: none; padding: 1rem 2rem; border-radius: 100px; font-family: var(--font-english); font-weight: 600; font-size: 1.1rem; cursor: pointer; font-style:italic; box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);">
                                 Get Shortcut Link
                             </a>
                         </div>
-                        
-                        <div style="margin-bottom: 0rem; text-align: left; background: #F9F7F2; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(180, 83, 9, 0.1);">
-                            <h4 style="font-family: var(--font-english); margin-bottom: 0.5rem; font-style:italic; color: #B45309;">
+
+                        <div
+                            style="margin-bottom: 0rem; text-align: left; background: #F9F7F2; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(180, 83, 9, 0.1);">
+                            <h4
+                                style="font-family: var(--font-english); margin-bottom: 0.5rem; font-style:italic; color: #B45309;">
                                 How to use:
                             </h4>
-                            <ol style="font-family: var(--font-english); line-height: 1.6; margin-left: 1.5rem; font-style:italic; color: #666;">
+                            <ol
+                                style="font-family: var(--font-english); line-height: 1.6; margin-left: 1.5rem; font-style:italic; color: #666;">
                                 <li>Click <strong>Get Shortcut Link</strong> and "Add Shortcut".</li>
                                 <li>Open the <strong>Shortcuts App</strong> on your Mac.</li>
                                 <li>Right-click the new Shortcut → <strong>Run</strong>.</li>
@@ -347,8 +368,10 @@
             </div>
 
             <div id="wallpaper-android" class="hidden">
-                <div style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
-                    <h3 style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
+                <div
+                    style="background: white; padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-soft);">
+                    <h3
+                        style="font-family: var(--font-english); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; font-style: italic;">
                         For Android
                     </h3>
                     <p style="font-family: var(--font-english); font-style: italic; color: #666;">
@@ -359,6 +382,10 @@
 
             <div id="wallpaper-ios" class="hidden">
                 <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <img src="preview/ios.png" alt="Daily Wallpaper Preview"
+                            style="max-width: 200px; width: 100%; height: auto; border-radius: 37px; border: 4px solid black;">
+                    </div>
 
                     <div>
                         <label for="wp-device"
@@ -466,8 +493,7 @@
                 <a href="mailto:contact@bhgvd.com" class="share-button icon-only" aria-label="Email">
                     <i class="ri-mail-line" style="font-size: 1.5rem;"></i>
                 </a>
-                <a href="https://x.com/BhgvdGita" target="_blank" class="share-button icon-only"
-                    aria-label="Twitter">
+                <a href="https://x.com/BhgvdGita" target="_blank" class="share-button icon-only" aria-label="Twitter">
                     <i class="ri-twitter-x-line" style="font-size: 1.5rem;"></i>
                 </a>
                 <a href="https://instagram.com/BhgvdGita" target="_blank" class="share-button icon-only"
