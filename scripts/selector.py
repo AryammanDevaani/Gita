@@ -25,14 +25,22 @@ def main():
                 all_verses.extend(value)
 
     # 2. Load History (Verses already posted)
+    # 2. Load History (Updated for Counter Support)
+    history_data = {"history": [], "counter": 1} # Default structure
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
             try:
-                history = json.load(f)
+                loaded = json.load(f)
+                # If it's the old list format, migrate it to the new dict format
+                if isinstance(loaded, list):
+                    history_data["history"] = loaded
+                elif isinstance(loaded, dict):
+                    history_data = loaded
             except json.JSONDecodeError:
-                history = []
-    else:
-        history = []
+                pass
+    
+    # Work with just the list part for the rest of this script
+    history = history_data.get("history", [])
 
     # 3. Filter out verses that are already in history
     # We create a unique signature for each verse: "Chapter:Verse"
@@ -65,9 +73,13 @@ def main():
         }, f)
 
     # 7. Update History
+    # 7. Update History
     history.append(selected_sig)
+    history_data["history"] = history  # Update the list inside the main object
+    
     with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
-        json.dump(history, f)
+        json.dump(history_data, f)
 
 if __name__ == "__main__":
+
     main()
