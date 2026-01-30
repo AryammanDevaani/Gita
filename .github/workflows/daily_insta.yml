@@ -1,4 +1,4 @@
-name: Daily Instagram Carousel
+name: Instagram
 
 on:
   schedule:
@@ -117,5 +117,6 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
 
           META_TOKEN: ${{ secrets.META_TOKEN }}
+
 
 
