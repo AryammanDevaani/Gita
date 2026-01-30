@@ -66,8 +66,6 @@ def build_caption(data, sequence):
         # This ensures: Header — Lang1 — Lang2 — Lang3 — Email
         caption_parts.append("—")
     
-    # 3. Footer
-    caption_parts.append("corrections@bhgvd.com")
 
     # Join with double newlines for spacing
     return "\n\n".join(caption_parts)
@@ -176,4 +174,5 @@ def main():
         publish_container(carousel_id)
 
 if __name__ == "__main__":
+
     main()
