@@ -4,10 +4,6 @@ on:
   schedule:
     # 7:30 AM IST (02:00 UTC) -> Hindi Mode
     - cron: '0 2 * * *'
-    # 3:30 PM IST (10:00 UTC) -> Gujarati Mode
-    - cron: '0 10 * * *'
-    # 11:30 PM IST (18:00 UTC) -> English Mode
-    - cron: '0 18 * * *'
 
   workflow_dispatch:
     inputs:
@@ -117,6 +113,7 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
 
           META_TOKEN: ${{ secrets.META_TOKEN }}
+
 
 
 
